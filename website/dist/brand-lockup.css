@@ -17,7 +17,7 @@
   transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
 }
 .partner-mark img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.game-mark img { object-position: center 30%; }
+.game-mark img { object-position: center; }
 .partner-cross { color: var(--gold); font: 30px/1 Georgia, serif; }
 .hero-brand-lockup:hover .partner-mark {
   transform: translateY(-3px);
