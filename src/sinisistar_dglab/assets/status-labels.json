@@ -1,0 +1,282 @@
+{
+  "Blessing_Lost": {
+    "label": "丧失加护",
+    "localize_id": 550
+  },
+  "Blinded": {
+    "label": "黑暗",
+    "localize_id": 181
+  },
+  "Book": {
+    "label": "人皮之书",
+    "localize_id": 681
+  },
+  "Breast": {
+    "label": "胀乳",
+    "localize_id": 2
+  },
+  "BreastSuper": {
+    "label": "进一步胀乳",
+    "localize_id": 499
+  },
+  "Clouding": {
+    "label": "思考障碍",
+    "localize_id": 584
+  },
+  "DeadlyPoison": {
+    "label": "剧毒",
+    "localize_id": 870
+  },
+  "Defilement": {
+    "label": "污秽",
+    "localize_id": 64
+  },
+  "Drunk": {
+    "label": "酩酊",
+    "localize_id": 691
+  },
+  "Entombed": {
+    "label": "无法行动",
+    "localize_id": 185
+  },
+  "FallSleep": {
+    "label": "睡意",
+    "localize_id": 432
+  },
+  "Feed": {
+    "label": "埃涅努特的饲育场",
+    "localize_id": 4
+  },
+  "FrogEgg": {
+    "label": "青蛙卵",
+    "localize_id": 867
+  },
+  "FrogLEgg": {
+    "label": "青蛙的苗床",
+    "localize_id": 872
+  },
+  "GO_OuterOne": {
+    "label": "外神的母体",
+    "localize_id": 675
+  },
+  "GO_Stomach": {
+    "label": "产卵器官",
+    "localize_id": 677
+  },
+  "Handcuffed": {
+    "label": "手铐",
+    "localize_id": 735
+  },
+  "InfertilityBlessing": {
+    "label": "不孕的加护",
+    "localize_id": 178
+  },
+  "LeechInfestation": {
+    "label": "水蛭黏附",
+    "localize_id": 187
+  },
+  "LeechInfestation_Hold": {
+    "label": "水蛭的成长",
+    "localize_id": 307
+  },
+  "Mask": {
+    "label": "洗脑",
+    "localize_id": 673
+  },
+  "MeatBud": {
+    "label": "肉芽",
+    "localize_id": 275
+  },
+  "Milk": {
+    "label": "母乳分泌",
+    "localize_id": 45
+  },
+  "MindIntegration": {
+    "label": "意识改变",
+    "localize_id": 361
+  },
+  "Mucus": {
+    "label": "粘液",
+    "localize_id": 183
+  },
+  "MucusSlug": {
+    "label": "满身粘液",
+    "localize_id": 487
+  },
+  "ParasiteLv13": {
+    "label": "寄生",
+    "localize_id": 745
+  },
+  "Poison": {
+    "label": "中毒",
+    "localize_id": 693
+  },
+  "Pregnant": {
+    "label": "怀孕",
+    "localize_id": 501
+  },
+  "Pregnant_Demi": {
+    "label": "亚人的母体",
+    "localize_id": 678
+  },
+  "SandBlinded": {
+    "label": "目盲",
+    "localize_id": 581
+  },
+  "Semen": {
+    "label": "精液累积",
+    "localize_id": 69
+  },
+  "Slow": {
+    "label": "迟钝",
+    "localize_id": 451
+  },
+  "SpiderEggSac": {
+    "label": "蜘蛛苗床",
+    "localize_id": 834
+  },
+  "SpiderWeb": {
+    "label": "蜘蛛丝",
+    "localize_id": 833
+  },
+  "Stone": {
+    "label": "石化",
+    "localize_id": 686
+  },
+  "TentacleEgg": {
+    "label": "触手的卵团",
+    "localize_id": 558
+  },
+  "TreeDisorientation": {
+    "label": "花粉的幻觉",
+    "localize_id": 493
+  },
+  "Assimilation": {
+    "label": "同化",
+    "translation_source": "internal"
+  },
+  "Assimilation_Seed": {
+    "label": "同化种子",
+    "translation_source": "internal"
+  },
+  "BigPicture": {
+    "label": "大画像（内部状态）",
+    "translation_source": "internal"
+  },
+  "BolaBind": {
+    "label": "流星锤束缚",
+    "translation_source": "internal"
+  },
+  "Broken2": {
+    "label": "破损·阶段二",
+    "translation_source": "internal"
+  },
+  "ChangeZombie": {
+    "label": "僵尸化",
+    "translation_source": "internal"
+  },
+  "Down2": {
+    "label": "倒地·阶段二",
+    "translation_source": "internal"
+  },
+  "Down2ForSewageBoss": {
+    "label": "下水道首领·倒地",
+    "translation_source": "internal"
+  },
+  "EvilWoodSeed": {
+    "label": "邪木种子",
+    "translation_source": "internal"
+  },
+  "FungalBed": {
+    "label": "菌床",
+    "translation_source": "internal"
+  },
+  "HandRestraints": {
+    "label": "手部束缚",
+    "translation_source": "internal"
+  },
+  "Infertility": {
+    "label": "不孕状态",
+    "translation_source": "internal"
+  },
+  "LeechEgg": {
+    "label": "水蛭卵",
+    "translation_source": "internal"
+  },
+  "LeechEgg_Boss": {
+    "label": "水蛭首领卵",
+    "translation_source": "internal"
+  },
+  "LimbLoss": {
+    "label": "肢体缺失",
+    "translation_source": "internal"
+  },
+  "LivestockParasite": {
+    "label": "家畜寄生",
+    "translation_source": "internal"
+  },
+  "Livestock_Pig": {
+    "label": "家畜化·猪",
+    "translation_source": "internal"
+  },
+  "LustMarkCurse": {
+    "label": "欲望刻印诅咒",
+    "translation_source": "internal"
+  },
+  "Lustfull": {
+    "label": "欲望亢进",
+    "translation_source": "internal"
+  },
+  "Lustfull_Forever": {
+    "label": "持续欲望亢进",
+    "translation_source": "internal"
+  },
+  "MeatBuding": {
+    "label": "肉芽生长",
+    "translation_source": "internal"
+  },
+  "MeatTentacleCluster1Bind": {
+    "label": "肉触手群束缚",
+    "translation_source": "internal"
+  },
+  "MindControl": {
+    "label": "精神控制",
+    "translation_source": "internal"
+  },
+  "MotherBody": {
+    "label": "母体化",
+    "translation_source": "internal"
+  },
+  "Mutation": {
+    "label": "变异",
+    "translation_source": "internal"
+  },
+  "Parasite": {
+    "label": "寄生状态",
+    "translation_source": "internal"
+  },
+  "ParasitePennis": {
+    "label": "寄生器官",
+    "translation_source": "internal"
+  },
+  "Semen_mucus": {
+    "label": "体液黏附",
+    "translation_source": "internal"
+  },
+  "Spore": {
+    "label": "孢子附着",
+    "translation_source": "internal"
+  },
+  "TentacleEgg_GO": {
+    "label": "触手卵团·战败",
+    "translation_source": "internal"
+  },
+  "Vomiting": {
+    "label": "呕吐",
+    "translation_source": "internal"
+  },
+  "WetNurse": {
+    "label": "乳母化",
+    "translation_source": "internal"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "hosting": {
+    "site": "sinisistar2-dglab",
+    "public": "website/dist",
+    "cleanUrls": true,
+    "ignore": ["**/.*", "**/node_modules/**"],
+    "headers": [
+      {"source":"**", "headers":[
+        {"key":"X-Content-Type-Options","value":"nosniff"},
+        {"key":"Referrer-Policy","value":"strict-origin-when-cross-origin"},
+        {"key":"Permissions-Policy","value":"microphone=(), camera=(), geolocation=()"},
+        {"key":"Content-Security-Policy","value":"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"}
+      ]},
+      {"source":"**/*.@(html|css|js|json)","headers":[{"key":"Cache-Control","value":"no-cache"}]},
+      {"source":"**/*.@(png|webp)","headers":[{"key":"Cache-Control","value":"public,max-age=3600"}]}
+    ]
+  }
+}

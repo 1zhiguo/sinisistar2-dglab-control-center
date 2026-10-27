@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+artifacts/
+.analysis/
+.firebase/
+*-debug.log
+observer/bin/
+observer/obj/
+trainer/bin/
+trainer/obj/
+.openai/
+public_repo/

@@ -1,0 +1,2952 @@
+{
+  "schema": 1,
+  "game_version": "1.3.1",
+  "candidate_count": 61,
+  "gallery_symbol_count": 109,
+  "gallery_distinct_ids": 108,
+  "gallery": [
+    {
+      "name": "None",
+      "value": -1
+    },
+    {
+      "name": "GaID_Livor",
+      "value": 4
+    },
+    {
+      "name": "GaID_SisterOAC",
+      "value": 17
+    },
+    {
+      "name": "GaID_Zombification",
+      "value": 3
+    },
+    {
+      "name": "GaID_Breast",
+      "value": 31
+    },
+    {
+      "name": "GaID_Breast_Leech",
+      "value": 94
+    },
+    {
+      "name": "GaID_Parasite",
+      "value": 18
+    },
+    {
+      "name": "GaID_Drunk",
+      "value": 77
+    },
+    {
+      "name": "GaID_Ruffian",
+      "value": 71
+    },
+    {
+      "name": "GaID_VillagerAges",
+      "value": 101
+    },
+    {
+      "name": "GaID_PriestTown",
+      "value": 102
+    },
+    {
+      "name": "GaID_SlugS",
+      "value": 74
+    },
+    {
+      "name": "GaID_SlugM",
+      "value": 75
+    },
+    {
+      "name": "GaID_SlugBoss",
+      "value": 76
+    },
+    {
+      "name": "GaID_Hunchback",
+      "value": 105
+    },
+    {
+      "name": "GaID_Zombie",
+      "value": 0
+    },
+    {
+      "name": "GaID_ZombieTomb",
+      "value": 1
+    },
+    {
+      "name": "GaID_ZombieCru",
+      "value": 2
+    },
+    {
+      "name": "GaID_ZombieCoffin",
+      "value": 5
+    },
+    {
+      "name": "GaID_Gravekeeper",
+      "value": 6
+    },
+    {
+      "name": "GaID_Enenuth",
+      "value": 7
+    },
+    {
+      "name": "GaID_EnenuthMollusk",
+      "value": 8
+    },
+    {
+      "name": "GaID_EnenuthMother",
+      "value": 95
+    },
+    {
+      "name": "GaID_VillageMeatWall",
+      "value": 78
+    },
+    {
+      "name": "GaID_Ghoul",
+      "value": 79
+    },
+    {
+      "name": "GaID_Funghoul",
+      "value": 80
+    },
+    {
+      "name": "GaID_Enenuth_JellyFish",
+      "value": 81
+    },
+    {
+      "name": "GaID_Cliff",
+      "value": 87
+    },
+    {
+      "name": "GaID_Bobel",
+      "value": 96
+    },
+    {
+      "name": "GaID_PigParasite",
+      "value": 82
+    },
+    {
+      "name": "GaID_VillagerMiddleMale_A_Pig",
+      "value": 83
+    },
+    {
+      "name": "GaID_TreeBoss",
+      "value": 73
+    },
+    {
+      "name": "GaID_ZombieSpawner",
+      "value": 72
+    },
+    {
+      "name": "GaID_SpiderHuntsman",
+      "value": 98
+    },
+    {
+      "name": "GaID_SpiderEgg",
+      "value": 100
+    },
+    {
+      "name": "GaID_Frog_M",
+      "value": 106
+    },
+    {
+      "name": "GaID_Frog_L",
+      "value": 103
+    },
+    {
+      "name": "GaID_Hag",
+      "value": 104
+    },
+    {
+      "name": "GaID_Seere",
+      "value": 88
+    },
+    {
+      "name": "GaID_SwampLeech",
+      "value": 9
+    },
+    {
+      "name": "GaID_SwampLeech_Adult",
+      "value": 10
+    },
+    {
+      "name": "GaID_FlyBug",
+      "value": 13
+    },
+    {
+      "name": "GaID_LeechGluttony",
+      "value": 12
+    },
+    {
+      "name": "GaID_LeechBaby",
+      "value": 16
+    },
+    {
+      "name": "GaID_LeechMan",
+      "value": 11
+    },
+    {
+      "name": "GaID_LeechBoss",
+      "value": 14
+    },
+    {
+      "name": "GaID_Swamp",
+      "value": 15
+    },
+    {
+      "name": "GaID_DemihumanM",
+      "value": 19
+    },
+    {
+      "name": "GaID_DemihumanS",
+      "value": 84
+    },
+    {
+      "name": "GaID_DemihumanL",
+      "value": 20
+    },
+    {
+      "name": "GaID_DemihumanM_Mask",
+      "value": 32
+    },
+    {
+      "name": "GaID_Demihuman_Prison",
+      "value": 33
+    },
+    {
+      "name": "GaID_DemihumanBoss",
+      "value": 21
+    },
+    {
+      "name": "GaID_DemihumanL_Mask",
+      "value": 34
+    },
+    {
+      "name": "GaID_DemihumanRaidBoss",
+      "value": 35
+    },
+    {
+      "name": "GaID_VillagerMiddleMale",
+      "value": 22
+    },
+    {
+      "name": "GaID_VillagerFemale",
+      "value": 23
+    },
+    {
+      "name": "GaID_VillagerMale",
+      "value": 24
+    },
+    {
+      "name": "GaID_PriestVillage",
+      "value": 25
+    },
+    {
+      "name": "GaID_VillagerMaleParasite",
+      "value": 27
+    },
+    {
+      "name": "GaID_VillagerFemaleParasite",
+      "value": 28
+    },
+    {
+      "name": "GaID_MiddleMaleParasiteL",
+      "value": 26
+    },
+    {
+      "name": "GaID_VillagerFat",
+      "value": 29
+    },
+    {
+      "name": "GaID_VillagerRegion",
+      "value": 85
+    },
+    {
+      "name": "GaID_Region",
+      "value": 86
+    },
+    {
+      "name": "GaID_VillagerMM_Before",
+      "value": 30
+    },
+    {
+      "name": "GaID_MeatWorm1",
+      "value": 37
+    },
+    {
+      "name": "GaID_MeatTentacleCeiling",
+      "value": 38
+    },
+    {
+      "name": "GaID_MeatBall",
+      "value": 39
+    },
+    {
+      "name": "GaID_MeatTentacleCluster",
+      "value": 40
+    },
+    {
+      "name": "GaID_MeatWormVore",
+      "value": 41
+    },
+    {
+      "name": "GaID_MeatWormShooter",
+      "value": 42
+    },
+    {
+      "name": "GaID_MeatCeiling",
+      "value": 43
+    },
+    {
+      "name": "GaID_MeatWomb1",
+      "value": 44
+    },
+    {
+      "name": "GaID_MeatWombBaby",
+      "value": 45
+    },
+    {
+      "name": "GaID_MeatTentacleCloudy",
+      "value": 46
+    },
+    {
+      "name": "GaID_MeatTentacleMan",
+      "value": 46
+    },
+    {
+      "name": "GaID_MeatEggMass",
+      "value": 47
+    },
+    {
+      "name": "GaID_MeatTentacleWall",
+      "value": 36
+    },
+    {
+      "name": "GaID_Mimic",
+      "value": 48
+    },
+    {
+      "name": "GaID_ContinueSewage",
+      "value": 49
+    },
+    {
+      "name": "GaID_MeatBoss",
+      "value": 50
+    },
+    {
+      "name": "GaID_PriestRod_H",
+      "value": 51
+    },
+    {
+      "name": "GaID_PriestRod_C_Air",
+      "value": 52
+    },
+    {
+      "name": "GaID_PriestSlime",
+      "value": 53
+    },
+    {
+      "name": "GaID_PriestBossEye",
+      "value": 54
+    },
+    {
+      "name": "GaID_PictureFrame",
+      "value": 55
+    },
+    {
+      "name": "GaID_TreasureBox",
+      "value": 56
+    },
+    {
+      "name": "GaID_StoneEye",
+      "value": 57
+    },
+    {
+      "name": "GaID_PictureFrameInsect",
+      "value": 58
+    },
+    {
+      "name": "GaID_MidasTouch",
+      "value": 59
+    },
+    {
+      "name": "GaID_PictureFrameBig",
+      "value": 60
+    },
+    {
+      "name": "GaID_Bobel_Barnacle",
+      "value": 61
+    },
+    {
+      "name": "GaID_SistarTentacle",
+      "value": 62
+    },
+    {
+      "name": "GaID_BobelDarktacle",
+      "value": 63
+    },
+    {
+      "name": "GaID_PigDining",
+      "value": 64
+    },
+    {
+      "name": "GaID_Priest_Scythe",
+      "value": 66
+    },
+    {
+      "name": "GaID_SnailBrain_s",
+      "value": 65
+    },
+    {
+      "name": "GaID_SnailBrain",
+      "value": 67
+    },
+    {
+      "name": "GaID_Ovaries",
+      "value": 68
+    },
+    {
+      "name": "GaID_OuterOne",
+      "value": 69
+    },
+    {
+      "name": "GaID_NoItem",
+      "value": 70
+    },
+    {
+      "name": "GaID_Walk",
+      "value": 93
+    },
+    {
+      "name": "GaID_Attack",
+      "value": 89
+    },
+    {
+      "name": "GaID_Damage",
+      "value": 90
+    },
+    {
+      "name": "GaID_Other_1",
+      "value": 91
+    },
+    {
+      "name": "GaID_Other_2",
+      "value": 92
+    },
+    {
+      "name": "GaID_Other_3",
+      "value": 97
+    },
+    {
+      "name": "GaID_SpiderS",
+      "value": 99
+    }
+  ],
+  "candidates": [
+    {
+      "enemy": "Babel_Dark",
+      "line": 1895,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 4
+        },
+        {
+          "name": "HoldEnd",
+          "value": 5
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Start",
+          "value": 2
+        },
+        {
+          "name": "Hold_End",
+          "value": 3
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "BloodMagicHand",
+      "line": 5245,
+      "states": [
+        {
+          "name": "Hold_Attack",
+          "value": 2
+        },
+        {
+          "name": "Hold",
+          "value": 3
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 4
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Attack",
+          "value": 1
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 2
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 3
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHoldAttack",
+        "TaskHoldCancel"
+      ],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "Bobel",
+      "line": 300,
+      "states": [
+        {
+          "name": "HoldAttack",
+          "value": 2
+        },
+        {
+          "name": "Hold",
+          "value": 3
+        },
+        {
+          "name": "HoldEnd",
+          "value": 4
+        }
+      ],
+      "animations": [],
+      "animation_fields": [
+        "m_AnimHashHoldAttack",
+        "m_AnimHashHold_Attack_Back",
+        "m_AnimHashHold_End",
+        "m_AnimHashHold_Loop",
+        "m_AnimHashHold_Start",
+        "m_AnimNameHold_Attack",
+        "m_AnimNameHold_Attack_Back",
+        "m_AnimNameHold_End",
+        "m_AnimNameHold_Loop",
+        "m_AnimNameHold_Start"
+      ],
+      "tasks": [
+        "TaskHold",
+        "TaskHoldAttack",
+        "TaskHoldEnd"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_Bobel",
+          "value": 96
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "Bobel_Barnacle",
+      "line": 1610,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 4
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Loop",
+          "value": 2
+        },
+        {
+          "name": "Hold_End",
+          "value": 3
+        },
+        {
+          "name": "Base_Eat",
+          "value": 6
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHold"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_Bobel_Barnacle",
+          "value": 61
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "BolaBindExtension",
+      "line": 109714,
+      "states": [],
+      "animations": [
+        {
+          "name": "Down_Hold_Bola",
+          "value": 0
+        },
+        {
+          "name": "Down_Hold_Bola_Damage",
+          "value": 1
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "Cluster1",
+      "line": 44442,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 5
+        },
+        {
+          "name": "Hold_End",
+          "value": 6
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 7
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Start",
+          "value": 4
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 5
+        },
+        {
+          "name": "Hold_Loop1",
+          "value": 6
+        },
+        {
+          "name": "Hold_Loop2",
+          "value": 7
+        },
+        {
+          "name": "Hold_Loop3",
+          "value": 8
+        },
+        {
+          "name": "Hold_End",
+          "value": 9
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "DebugScareLelia",
+      "line": 12167,
+      "states": [
+        {
+          "name": "AllHold",
+          "value": 3
+        }
+      ],
+      "animations": [],
+      "animation_fields": [
+        "m_AnimHold"
+      ],
+      "tasks": [
+        "TaskAllHold"
+      ],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "DemiHumanBoss",
+      "line": 8949,
+      "states": [
+        {
+          "name": "HoldAttack",
+          "value": 4
+        },
+        {
+          "name": "Hold",
+          "value": 5
+        },
+        {
+          "name": "HoldCancel",
+          "value": 6
+        },
+        {
+          "name": "HoldEnd",
+          "value": 7
+        }
+      ],
+      "animations": [
+        {
+          "name": "HoldAttack_Start",
+          "value": 3
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHold",
+        "TaskHoldAttack",
+        "TaskHoldCancel",
+        "TaskHoldEnd"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_DemihumanBoss",
+          "value": 21
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "DemiHumanL",
+      "line": 9552,
+      "states": [
+        {
+          "name": "HoldAttack01",
+          "value": 4
+        },
+        {
+          "name": "HoldAttack02",
+          "value": 5
+        },
+        {
+          "name": "HoldAttack03",
+          "value": 6
+        },
+        {
+          "name": "HoldStart",
+          "value": 9
+        },
+        {
+          "name": "HoldEnd",
+          "value": 10
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Attack1",
+          "value": 4
+        },
+        {
+          "name": "Hold_Attack2",
+          "value": 5
+        },
+        {
+          "name": "Hold_Attack3",
+          "value": 6
+        },
+        {
+          "name": "Hold_Start",
+          "value": 7
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 8
+        },
+        {
+          "name": "Hold_End",
+          "value": 9
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHoldAttack01",
+        "TaskHoldAttack02",
+        "TaskHoldAttack03",
+        "TaskHoldEnd",
+        "TaskHoldStart"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_DemihumanL",
+          "value": 20
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "DemiHumanM",
+      "line": 10776,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 4
+        },
+        {
+          "name": "ThreatByWeapon",
+          "value": 10
+        },
+        {
+          "name": "ThreatFromIdle",
+          "value": 11
+        }
+      ],
+      "animations": [
+        {
+          "name": "Threat",
+          "value": 10
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHold",
+        "TaskThreatByWeapon",
+        "TaskThreatFromIdle"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_DemihumanM",
+          "value": 19
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "DemiHumanS",
+      "line": 11618,
+      "states": [
+        {
+          "name": "NotFoundThreat",
+          "value": 7
+        },
+        {
+          "name": "Hold",
+          "value": 10
+        },
+        {
+          "name": "HoldCancel",
+          "value": 11
+        },
+        {
+          "name": "HoldCancelOther",
+          "value": 12
+        },
+        {
+          "name": "OtherBind",
+          "value": 15
+        },
+        {
+          "name": "Down2Threat",
+          "value": 17
+        }
+      ],
+      "animations": [
+        {
+          "name": "Threat",
+          "value": 4
+        },
+        {
+          "name": "Hold_Loop1",
+          "value": 9
+        },
+        {
+          "name": "Hold_Loop2",
+          "value": 10
+        },
+        {
+          "name": "Hold_Loop3",
+          "value": 11
+        },
+        {
+          "name": "Hold_Down",
+          "value": 12
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskDown2Threat",
+        "TaskHold",
+        "TaskHoldCancel",
+        "TaskHoldCancelOther",
+        "TaskNotFoundThreat",
+        "TaskOtherBind"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_DemihumanS",
+          "value": 84
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "DemiHumanS_Cart",
+      "line": 49957,
+      "states": [
+        {
+          "name": "Threat",
+          "value": 4
+        }
+      ],
+      "animations": [
+        {
+          "name": "Wand_Threat",
+          "value": 2
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "Enenuth",
+      "line": 12619,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 5
+        },
+        {
+          "name": "HoldCancel",
+          "value": 6
+        },
+        {
+          "name": "HoldEnd",
+          "value": 7
+        },
+        {
+          "name": "OtherBind",
+          "value": 10
+        }
+      ],
+      "animations": [],
+      "animation_fields": [
+        "m_AnimHoldCancel",
+        "m_AnimHoldEnd",
+        "m_AnimHoldEnd_Loop",
+        "m_AnimHoldLoop1",
+        "m_AnimHoldLoop2",
+        "m_AnimHoldLoop3"
+      ],
+      "tasks": [
+        "TaskHold",
+        "TaskHoldCancel",
+        "TaskHoldEnd",
+        "TaskOtherBind"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_Enenuth",
+          "value": 7
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "EnenuthMollusk",
+      "line": 13261,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 4
+        },
+        {
+          "name": "Hold_End",
+          "value": 5
+        },
+        {
+          "name": "HoldRealse",
+          "value": 8
+        }
+      ],
+      "animations": [],
+      "animation_fields": [
+        "m_AnimHashHold",
+        "m_AnimHashHold_End",
+        "m_AnimNameHold",
+        "m_AnimNameHold_End",
+        "m_AnimNameHold_End_Lite"
+      ],
+      "tasks": [
+        "TaskHold",
+        "TaskHoldRelease",
+        "TaskHold_End"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_EnenuthMollusk",
+          "value": 8
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "FlyBug",
+      "line": 16615,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 6
+        },
+        {
+          "name": "Hold_End",
+          "value": 7
+        }
+      ],
+      "animations": [],
+      "animation_fields": [
+        "m_AnimHashHold",
+        "m_AnimHashHold_End",
+        "m_AnimNameAttack",
+        "m_AnimNameHold",
+        "m_AnimNameHold_End"
+      ],
+      "tasks": [
+        "TaskHold",
+        "TaskHold_End"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_FlyBug",
+          "value": 13
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "FlyBugRequiem",
+      "line": 26872,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 6
+        }
+      ],
+      "animations": [],
+      "animation_fields": [
+        "m_AnimHashHold",
+        "m_AnimNameHold"
+      ],
+      "tasks": [
+        "TaskHold"
+      ],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "Frog_L",
+      "line": 39008,
+      "states": [
+        {
+          "name": "Eat_In",
+          "value": 4
+        },
+        {
+          "name": "Eat_Hold",
+          "value": 5
+        },
+        {
+          "name": "JumpPress_Hold_Start",
+          "value": 6
+        }
+      ],
+      "animations": [
+        {
+          "name": "Eat_In",
+          "value": 7
+        },
+        {
+          "name": "Eat_Cancel",
+          "value": 8
+        },
+        {
+          "name": "Eat",
+          "value": 9
+        },
+        {
+          "name": "Hold_Start",
+          "value": 10
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskEatHold",
+        "TaskEatIn"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_Frog_L",
+          "value": 103
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "Frog_M",
+      "line": 39421,
+      "states": [
+        {
+          "name": "Hold_Start",
+          "value": 4
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 5
+        },
+        {
+          "name": "Hold_End",
+          "value": 6
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 7
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Start",
+          "value": 5
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 6
+        },
+        {
+          "name": "Hold_End",
+          "value": 7
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 8
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHoldStart"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_Frog_M",
+          "value": 106
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "Funghoul",
+      "line": 46141,
+      "states": [
+        {
+          "name": "Hold_Attack",
+          "value": 5
+        },
+        {
+          "name": "Hold_Start",
+          "value": 8
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 9
+        },
+        {
+          "name": "Hold_End",
+          "value": 10
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Attack",
+          "value": 2
+        },
+        {
+          "name": "Hold_Start",
+          "value": 5
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 6
+        },
+        {
+          "name": "Hold_End",
+          "value": 7
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [
+        {
+          "name": "GaID_Funghoul",
+          "value": 80
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "JellyFish",
+      "line": 46425,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 5
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 6
+        },
+        {
+          "name": "Hold_End",
+          "value": 7
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Loop",
+          "value": 3
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 4
+        },
+        {
+          "name": "Hold_End",
+          "value": 5
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "LeechGluttony",
+      "line": 18381,
+      "states": [
+        {
+          "name": "Hold_Attack",
+          "value": 2
+        },
+        {
+          "name": "Hold_End",
+          "value": 4
+        }
+      ],
+      "animations": [],
+      "animation_fields": [
+        "m_AnimHashHold_Attack",
+        "m_AnimHashHold_End",
+        "m_AnimNameHold_Attack",
+        "m_AnimNameHold_End"
+      ],
+      "tasks": [
+        "TaskHold_Attack",
+        "TaskHold_End"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_LeechGluttony",
+          "value": 12
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "LeechMan",
+      "line": 18903,
+      "states": [
+        {
+          "name": "Hold_Attack",
+          "value": 6
+        },
+        {
+          "name": "Hold_Start",
+          "value": 7
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 8
+        },
+        {
+          "name": "Hold_End",
+          "value": 9
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 11
+        }
+      ],
+      "animations": [],
+      "animation_fields": [
+        "m_AnimHashHold_Attack",
+        "m_AnimHashHold_Cancel",
+        "m_AnimHashHold_End",
+        "m_AnimHashHold_Loop",
+        "m_AnimHashHold_Start",
+        "m_AnimNameAttack",
+        "m_AnimNameHold_Attack",
+        "m_AnimNameHold_Cancel",
+        "m_AnimNameHold_End",
+        "m_AnimNameHold_Loop",
+        "m_AnimNameHold_Start"
+      ],
+      "tasks": [
+        "TaskHold_Attack",
+        "TaskHold_Cancel",
+        "TaskHold_End",
+        "TaskHold_Loop",
+        "TaskHold_Start"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_LeechMan",
+          "value": 11
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "MeatBoss",
+      "line": 45646,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 4
+        },
+        {
+          "name": "Hold_End",
+          "value": 5
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 6
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Loop",
+          "value": 2
+        },
+        {
+          "name": "Hold_End",
+          "value": 4
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 7
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHold"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_MeatBoss",
+          "value": 50
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "MeatCeiling",
+      "line": 41073,
+      "states": [],
+      "animations": [
+        {
+          "name": "Hold",
+          "value": 1
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [
+        {
+          "name": "GaID_MeatCeiling",
+          "value": 43
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "MeatTentacleCloudy",
+      "line": 41637,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 5
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Start",
+          "value": 0
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [
+        {
+          "name": "GaID_MeatTentacleCloudy",
+          "value": 46
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "MeatTentacleWall",
+      "line": 41891,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 3
+        },
+        {
+          "name": "Hold_End",
+          "value": 4
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Loop",
+          "value": 1
+        },
+        {
+          "name": "Hold_End",
+          "value": 2
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [
+        {
+          "name": "GaID_MeatTentacleWall",
+          "value": 36
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "MeatWombBaby",
+      "line": 42391,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 4
+        },
+        {
+          "name": "HoldRelease",
+          "value": 5
+        },
+        {
+          "name": "Hold_Down",
+          "value": 6
+        },
+        {
+          "name": "JoinedHoldHide",
+          "value": 8
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Loop1",
+          "value": 2
+        },
+        {
+          "name": "Hold_Loop2",
+          "value": 3
+        },
+        {
+          "name": "Hold_Loop3",
+          "value": 4
+        },
+        {
+          "name": "Hold_Down",
+          "value": 5
+        },
+        {
+          "name": "Hold_Down_Loop",
+          "value": 6
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHoldRelease"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_MeatWombBaby",
+          "value": 45
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "MeatWorm",
+      "line": 42712,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 4
+        },
+        {
+          "name": "Hold_End",
+          "value": 5
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Start",
+          "value": 3
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 4
+        },
+        {
+          "name": "Hold_End",
+          "value": 5
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "MeatWormVore",
+      "line": 43151,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 6
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 7
+        },
+        {
+          "name": "Hold_End",
+          "value": 8
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Start",
+          "value": 5
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 6
+        },
+        {
+          "name": "Hold_End",
+          "value": 7
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [
+        {
+          "name": "GaID_MeatWormVore",
+          "value": 41
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "MidasTouch",
+      "line": 652,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 6
+        },
+        {
+          "name": "HoldCancel",
+          "value": 7
+        },
+        {
+          "name": "HoldEnd",
+          "value": 10
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Attack",
+          "value": 2
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 5
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 6
+        },
+        {
+          "name": "Hold_End",
+          "value": 7
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHold"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_MidasTouch",
+          "value": 59
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "MiscarriedFetus",
+      "line": 4038,
+      "states": [
+        {
+          "name": "HoldRelease",
+          "value": 5
+        },
+        {
+          "name": "Hold",
+          "value": 6
+        },
+        {
+          "name": "JoinedHold",
+          "value": 7
+        },
+        {
+          "name": "DeadNotDefeat",
+          "value": 9
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Loop1",
+          "value": 6
+        },
+        {
+          "name": "Hold_Loop2",
+          "value": 7
+        },
+        {
+          "name": "Hold_Loop3",
+          "value": 8
+        },
+        {
+          "name": "Hold_Loop4",
+          "value": 9
+        },
+        {
+          "name": "Hold_End",
+          "value": 10
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHoldRelease"
+      ],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "OnlyHoldEnemy",
+      "line": 43673,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 4
+        },
+        {
+          "name": "Hold_End",
+          "value": 5
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 6
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Attack1",
+          "value": 0
+        },
+        {
+          "name": "Hold_Start",
+          "value": 1
+        },
+        {
+          "name": "Hold_End",
+          "value": 3
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 4
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "ParasiteBullet",
+      "line": 20992,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 3
+        },
+        {
+          "name": "GroundHold",
+          "value": 4
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Loop",
+          "value": 8
+        },
+        {
+          "name": "Hold_End",
+          "value": 9
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "ParasiteTentacle",
+      "line": 21296,
+      "states": [],
+      "animations": [
+        {
+          "name": "Hold_Start",
+          "value": 2
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 3
+        },
+        {
+          "name": "Hold_End",
+          "value": 4
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "PictureFrameBig",
+      "line": 1252,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 4
+        },
+        {
+          "name": "HoldEnd",
+          "value": 5
+        },
+        {
+          "name": "HoldRelease",
+          "value": 7
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Start",
+          "value": 5
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 6
+        },
+        {
+          "name": "Hold_End",
+          "value": 7
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHoldEnd",
+        "TaskHoldRelease"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_PictureFrameBig",
+          "value": 60
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "PigBG",
+      "line": 50542,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 4
+        }
+      ],
+      "animations": [
+        {
+          "name": "Continue_Hold",
+          "value": 3
+        },
+        {
+          "name": "Continue_Hold_Breast",
+          "value": 5
+        },
+        {
+          "name": "Continue_Hold_Breast2",
+          "value": 6
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHold"
+      ],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "PigDining",
+      "line": 2552,
+      "states": [
+        {
+          "name": "Walk_Eat",
+          "value": 3
+        },
+        {
+          "name": "Hold",
+          "value": 4
+        }
+      ],
+      "animations": [
+        {
+          "name": "Walk_Eat",
+          "value": 5
+        },
+        {
+          "name": "Hold_Attack",
+          "value": 6
+        },
+        {
+          "name": "Hold_End",
+          "value": 7
+        },
+        {
+          "name": "Hold_Dizzy",
+          "value": 14
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHold"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_PigDining",
+          "value": 64
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "PigParasite",
+      "line": 51038,
+      "states": [
+        {
+          "name": "Down_Eat",
+          "value": 8
+        }
+      ],
+      "animations": [
+        {
+          "name": "Down_Eat",
+          "value": 6
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [
+        {
+          "name": "GaID_PigParasite",
+          "value": 82
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "PriestSlime",
+      "line": 6452,
+      "states": [
+        {
+          "name": "HoldStart",
+          "value": 5
+        },
+        {
+          "name": "HoldEnd",
+          "value": 6
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Loop",
+          "value": 5
+        },
+        {
+          "name": "Hold_End",
+          "value": 6
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [
+        {
+          "name": "GaID_PriestSlime",
+          "value": 53
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "PriestVillage",
+      "line": 21720,
+      "states": [
+        {
+          "name": "Walk_AfterHoldAttack",
+          "value": 4
+        },
+        {
+          "name": "HoldCancel",
+          "value": 6
+        },
+        {
+          "name": "HoldAttack",
+          "value": 9
+        },
+        {
+          "name": "HoldStart",
+          "value": 10
+        },
+        {
+          "name": "HoldEnd",
+          "value": 11
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Start",
+          "value": 5
+        },
+        {
+          "name": "Hold_End",
+          "value": 6
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 7
+        },
+        {
+          "name": "Hold_Attack",
+          "value": 8
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 9
+        },
+        {
+          "name": "Guard_Walk3_Hold_Attack",
+          "value": 17
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHoldEnd",
+        "TaskHoldStart",
+        "TaskWalk_AfterHoldAttack"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_PriestVillage",
+          "value": 25
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "Rat",
+      "line": 40013,
+      "states": [
+        {
+          "name": "Eat",
+          "value": 5
+        }
+      ],
+      "animations": [
+        {
+          "name": "Eat",
+          "value": 5
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskEat"
+      ],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "Seere",
+      "line": 51807,
+      "states": [
+        {
+          "name": "Hold_End",
+          "value": 7
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_End",
+          "value": 7
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHoldEnd"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_Seere",
+          "value": 88
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "SistarTentacle",
+      "line": 3081,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 6
+        },
+        {
+          "name": "HoldEnd",
+          "value": 7
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Magic",
+          "value": 1
+        },
+        {
+          "name": "Hold_Start",
+          "value": 2
+        },
+        {
+          "name": "Hold_End",
+          "value": 3
+        },
+        {
+          "name": "Hold_Magic_Cancel",
+          "value": 4
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 5
+        },
+        {
+          "name": "Hold_Loop2",
+          "value": 6
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHold"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_SistarTentacle",
+          "value": 62
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "SisterOAC",
+      "line": 16003,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 9
+        },
+        {
+          "name": "Hold_End",
+          "value": 10
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 11
+        }
+      ],
+      "animations": [],
+      "animation_fields": [
+        "m_AnimHashHold_Cancel",
+        "m_AnimHashHold_End",
+        "m_AnimHashHold_Loop",
+        "m_AnimHashHold_Start",
+        "m_AnimNameHold_Cancel",
+        "m_AnimNameHold_End",
+        "m_AnimNameHold_Loop",
+        "m_AnimNameHold_Start"
+      ],
+      "tasks": [
+        "TaskHold",
+        "TaskHoldCancel",
+        "TaskHold_End"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_SisterOAC",
+          "value": 17
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "SlugM",
+      "line": 47227,
+      "states": [
+        {
+          "name": "Hold_Start",
+          "value": 4
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Start",
+          "value": 3
+        },
+        {
+          "name": "Hold_End_Loop",
+          "value": 4
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [
+        {
+          "name": "GaID_SlugM",
+          "value": 75
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "SlugS",
+      "line": 47536,
+      "states": [
+        {
+          "name": "HoldRelease",
+          "value": 7
+        },
+        {
+          "name": "Hold",
+          "value": 8
+        },
+        {
+          "name": "JoinedHoldHide",
+          "value": 9
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Loop1",
+          "value": 6
+        },
+        {
+          "name": "Hold_Loop2",
+          "value": 7
+        },
+        {
+          "name": "Hold_Loop3",
+          "value": 8
+        },
+        {
+          "name": "Hold_End",
+          "value": 9
+        },
+        {
+          "name": "Hold_End_Loop",
+          "value": 10
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHoldRelease"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_SlugS",
+          "value": 74
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "SnailBrain",
+      "line": 7632,
+      "states": [
+        {
+          "name": "EyeAttack",
+          "value": 4
+        }
+      ],
+      "animations": [],
+      "animation_fields": [],
+      "tasks": [
+        "TaskEyeAttack"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_SnailBrain",
+          "value": 67
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "SnailBrainS",
+      "line": 7924,
+      "states": [
+        {
+          "name": "Breath",
+          "value": 5
+        },
+        {
+          "name": "Hold_Attack",
+          "value": 6
+        },
+        {
+          "name": "Hold",
+          "value": 7
+        },
+        {
+          "name": "Hold_End",
+          "value": 8
+        }
+      ],
+      "animations": [
+        {
+          "name": "Breath",
+          "value": 3
+        },
+        {
+          "name": "Hold_Attack",
+          "value": 4
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 5
+        },
+        {
+          "name": "Hold_End",
+          "value": 6
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [
+        {
+          "name": "GaID_SnailBrain_s",
+          "value": 65
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "SnailBrainS_Ground",
+      "line": 8171,
+      "states": [
+        {
+          "name": "Breath",
+          "value": 5
+        }
+      ],
+      "animations": [
+        {
+          "name": "Breath",
+          "value": 3
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "SpiderHuntsman",
+      "line": 49267,
+      "states": [
+        {
+          "name": "HoldAttack",
+          "value": 7
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 12
+        },
+        {
+          "name": "Hold_End",
+          "value": 13
+        },
+        {
+          "name": "Hold_End_Loop",
+          "value": 14
+        },
+        {
+          "name": "Hold_End_Loop_Join",
+          "value": 15
+        },
+        {
+          "name": "Hold_End_Loop_Join2",
+          "value": 16
+        },
+        {
+          "name": "JoinedHold",
+          "value": 18
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Attack",
+          "value": 11
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 12
+        },
+        {
+          "name": "Hold_End",
+          "value": 13
+        },
+        {
+          "name": "Hold_End_Loop",
+          "value": 14
+        },
+        {
+          "name": "Hold_End_Loop_Join",
+          "value": 15
+        },
+        {
+          "name": "Hold_End_Loop_Join2",
+          "value": 16
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHoldAttack",
+        "TaskJoinedHold"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_SpiderHuntsman",
+          "value": 98
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "SpiderSuspension",
+      "line": 15475,
+      "states": [
+        {
+          "name": "Hold_Attack",
+          "value": 2
+        },
+        {
+          "name": "Hold_Start",
+          "value": 3
+        },
+        {
+          "name": "Hold_End",
+          "value": 4
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 5
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Attack",
+          "value": 1
+        },
+        {
+          "name": "Hold_Start",
+          "value": 2
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 3
+        },
+        {
+          "name": "Hold_End",
+          "value": 4
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 5
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHoldAttack",
+        "TaskHoldStart"
+      ],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "SwampLeech",
+      "line": 19424,
+      "states": [
+        {
+          "name": "Hold_Attack",
+          "value": 6
+        },
+        {
+          "name": "Hold_Start",
+          "value": 7
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 8
+        },
+        {
+          "name": "Hold_End",
+          "value": 9
+        }
+      ],
+      "animations": [],
+      "animation_fields": [
+        "m_AnimHashHold_Attack",
+        "m_AnimHashHold_Cancel",
+        "m_AnimHashHold_End",
+        "m_AnimHashHold_Start",
+        "m_AnimNameHold_Attack",
+        "m_AnimNameHold_Cancel",
+        "m_AnimNameHold_End",
+        "m_AnimNameHold_Start"
+      ],
+      "tasks": [
+        "TaskHold_Attack",
+        "TaskHold_Cancel",
+        "TaskHold_End",
+        "TaskHold_Start"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_SwampLeech",
+          "value": 9
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "SwampLeech_Adult",
+      "line": 19951,
+      "states": [
+        {
+          "name": "Hold_Start",
+          "value": 6
+        },
+        {
+          "name": "Hold_End",
+          "value": 7
+        }
+      ],
+      "animations": [],
+      "animation_fields": [
+        "m_AnimHashHold_End",
+        "m_AnimHashHold_Start",
+        "m_AnimNameAttack",
+        "m_AnimNameHold_End",
+        "m_AnimNameHold_Start"
+      ],
+      "tasks": [
+        "TaskHold_End",
+        "TaskHold_Start"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_SwampLeech_Adult",
+          "value": 10
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "VillagerAges",
+      "line": 40364,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 4
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 5
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold",
+          "value": 2
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 3
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [
+        {
+          "name": "GaID_VillagerAges",
+          "value": 101
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "VillagerFat",
+      "line": 22645,
+      "states": [
+        {
+          "name": "HoldAttack",
+          "value": 4
+        },
+        {
+          "name": "HoldStart",
+          "value": 5
+        },
+        {
+          "name": "HoldEnd",
+          "value": 6
+        },
+        {
+          "name": "HoldCancel",
+          "value": 8
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Attack",
+          "value": 3
+        },
+        {
+          "name": "Hold_Start",
+          "value": 4
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 5
+        },
+        {
+          "name": "Hold_End",
+          "value": 6
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 7
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [],
+      "gallery_aliases": [
+        {
+          "name": "GaID_VillagerFat",
+          "value": 29
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "VillagerMale",
+      "line": 23521,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 5
+        },
+        {
+          "name": "HoldCancel",
+          "value": 9
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Start",
+          "value": 7
+        },
+        {
+          "name": "Hold_Cancel",
+          "value": 9
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHold"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_VillagerMale",
+          "value": 24
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "VillagerMiddleMale",
+      "line": 23930,
+      "states": [
+        {
+          "name": "AdjustHoldPosition",
+          "value": 7
+        },
+        {
+          "name": "HoldAttack",
+          "value": 8
+        },
+        {
+          "name": "HoldStart",
+          "value": 9
+        },
+        {
+          "name": "HoldEnd",
+          "value": 10
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold_Attack",
+          "value": 11
+        },
+        {
+          "name": "Hold_End",
+          "value": 12
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskAdjustHoldPosition",
+        "TaskHoldAttack"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_VillagerMiddleMale",
+          "value": 22
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "VillagerMiddleMaleParasiteL",
+      "line": 24218,
+      "states": [
+        {
+          "name": "IdleAttack",
+          "value": 1
+        }
+      ],
+      "animations": [],
+      "animation_fields": [],
+      "tasks": [
+        "TaskIdleAttack"
+      ],
+      "gallery_aliases": [],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "VillagerRegion",
+      "line": 24501,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 3
+        },
+        {
+          "name": "Hold_Down",
+          "value": 4
+        },
+        {
+          "name": "Hold_End",
+          "value": 5
+        },
+        {
+          "name": "OtherHoldHide",
+          "value": 8
+        },
+        {
+          "name": "OtherHoldRelease",
+          "value": 9
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold",
+          "value": 3
+        },
+        {
+          "name": "Hold_Down",
+          "value": 4
+        },
+        {
+          "name": "Hold_Down_Loop",
+          "value": 5
+        },
+        {
+          "name": "Hold_Down_End",
+          "value": 6
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskOtherHoldRelease"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_VillagerRegion",
+          "value": 85
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "Zombie",
+      "line": 25207,
+      "states": [
+        {
+          "name": "CombatEat",
+          "value": 4
+        },
+        {
+          "name": "Hold",
+          "value": 6
+        },
+        {
+          "name": "HoldCancel",
+          "value": 7
+        },
+        {
+          "name": "HoldEnd",
+          "value": 8
+        }
+      ],
+      "animations": [],
+      "animation_fields": [
+        "m_AnimHold_Cancel",
+        "m_AnimHold_End",
+        "m_AnimHold_End_Grave",
+        "m_AnimHold_Loop",
+        "m_AnimHold_Loop_Lite"
+      ],
+      "tasks": [
+        "TaskCombatEat",
+        "TaskHold",
+        "TaskHoldCancel",
+        "TaskHoldEnd"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_Zombie",
+          "value": 0
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    },
+    {
+      "enemy": "ZombieTomb",
+      "line": 26307,
+      "states": [
+        {
+          "name": "Hold",
+          "value": 3
+        },
+        {
+          "name": "HoldEnd",
+          "value": 4
+        }
+      ],
+      "animations": [
+        {
+          "name": "Hold",
+          "value": 1
+        },
+        {
+          "name": "Hold_Loop",
+          "value": 2
+        },
+        {
+          "name": "Hold_End",
+          "value": 3
+        }
+      ],
+      "animation_fields": [],
+      "tasks": [
+        "TaskHold",
+        "TaskHoldEnd"
+      ],
+      "gallery_aliases": [
+        {
+          "name": "GaID_ZombieTomb",
+          "value": 1
+        }
+      ],
+      "runtime_verified": false,
+      "precise_cg_verified": false,
+      "evidence": "Static metadata symbols; candidate family, not a CG count"
+    }
+  ],
+  "limitation": "Names identify candidate enemy flow families only. Active animation/hash, variants, phases and duration require runtime observation.",
+  "source_sha256": "1f4dc8012a37588cb49cc8d298859608b55b3d913dfe2ca08f0c79cddd94a10b"
+}

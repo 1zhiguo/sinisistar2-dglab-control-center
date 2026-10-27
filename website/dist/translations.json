@@ -1,0 +1,252 @@
+{
+  "f0h": {
+    "zh": "受伤与战败反馈",
+    "en": "Damage and defeat feedback",
+    "ja": "ダメージ・敗北フィードバック"
+  },
+  "f0p": {
+    "zh": "按受伤、异常和已验证的战败流程设置强度、波形与时长。",
+    "en": "Set intensity, waves and duration for damage, status effects and verified defeat flows.",
+    "ja": "ダメージ、状態異常、確認済みの敗北イベントごとに強度・波形・時間を設定。"
+  },
+  "f1h": {
+    "zh": "V3 / V4 双设备连接",
+    "en": "V3 / V4 device pairing",
+    "ja": "V3 / V4 デバイス接続"
+  },
+  "f1p": {
+    "zh": "支持郊狼与负鼠；两种设备及 A/B 通道独立配置。",
+    "en": "Connect Coyote and Opossum with separate device and A/B channel settings.",
+    "ja": "郊狼と負鼠に対応。デバイスと A/B チャンネルを個別に設定。"
+  },
+  "f2h": {
+    "zh": "低 / 中 / 高预设",
+    "en": "Low / medium / high presets",
+    "ja": "低・中・高プリセット"
+  },
+  "f2p": {
+    "zh": "快速选择档位，或分别调整强度、上限和反馈时长。",
+    "en": "Choose a preset or adjust intensity, caps and feedback duration.",
+    "ja": "プリセットを選択し、強度・上限・フィードバック時間を調整。"
+  },
+  "f3h": {
+    "zh": "波形工作台",
+    "en": "Waveform studio",
+    "ja": "波形エディター"
+  },
+  "f3p": {
+    "zh": "拖绘波形，预览预设，支持撤销、重做和自定义保存。",
+    "en": "Draw waves, preview presets, undo, redo and save custom patterns.",
+    "ja": "波形の描画、プリセットのプレビュー、元に戻す・やり直し・保存に対応。"
+  },
+  "f4h": {
+    "zh": "四通道游戏 HUD",
+    "en": "Four-channel game HUD",
+    "ja": "4 チャンネル HUD"
+  },
+  "f4p": {
+    "zh": "显示 Pulse / 负鼠 A/B 输出，位置、缩放和透明度可调。",
+    "en": "View Pulse and Opossum A/B output; adjust position, scale and opacity.",
+    "ja": "Pulse・負鼠の A/B 出力を表示。位置・サイズ・透明度を調整可能。"
+  },
+  "f5h": {
+    "zh": "CG 反馈与波形队列",
+    "en": "CG feedback and wave queues",
+    "ja": "CG フィードバック・波形キュー"
+  },
+  "f5p": {
+    "zh": "独立设置 CG 反馈和分段波形的顺序、强度与时长。",
+    "en": "Configure CG feedback and the order, intensity and timing of wave segments.",
+    "ja": "CG のフィードバックと波形の順番・強度・時間を個別設定。"
+  },
+  "f6h": {
+    "zh": "事件检测器",
+    "en": "Event inspector",
+    "ja": "イベントモニター"
+  },
+  "f6p": {
+    "zh": "查看 HP / MP、当前异常和游戏事件，支持独立窗口。",
+    "en": "Inspect HP / MP, active status effects and game events in a detachable window.",
+    "ja": "HP・MP、現在の状態異常、ゲームイベントを確認。別ウィンドウ表示に対応。"
+  },
+  "f7h": {
+    "zh": "全局急停",
+    "en": "Global emergency stop",
+    "ja": "グローバル緊急停止"
+  },
+  "f7p": {
+    "zh": "默认 Ctrl+F12，归零并锁定两路输出；支持自定义按键。",
+    "en": "Ctrl+F12 zeros and locks both output routes. The shortcut is configurable.",
+    "ja": "標準は Ctrl+F12。両方の出力をゼロにしてロック。キーの変更も可能。"
+  },
+  "screendevices": {
+    "zh": "设备与游戏 · 插件安装、扫码与设备连接",
+    "en": "Devices & game · plugin installation and pairing",
+    "ja": "デバイス・ゲーム · プラグイン導入と接続"
+  },
+  "screenquick": {
+    "zh": "快速设置 · 预设与独立 A/B 强度",
+    "en": "Quick settings · presets and independent A/B levels",
+    "ja": "クイック設定 · プリセットと A/B 強度"
+  },
+  "screenstrategy": {
+    "zh": "联动策略 · 事件、波形与反馈时长",
+    "en": "Feedback rules · events, waves and duration",
+    "ja": "連動ルール · イベント・波形・時間"
+  },
+  "screenwaveforms": {
+    "zh": "波形工作台 · 拖绘、预览与保存",
+    "en": "Waveform studio · draw, preview and save",
+    "ja": "波形エディター · 描画・プレビュー・保存"
+  },
+  "step0h": {
+    "zh": "运行控制中心",
+    "en": "Run the control center",
+    "ja": "コントロールセンターを起動"
+  },
+  "step0p": {
+    "zh": "下载源码，安装 requirements-native.txt 后运行 run_native.cmd。",
+    "en": "Download the source, install requirements-native.txt, then run run_native.cmd.",
+    "ja": "ソースをダウンロードし、requirements-native.txt を導入して run_native.cmd を実行。"
+  },
+  "step1h": {
+    "zh": "安装游戏插件",
+    "en": "Install the game plugin",
+    "ja": "ゲームプラグインを導入"
+  },
+  "step1p": {
+    "zh": "在「设备与游戏」选择 v1.3.1 游戏目录，安装联动插件后启动游戏。",
+    "en": "Select the v1.3.1 game folder in Devices & game, install the plugin, then launch the game.",
+    "ja": "「デバイス・ゲーム」で v1.3.1 のフォルダーを選択。プラグイン導入後にゲームを起動。"
+  },
+  "step2h": {
+    "zh": "扫码与设置",
+    "en": "Pair and configure",
+    "ja": "接続と設定"
+  },
+  "step2p": {
+    "zh": "手机与电脑接入同一局域网，选择 V3 / V4 扫码，确认设备、预设与上限。",
+    "en": "Use the same LAN on phone and PC. Pair through V3 / V4, then check devices, presets and caps.",
+    "ja": "スマートフォンと PC を同じ LAN に接続。V3 / V4 で QR 接続し、デバイス・プリセット・上限を確認。"
+  },
+  "skip": {
+    "zh": "跳到正文",
+    "en": "Skip to content",
+    "ja": "本文へ"
+  },
+  "back": {
+    "zh": "← 返回 DG-LAB × Any",
+    "en": "← Back to DG-LAB × Any",
+    "ja": "← DG-LAB × Any に戻る"
+  },
+  "navf": {
+    "zh": "功能",
+    "en": "Features",
+    "ja": "機能"
+  },
+  "navs": {
+    "zh": "界面",
+    "en": "Interface",
+    "ja": "画面"
+  },
+  "navg": {
+    "zh": "使用说明",
+    "en": "Setup",
+    "ja": "使い方"
+  },
+  "navd": {
+    "zh": "下载",
+    "en": "Download",
+    "ja": "ダウンロード"
+  },
+  "subtitle": {
+    "zh": "控制中心",
+    "en": "Control Center",
+    "ja": "コントロールセンター"
+  },
+  "lead": {
+    "zh": "将受伤、异常状态和战败流程同步到郊狼与负鼠。独立设置通道、强度、波形与时长。",
+    "en": "Sync damage, status effects and defeat flows with Coyote and Opossum. Configure channels, intensity, waves and duration independently.",
+    "ja": "ダメージ・状態異常・敗北イベントを郊狼と負鼠に連動。チャンネル・強度・波形・時間を個別に設定。"
+  },
+  "get": {
+    "zh": "获取源码",
+    "en": "Get the source",
+    "ja": "ソースを入手"
+  },
+  "start": {
+    "zh": "查看使用步骤 ↗",
+    "en": "Setup steps ↗",
+    "ja": "導入手順 ↗"
+  },
+  "compat": {
+    "zh": "SiNiSistar2 v1.3.1 · 中 / 英 / 日界面",
+    "en": "SiNiSistar2 v1.3.1 · Chinese / English / Japanese UI",
+    "ja": "SiNiSistar2 v1.3.1 · 中国語・英語・日本語 UI"
+  },
+  "capture": {
+    "zh": "软件实际界面 · 离线截图，设备未连接",
+    "en": "Actual application · offline captures, devices disconnected",
+    "ja": "実際のソフトウェア画面 · オフライン撮影、デバイス未接続"
+  },
+  "features": {
+    "zh": "核心功能",
+    "en": "Core features",
+    "ja": "主な機能"
+  },
+  "screens": {
+    "zh": "程序界面",
+    "en": "Application interface",
+    "ja": "ソフトウェア画面"
+  },
+  "expand": {
+    "zh": "点击截图可放大查看。",
+    "en": "Select a screenshot to enlarge.",
+    "ja": "画像をクリックして拡大。"
+  },
+  "setup": {
+    "zh": "使用步骤",
+    "en": "Setup",
+    "ja": "導入手順"
+  },
+  "prereq": {
+    "zh": "源码运行需要 Windows x64、Python 3.10+。首次安装游戏插件前退出游戏；连接后按软件内五步教程设置。",
+    "en": "Source setup requires Windows x64 and Python 3.10+. Close the game before installing its plugin. Follow the five-step tutorial in the app.",
+    "ja": "ソース実行には Windows x64 と Python 3.10+ が必要です。プラグイン導入前にゲームを終了し、アプリ内の 5 ステップガイドに従ってください。"
+  },
+  "download": {
+    "zh": "下载与源码",
+    "en": "Download & source",
+    "ja": "ダウンロード・ソース"
+  },
+  "version": {
+    "zh": "开发版 · 0.6",
+    "en": "Development build · 0.6",
+    "ja": "開発版 · 0.6"
+  },
+  "sourcebody": {
+    "zh": "提供原生界面、观察插件与独立辅助插件源码。运行时和插件构建步骤见仓库说明。",
+    "en": "Includes source for the native UI, observer and optional helper plugin. See the repository for runtime setup and plugin builds.",
+    "ja": "ネイティブ UI、観測プラグイン、任意の補助プラグインのソースを公開。ランタイムの準備とビルド方法はリポジトリに記載。"
+  },
+  "sourcenote": {
+    "zh": "下载内容为源码 ZIP，需要安装 Python 依赖；不含游戏本体和运行时二进制。",
+    "en": "This is a source ZIP requiring Python dependencies. Game files and runtime binaries are not included.",
+    "ja": "Python の依存パッケージが必要なソース ZIP です。ゲーム本体とランタイムのバイナリは含みません。"
+  },
+  "zip": {
+    "zh": "下载源码 ZIP ↓",
+    "en": "Download source ZIP ↓",
+    "ja": "ソース ZIP をダウンロード ↓"
+  },
+  "github": {
+    "zh": "查看 GitHub ↗",
+    "en": "View on GitHub ↗",
+    "ja": "GitHub を開く ↗"
+  },
+  "rights": {
+    "zh": "非官方联动工具，不包含游戏本体。游戏画面、角色与 DG-LAB 标识归各自权利人所有；项目代码采用 GPL-3.0。",
+    "en": "Unofficial companion; the game is not included. Game artwork, characters and DG-LAB marks belong to their owners. Project code is GPL-3.0.",
+    "ja": "非公式の連動ツール。ゲーム本体は含みません。ゲーム画像・キャラクター・DG-LAB の標章は各権利者に帰属。コードは GPL-3.0。"
+  }
+}

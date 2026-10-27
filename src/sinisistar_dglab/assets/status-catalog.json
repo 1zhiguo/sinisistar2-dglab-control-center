@@ -1,0 +1,422 @@
+{
+  "Assimilation": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Assimilation_Seed": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "BigPicture": {
+    "category": "special",
+    "category_label": "特殊与流程",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Blessing_Lost": {
+    "category": "special",
+    "category_label": "特殊与流程",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "Blinded": {
+    "category": "debuff",
+    "category_label": "伤害与减益",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "BolaBind": {
+    "category": "restraint",
+    "category_label": "束缚与行动",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Book": {
+    "category": "special",
+    "category_label": "特殊与流程",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "Breast": {
+    "category": "body",
+    "category_label": "身体与持续状态",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "BreastSuper": {
+    "category": "body",
+    "category_label": "身体与持续状态",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "Broken2": {
+    "category": "special",
+    "category_label": "特殊与流程",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "ChangeZombie": {
+    "category": "special",
+    "category_label": "特殊与流程",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Clouding": {
+    "category": "debuff",
+    "category_label": "伤害与减益",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "DeadlyPoison": {
+    "category": "debuff",
+    "category_label": "伤害与减益",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "Defilement": {
+    "category": "debuff",
+    "category_label": "伤害与减益",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "Down2": {
+    "category": "restraint",
+    "category_label": "束缚与行动",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Down2ForSewageBoss": {
+    "category": "restraint",
+    "category_label": "束缚与行动",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Drunk": {
+    "category": "debuff",
+    "category_label": "伤害与减益",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "Entombed": {
+    "category": "restraint",
+    "category_label": "束缚与行动",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "EvilWoodSeed": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "FallSleep": {
+    "category": "debuff",
+    "category_label": "伤害与减益",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "Feed": {
+    "category": "special",
+    "category_label": "特殊与流程",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "FrogEgg": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "FrogLEgg": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "FungalBed": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "GO_OuterOne": {
+    "category": "special",
+    "category_label": "特殊与流程",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "GO_Stomach": {
+    "category": "special",
+    "category_label": "特殊与流程",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "HandRestraints": {
+    "category": "restraint",
+    "category_label": "束缚与行动",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Handcuffed": {
+    "category": "restraint",
+    "category_label": "束缚与行动",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "Infertility": {
+    "category": "body",
+    "category_label": "身体与持续状态",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "InfertilityBlessing": {
+    "category": "positive",
+    "category_label": "正面加护",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "LeechEgg": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "LeechEgg_Boss": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "LeechInfestation": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "LeechInfestation_Hold": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "LimbLoss": {
+    "category": "restraint",
+    "category_label": "束缚与行动",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "LivestockParasite": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Livestock_Pig": {
+    "category": "special",
+    "category_label": "特殊与流程",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "LustMarkCurse": {
+    "category": "body",
+    "category_label": "身体与持续状态",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Lustfull": {
+    "category": "body",
+    "category_label": "身体与持续状态",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Lustfull_Forever": {
+    "category": "body",
+    "category_label": "身体与持续状态",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Mask": {
+    "category": "special",
+    "category_label": "特殊与流程",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "MeatBud": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "MeatBuding": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "MeatTentacleCluster1Bind": {
+    "category": "restraint",
+    "category_label": "束缚与行动",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Milk": {
+    "category": "body",
+    "category_label": "身体与持续状态",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "MindControl": {
+    "category": "special",
+    "category_label": "特殊与流程",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "MindIntegration": {
+    "category": "special",
+    "category_label": "特殊与流程",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "MotherBody": {
+    "category": "special",
+    "category_label": "特殊与流程",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Mucus": {
+    "category": "debuff",
+    "category_label": "伤害与减益",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "MucusSlug": {
+    "category": "debuff",
+    "category_label": "伤害与减益",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "Mutation": {
+    "category": "special",
+    "category_label": "特殊与流程",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Parasite": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "ParasiteLv13": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "ParasitePennis": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Poison": {
+    "category": "debuff",
+    "category_label": "伤害与减益",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "Pregnant": {
+    "category": "body",
+    "category_label": "身体与持续状态",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "Pregnant_Demi": {
+    "category": "body",
+    "category_label": "身体与持续状态",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "SandBlinded": {
+    "category": "debuff",
+    "category_label": "伤害与减益",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "Semen": {
+    "category": "body",
+    "category_label": "身体与持续状态",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "Semen_mucus": {
+    "category": "body",
+    "category_label": "身体与持续状态",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Slow": {
+    "category": "debuff",
+    "category_label": "伤害与减益",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "SpiderEggSac": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "SpiderWeb": {
+    "category": "restraint",
+    "category_label": "束缚与行动",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "Spore": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "Stone": {
+    "category": "debuff",
+    "category_label": "伤害与减益",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "TentacleEgg": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "TentacleEgg_GO": {
+    "category": "parasite",
+    "category_label": "寄生与附着",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "TreeDisorientation": {
+    "category": "debuff",
+    "category_label": "伤害与减益",
+    "translation_source": "game",
+    "description": "名称来自当前游戏的中文本地化。"
+  },
+  "Vomiting": {
+    "category": "debuff",
+    "category_label": "伤害与减益",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  },
+  "WetNurse": {
+    "category": "body",
+    "category_label": "身体与持续状态",
+    "translation_source": "internal",
+    "description": "由内部类型名译出，具体机制待实机对照。"
+  }
+}
