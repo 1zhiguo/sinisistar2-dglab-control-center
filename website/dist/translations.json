@@ -248,5 +248,45 @@
     "zh": "非官方联动工具，不包含游戏本体。游戏画面、角色与 DG-LAB 标识归各自权利人所有；项目代码采用 GPL-3.0。",
     "en": "Unofficial companion; the game is not included. Game artwork, characters and DG-LAB marks belong to their owners. Project code is GPL-3.0.",
     "ja": "非公式の連動ツール。ゲーム本体は含みません。ゲーム画像・キャラクター・DG-LAB の標章は各権利者に帰属。コードは GPL-3.0。"
+  },
+  "support": {
+    "zh": "支持与交流",
+    "en": "Support & community",
+    "ja": "サポート・コミュニティ"
+  },
+  "socialcopy": {
+    "zh": "开发动态与版本更新",
+    "en": "Development updates and releases",
+    "ja": "開発情報・バージョン更新"
+  },
+  "socialfollow": {
+    "zh": "在 X 上关注 ↗",
+    "en": "Follow on X ↗",
+    "ja": "X でフォロー ↗"
+  },
+  "community": {
+    "zh": "技术交流群",
+    "en": "Community chat",
+    "ja": "コミュニティ"
+  },
+  "groupnumber": {
+    "zh": "QQ群：1129729751",
+    "en": "QQ group: 1129729751",
+    "ja": "QQ グループ：1129729751"
+  },
+  "reward": {
+    "zh": "赞赏项目",
+    "en": "Support the project",
+    "ja": "プロジェクトを支援"
+  },
+  "rewardcode": {
+    "zh": "赞赏码",
+    "en": "Reward code",
+    "ja": "支援用 QR コード"
+  },
+  "qrenlarge": {
+    "zh": "点击二维码可放大查看。",
+    "en": "Select a QR code to enlarge.",
+    "ja": "QR コードをクリックして拡大。"
   }
 }
