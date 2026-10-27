@@ -1,0 +1,851 @@
+[
+  {
+    "case": "grave_main",
+    "expected": true,
+    "state": {
+      "source": "bepinex",
+      "fingerprint": "b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d",
+      "session": "realplay-fixture",
+      "pid": 123,
+      "player": 0,
+      "live": true,
+      "valid": false,
+      "sampled_at": 41857.631656000005,
+      "sample_id": 3722,
+      "scene": "Road_2_1_GO",
+      "scene_id": 4,
+      "paused": false,
+      "loading": false,
+      "hp": {
+        "current": 1,
+        "max": 120
+      },
+      "mp": {
+        "current": 110,
+        "max": 110
+      },
+      "bound": false,
+      "gacha": null,
+      "abnormals": [
+        {
+          "type_raw": 825765986,
+          "level": 1,
+          "name_id": 178,
+          "max_level": 1,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "InfertilityBlessing",
+          "localized_name": "不孕的加护"
+        },
+        {
+          "type_raw": 960050227,
+          "level": 1,
+          "name_id": 64,
+          "max_level": 10,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "Defilement",
+          "localized_name": "污秽 1/10"
+        }
+      ],
+      "time_scale": 1,
+      "event_playing": true,
+      "flow": {
+        "valid": true,
+        "key": "[4,\"Event\",\"Main\",\"HierarchyEventPlayer\"]",
+        "name": "Main",
+        "type": "HierarchyEventPlayer",
+        "group": "Event",
+        "playing": true,
+        "paused": false,
+        "run": 9,
+        "elapsed": 0,
+        "timeline_time": null,
+        "timeline_duration": null,
+        "label": "Start",
+        "label_type": "PlaySoundLabel",
+        "event_value": "",
+        "next_name": "Pregnant",
+        "restart_confirmed": false,
+        "boss_battle": true,
+        "defeat_confirmed": false
+      },
+      "cg_playback": {
+        "schema": 1,
+        "available": true,
+        "source": "declared CG references",
+        "hp_used": false,
+        "take_hook": true,
+        "catalog_take_owners": 1,
+        "event": {
+          "object": 2698991471904,
+          "type": "HierarchyEventPlayer",
+          "path": "Root/Event/GravekeeperGO1/Main",
+          "playing": true
+        },
+        "animators": [],
+        "animator_errors": [],
+        "truncated": false,
+        "read_ms": 0.017
+      },
+      "observer_version": "0.5.1"
+    }
+  },
+  {
+    "case": "leech_go1",
+    "expected": true,
+    "state": {
+      "source": "bepinex",
+      "fingerprint": "b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d",
+      "session": "realplay-fixture",
+      "pid": 123,
+      "player": 0,
+      "live": true,
+      "valid": false,
+      "sampled_at": 41787.003962,
+      "sample_id": 3082,
+      "scene": "Dungeon_Swamp_Boss_GO1",
+      "scene_id": 29,
+      "paused": false,
+      "loading": false,
+      "hp": {
+        "current": 1,
+        "max": 120
+      },
+      "mp": {
+        "current": 90,
+        "max": 90
+      },
+      "bound": false,
+      "gacha": null,
+      "abnormals": [
+        {
+          "type_raw": 825765986,
+          "level": 1,
+          "name_id": 178,
+          "max_level": 1,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "InfertilityBlessing",
+          "localized_name": "不孕的加护"
+        },
+        {
+          "type_raw": 960050227,
+          "level": 1,
+          "name_id": 64,
+          "max_level": 10,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "Defilement",
+          "localized_name": "污秽 1/10"
+        },
+        {
+          "type_raw": 1717855074,
+          "level": 1,
+          "name_id": 735,
+          "max_level": 1,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "Broken2",
+          "localized_name": "手铐"
+        },
+        {
+          "type_raw": 895628336,
+          "level": 2,
+          "name_id": 257,
+          "max_level": 3,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "LeechEgg",
+          "localized_name": "水蛭的卵 2/2"
+        }
+      ],
+      "time_scale": 1,
+      "event_playing": true,
+      "flow": {
+        "valid": true,
+        "key": "[29,\"Event\",\"Default\",\"HierarchyEventPlayer\"]",
+        "name": "Default",
+        "type": "HierarchyEventPlayer",
+        "group": "Event",
+        "playing": true,
+        "paused": false,
+        "run": 5,
+        "elapsed": 0,
+        "timeline_time": null,
+        "timeline_duration": null,
+        "label": "",
+        "label_type": "",
+        "event_value": "",
+        "next_name": "",
+        "restart_confirmed": false,
+        "boss_battle": true,
+        "defeat_confirmed": false
+      },
+      "cg_playback": {
+        "schema": 1,
+        "available": true,
+        "source": "declared CG references",
+        "hp_used": false,
+        "take_hook": true,
+        "catalog_take_owners": 1,
+        "event": {
+          "object": 2698992823296,
+          "type": "HierarchyEventPlayer",
+          "path": "Root/Event/Default",
+          "playing": true
+        },
+        "animators": [],
+        "animator_errors": [],
+        "truncated": false,
+        "read_ms": 0.015
+      },
+      "observer_version": "0.5.1"
+    }
+  },
+  {
+    "case": "leech_go2",
+    "expected": true,
+    "state": {
+      "source": "bepinex",
+      "fingerprint": "b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d",
+      "session": "realplay-fixture",
+      "pid": 123,
+      "player": 0,
+      "live": true,
+      "valid": false,
+      "sampled_at": 41799.465448999996,
+      "sample_id": 3194,
+      "scene": "Dungeon_Swamp_Boss_GO2",
+      "scene_id": 30,
+      "paused": false,
+      "loading": false,
+      "hp": {
+        "current": 1,
+        "max": 120
+      },
+      "mp": {
+        "current": 90,
+        "max": 90
+      },
+      "bound": false,
+      "gacha": null,
+      "abnormals": [
+        {
+          "type_raw": 825765986,
+          "level": 1,
+          "name_id": 178,
+          "max_level": 1,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "InfertilityBlessing",
+          "localized_name": "不孕的加护"
+        },
+        {
+          "type_raw": 960050227,
+          "level": 1,
+          "name_id": 64,
+          "max_level": 10,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "Defilement",
+          "localized_name": "污秽 1/10"
+        },
+        {
+          "type_raw": 1717855074,
+          "level": 1,
+          "name_id": 735,
+          "max_level": 1,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "Broken2",
+          "localized_name": "手铐"
+        },
+        {
+          "type_raw": 895628336,
+          "level": 2,
+          "name_id": 257,
+          "max_level": 3,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "LeechEgg",
+          "localized_name": "水蛭的卵 2/2"
+        },
+        {
+          "type_raw": 1681340722,
+          "level": 1,
+          "name_id": 183,
+          "max_level": 1,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": true,
+          "name": "Mucus",
+          "localized_name": "粘液"
+        }
+      ],
+      "time_scale": 1,
+      "event_playing": true,
+      "flow": {
+        "valid": true,
+        "key": "[30,\"Event\",\"Default\",\"HierarchyEventPlayer\"]",
+        "name": "Default",
+        "type": "HierarchyEventPlayer",
+        "group": "Event",
+        "playing": true,
+        "paused": false,
+        "run": 6,
+        "elapsed": 0,
+        "timeline_time": null,
+        "timeline_duration": null,
+        "label": "",
+        "label_type": "",
+        "event_value": "",
+        "next_name": "",
+        "restart_confirmed": false,
+        "boss_battle": true,
+        "defeat_confirmed": false
+      },
+      "cg_playback": {
+        "schema": 1,
+        "available": true,
+        "source": "declared CG references",
+        "hp_used": false,
+        "take_hook": true,
+        "catalog_take_owners": 1,
+        "event": {
+          "object": 2698992985216,
+          "type": "HierarchyEventPlayer",
+          "path": "Root/Event/Default",
+          "playing": true
+        },
+        "animators": [],
+        "animator_errors": [],
+        "truncated": false,
+        "read_ms": 0.015
+      },
+      "observer_version": "0.5.1"
+    }
+  },
+  {
+    "case": "grave_wait",
+    "expected": true,
+    "state": {
+      "source": "bepinex",
+      "fingerprint": "b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d",
+      "session": "realplay-fixture",
+      "pid": 123,
+      "player": 0,
+      "live": true,
+      "valid": true,
+      "sampled_at": 41883.365426,
+      "sample_id": 3957,
+      "scene": "Road_2_1",
+      "scene_id": 3,
+      "paused": false,
+      "loading": false,
+      "hp": {
+        "current": 1,
+        "max": 120
+      },
+      "mp": {
+        "current": 110,
+        "max": 110
+      },
+      "bound": false,
+      "gacha": {
+        "active": false,
+        "value": 0,
+        "threshold": 25
+      },
+      "abnormals": [
+        {
+          "type_raw": 825765986,
+          "level": 1,
+          "name_id": 178,
+          "max_level": 1,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "InfertilityBlessing",
+          "localized_name": "不孕的加护"
+        },
+        {
+          "type_raw": 960050227,
+          "level": 2,
+          "name_id": 66,
+          "max_level": 10,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "Defilement",
+          "localized_name": "污秽 2/10"
+        },
+        {
+          "type_raw": 808858210,
+          "level": 1,
+          "name_id": 69,
+          "max_level": 1,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "Semen",
+          "localized_name": "精液累积"
+        },
+        {
+          "type_raw": 909664822,
+          "level": 3,
+          "name_id": 80,
+          "max_level": 4,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "ChangeZombie",
+          "localized_name": "丧尸化的诅咒 3/3"
+        }
+      ],
+      "time_scale": 1,
+      "event_playing": true,
+      "flow": {
+        "valid": true,
+        "key": "[3,\"S04_GraveTest\",\"WaitGraveKeeperAnimation\",\"HierarchyEventPlayer\"]",
+        "name": "WaitGraveKeeperAnimation",
+        "type": "HierarchyEventPlayer",
+        "group": "S04_GraveTest",
+        "playing": true,
+        "paused": false,
+        "run": 12,
+        "elapsed": 0,
+        "timeline_time": null,
+        "timeline_duration": null,
+        "label": "",
+        "label_type": "",
+        "event_value": "",
+        "next_name": "Failure",
+        "restart_confirmed": false,
+        "boss_battle": true,
+        "defeat_confirmed": false
+      },
+      "cg_playback": {
+        "schema": 1,
+        "available": true,
+        "source": "declared CG references",
+        "hp_used": false,
+        "take_hook": true,
+        "catalog_take_owners": 1,
+        "event": {
+          "object": 2698992986848,
+          "type": "HierarchyEventPlayer",
+          "path": "Root/Event/S04_GraveTest/GravekeeperContinue/WaitGraveKeeperAnimation",
+          "playing": true
+        },
+        "animators": [],
+        "animator_errors": [],
+        "truncated": false,
+        "read_ms": 0.017
+      },
+      "observer_version": "0.5.1"
+    }
+  },
+  {
+    "case": "grave_continue",
+    "expected": true,
+    "state": {
+      "source": "bepinex",
+      "fingerprint": "b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d",
+      "session": "realplay-fixture",
+      "pid": 123,
+      "player": 0,
+      "live": true,
+      "valid": true,
+      "sampled_at": 41868.402554,
+      "sample_id": 3820,
+      "scene": "Road_2_1",
+      "scene_id": 3,
+      "paused": false,
+      "loading": false,
+      "hp": {
+        "current": 1,
+        "max": 120
+      },
+      "mp": {
+        "current": 110,
+        "max": 110
+      },
+      "bound": false,
+      "gacha": {
+        "active": false,
+        "value": 0,
+        "threshold": 10
+      },
+      "abnormals": [
+        {
+          "type_raw": 825765986,
+          "level": 1,
+          "name_id": 178,
+          "max_level": 1,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "InfertilityBlessing",
+          "localized_name": "不孕的加护"
+        },
+        {
+          "type_raw": 960050227,
+          "level": 1,
+          "name_id": 64,
+          "max_level": 10,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "Defilement",
+          "localized_name": "污秽 1/10"
+        }
+      ],
+      "time_scale": 1,
+      "event_playing": true,
+      "flow": {
+        "valid": true,
+        "key": "[3,\"S04_GraveTest\",\"Continue\",\"PlayableDirectorPlayer\"]",
+        "name": "Continue",
+        "type": "PlayableDirectorPlayer",
+        "group": "S04_GraveTest",
+        "playing": true,
+        "paused": false,
+        "run": 10,
+        "elapsed": 0,
+        "timeline_time": 0.04999819956719875,
+        "timeline_duration": 0.783333333332,
+        "label": "",
+        "label_type": "",
+        "event_value": "",
+        "next_name": "",
+        "restart_confirmed": false,
+        "boss_battle": true,
+        "defeat_confirmed": false
+      },
+      "cg_playback": {
+        "schema": 1,
+        "available": true,
+        "source": "declared CG references",
+        "hp_used": false,
+        "take_hook": true,
+        "catalog_take_owners": 1,
+        "event": {
+          "object": 2698994983808,
+          "type": "PlayableDirectorPlayer",
+          "path": "Root/Event/S04_GraveTest/GravekeeperContinue/Continue",
+          "playing": true
+        },
+        "animators": [],
+        "animator_errors": [],
+        "truncated": false,
+        "read_ms": 0.017
+      },
+      "observer_version": "0.5.1"
+    }
+  },
+  {
+    "case": "grave_failure",
+    "expected": true,
+    "state": {
+      "source": "bepinex",
+      "fingerprint": "b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d",
+      "session": "realplay-fixture",
+      "pid": 123,
+      "player": 0,
+      "live": true,
+      "valid": true,
+      "sampled_at": 41885.449824,
+      "sample_id": 3976,
+      "scene": "Road_2_1",
+      "scene_id": 3,
+      "paused": false,
+      "loading": false,
+      "hp": {
+        "current": 1,
+        "max": 120
+      },
+      "mp": {
+        "current": 110,
+        "max": 110
+      },
+      "bound": false,
+      "gacha": {
+        "active": false,
+        "value": 0,
+        "threshold": 25
+      },
+      "abnormals": [
+        {
+          "type_raw": 825765986,
+          "level": 1,
+          "name_id": 178,
+          "max_level": 1,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "InfertilityBlessing",
+          "localized_name": "不孕的加护"
+        },
+        {
+          "type_raw": 960050227,
+          "level": 2,
+          "name_id": 66,
+          "max_level": 10,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "Defilement",
+          "localized_name": "污秽 2/10"
+        },
+        {
+          "type_raw": 808858210,
+          "level": 1,
+          "name_id": 69,
+          "max_level": 1,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "Semen",
+          "localized_name": "精液累积"
+        },
+        {
+          "type_raw": 909664822,
+          "level": 3,
+          "name_id": 80,
+          "max_level": 4,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "ChangeZombie",
+          "localized_name": "丧尸化的诅咒 3/3"
+        }
+      ],
+      "time_scale": 1,
+      "event_playing": true,
+      "flow": {
+        "valid": true,
+        "key": "[3,\"S04_GraveTest\",\"Failure\",\"PlayableDirectorPlayer\"]",
+        "name": "Failure",
+        "type": "PlayableDirectorPlayer",
+        "group": "S04_GraveTest",
+        "playing": true,
+        "paused": false,
+        "run": 13,
+        "elapsed": 0,
+        "timeline_time": 0.04999930039048195,
+        "timeline_duration": 10.116666666666,
+        "label": "Start",
+        "label_type": "PlaySoundLabel",
+        "event_value": "",
+        "next_name": "",
+        "restart_confirmed": false,
+        "boss_battle": true,
+        "defeat_confirmed": false
+      },
+      "cg_playback": {
+        "schema": 1,
+        "available": true,
+        "source": "declared CG references",
+        "hp_used": false,
+        "take_hook": true,
+        "catalog_take_owners": 1,
+        "event": {
+          "object": 2698996041808,
+          "type": "PlayableDirectorPlayer",
+          "path": "Root/Event/S04_GraveTest/GravekeeperContinue/Failure",
+          "playing": true
+        },
+        "animators": [],
+        "animator_errors": [],
+        "truncated": false,
+        "read_ms": 0.02
+      },
+      "observer_version": "0.5.1"
+    }
+  },
+  {
+    "case": "boss_intro",
+    "expected": false,
+    "state": {
+      "source": "bepinex",
+      "fingerprint": "b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d",
+      "session": "realplay-fixture",
+      "pid": 123,
+      "player": 0,
+      "live": true,
+      "valid": true,
+      "sampled_at": 41708.848421999995,
+      "sample_id": 2364,
+      "scene": "Dungeon_Swamp_Boss",
+      "scene_id": 28,
+      "paused": false,
+      "loading": false,
+      "hp": {
+        "current": 120,
+        "max": 120
+      },
+      "mp": {
+        "current": 110,
+        "max": 110
+      },
+      "bound": false,
+      "gacha": {
+        "active": false,
+        "value": 0,
+        "threshold": 0
+      },
+      "abnormals": [
+        {
+          "type_raw": 825765986,
+          "level": 1,
+          "name_id": 178,
+          "max_level": 1,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "InfertilityBlessing",
+          "localized_name": "不孕的加护"
+        }
+      ],
+      "time_scale": 1,
+      "event_playing": true,
+      "flow": {
+        "valid": true,
+        "key": "[28,\"\",\"Director\",\"PlayableDirectorPlayer\"]",
+        "name": "Director",
+        "type": "PlayableDirectorPlayer",
+        "group": "",
+        "playing": true,
+        "paused": false,
+        "run": 2,
+        "elapsed": 0,
+        "timeline_time": 0.03333439864218235,
+        "timeline_duration": 8.849999999999,
+        "label": "",
+        "label_type": "",
+        "event_value": "",
+        "next_name": "",
+        "restart_confirmed": false,
+        "boss_battle": true,
+        "defeat_confirmed": false
+      },
+      "cg_playback": {
+        "schema": 1,
+        "available": true,
+        "source": "declared CG references",
+        "hp_used": false,
+        "take_hook": true,
+        "catalog_take_owners": 1,
+        "event": {
+          "object": 2698764188736,
+          "type": "PlayableDirectorPlayer",
+          "path": "Root/Event/LeechBossEvent/BossOP/Director",
+          "playing": true
+        },
+        "animators": [],
+        "animator_errors": [],
+        "truncated": false,
+        "read_ms": 0.031
+      },
+      "observer_version": "0.5.1"
+    }
+  },
+  {
+    "case": "save_point",
+    "expected": false,
+    "state": {
+      "source": "bepinex",
+      "fingerprint": "b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d",
+      "session": "realplay-fixture",
+      "pid": 123,
+      "player": 0,
+      "live": true,
+      "valid": true,
+      "sampled_at": 41683.658390000004,
+      "sample_id": 2133,
+      "scene": "Road_3_1_SavePoint",
+      "scene_id": 20,
+      "paused": false,
+      "loading": false,
+      "hp": {
+        "current": 120,
+        "max": 120
+      },
+      "mp": {
+        "current": 110,
+        "max": 110
+      },
+      "bound": false,
+      "gacha": {
+        "active": false,
+        "value": 0,
+        "threshold": 0
+      },
+      "abnormals": [
+        {
+          "type_raw": 825765986,
+          "level": 1,
+          "name_id": 178,
+          "max_level": 1,
+          "delete_timer": -1,
+          "delete_time": -1,
+          "remove_on_scene_change": false,
+          "name": "InfertilityBlessing",
+          "localized_name": "不孕的加护"
+        }
+      ],
+      "time_scale": 1,
+      "event_playing": true,
+      "flow": {
+        "valid": true,
+        "key": "[20,\"\",\"SaveDirector\",\"PlayableDirectorPlayer\"]",
+        "name": "SaveDirector",
+        "type": "PlayableDirectorPlayer",
+        "group": "",
+        "playing": true,
+        "paused": false,
+        "run": 1,
+        "elapsed": 0,
+        "timeline_time": 0,
+        "timeline_duration": 2.249999999999,
+        "label": "",
+        "label_type": "",
+        "event_value": "",
+        "next_name": "",
+        "restart_confirmed": false,
+        "boss_battle": false,
+        "defeat_confirmed": false
+      },
+      "cg_playback": {
+        "schema": 1,
+        "available": true,
+        "source": "declared CG references",
+        "hp_used": false,
+        "take_hook": true,
+        "catalog_take_owners": 0,
+        "event": {
+          "object": 2698989913744,
+          "type": "PlayableDirectorPlayer",
+          "path": "Root/Character/SavePoint/SaveEvent/SaveDirector",
+          "playing": true
+        },
+        "animators": [],
+        "animator_errors": [],
+        "truncated": false,
+        "read_ms": 1.046
+      },
+      "observer_version": "0.5.1"
+    }
+  }
+]

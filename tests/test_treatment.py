@@ -73,8 +73,10 @@ class SameHpFlow(unittest.TestCase):
         for seq,t in enumerate((11,12,13,14),3):
             s=update(e,t,[event(t,seq)]);out=x.update(s,p,WAVES,now=t,enabled=True)
             if t>=12:self.assertFalse(any(out['pulse_stream'].values()))
-    def test_default_off_and_cg_side_channel_filter_remain_effective(self):
-        e,s=confirmed();p=initial_profile();self.assertFalse(any(PulsePlanner().update(s,p,WAVES,now=10.5,enabled=True)['pulse_stream'].values()))
+    def test_default_on_explicit_off_and_cg_side_channel_filter_remain_effective(self):
+        e,s=confirmed();p=initial_profile();self.assertTrue(p['cg']['same_hp_enabled'])
+        p['cg']['same_hp_enabled']=False
+        self.assertFalse(any(PulsePlanner().update(s,p,WAVES,now=10.5,enabled=True)['pulse_stream'].values()))
         p=profile();p['channel_feedback']['pulse']={'A':'damage','B':'cg'};out=PulsePlanner().update(s,p,WAVES,now=10.5,enabled=True)
         self.assertIsNone(out['pulse_stream']['A']);self.assertIsNotNone(out['pulse_stream']['B'])
 

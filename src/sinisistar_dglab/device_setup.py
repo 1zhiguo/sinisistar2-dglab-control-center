@@ -2,6 +2,7 @@
 import math
 
 HINTS={
+ 'device-unresponsive':('设备离线或状态待确认','APP Socket 仍在线；正在重新同步设备，连接恢复后会先确认归零。'),
  'bluetooth-not-connected':('蓝牙未连接','请在 DG-LAB APP 中连接控制器，并保持 APP 在线。'),
  'channel-muted':('通道已静音','请在 DG-LAB APP 中手动解除该通道静音。'),
  'channel-blocked':('通道已屏蔽','请在 DG-LAB APP 中手动打开被屏蔽的通道。'),

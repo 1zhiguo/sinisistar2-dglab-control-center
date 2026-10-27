@@ -3,6 +3,15 @@ MODES=('damage','cg','both')
 
 def defaults():return {r:{c:'both' for c in 'AB'} for r in ('pulse','vibration')}
 
+def planner_copy(profile):
+    """Copy only branches a route filter edits, preserving the source profile."""
+    result=dict(profile)
+    for group in ('rules','abnormals'):
+        result[group]={key:dict(rule) for key,rule in profile[group].items()}
+    if isinstance(profile.get('cg'),dict):
+        result['cg']=dict(profile['cg'],rule=dict(profile['cg'].get('rule') or {}))
+    return result
+
 def sanitize(raw):
     result=defaults()
     if isinstance(raw,dict):

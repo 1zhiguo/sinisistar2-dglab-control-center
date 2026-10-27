@@ -40,6 +40,17 @@ class V4Stream(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(self.hub.select_device('ovc',self.app.client_id,'coyote'))
         await self.select('pulse');self.assertTrue(self.pulse.snapshot()['feedback_known'])
         self.assertFalse(self.app.pulses('coyote'))
+
+    async def test_idle_routes_sleep_and_new_frame_wakes_without_poll_delay(self):
+        before=[s._loop_passes for s in (self.pulse,self.ovc)]
+        await asyncio.sleep(.35)
+        self.assertTrue(all(s._loop_passes-n<=4 for s,n in zip((self.pulse,self.ovc),before)))
+        await self.select('pulse')
+        self.pulse.set_output_permission(True,hard_limits={'A':30,'B':30})
+        self.pulse.submit_plan({'A':frame(15),'B':None})
+        await self.until(lambda:bool(self.app.pulses('coyote')))
+        # The original single-frame/no-repeat/expiry test covers the lease.
+        self.assertEqual(len(self.app.pulses('coyote')),1)
     async def test_two_roles_send_independently_and_ovc_rounds_down_tens(self):
         await self.select('pulse');await self.select('ovc');await self.drive(pulse=13,ovc=39)
         self.assertTrue(self.app.pulses('coyote'));self.assertTrue(self.app.pulses('ovc'))
@@ -110,6 +121,18 @@ class V4Stream(unittest.IsolatedAsyncioTestCase):
         self.ovc.set_output_permission(True,hard_limits={'A':50,'B':50});self.ovc.submit_plan({'A':frame(30),'B':None})
         await asyncio.sleep(.15);await self.drive(.25,pulse=11)
         self.assertTrue(self.pulse.snapshot()['connected']);self.assertTrue(self.app.pulses('coyote'))
+
+    async def test_sleeping_ovc_catalog_refresh_does_not_interrupt_pulse_stream(self):
+        self.hub._hub._discovery_interval=.2
+        await self.select('pulse');await self.select('ovc')
+        await self.drive(.3,pulse=12,ovc=40)
+        since=time.monotonic();self.app.devices.pop()
+        await self.drive(.9,pulse=12)
+        self.assertTrue(self.hub.snapshot()['app_connected'])
+        self.assertFalse(self.ovc.snapshot()['connected'])
+        receipts=self.app.pulses('coyote',since=since)
+        self.assertGreaterEqual(len(receipts),6)
+        self.assertLess(max(b['at']-a['at'] for a,b in zip(receipts,receipts[1:])),.25)
 
 class RpcFutureCleanup(unittest.IsolatedAsyncioTestCase):
     async def test_disconnect_during_failed_write_does_not_orphan_its_waiter(self):

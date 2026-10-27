@@ -1,0 +1,136 @@
+{
+  "schema": 1,
+  "source": "bepinex",
+  "fingerprint": "b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d",
+  "session": "fixture-bobel-session",
+  "pid": 123,
+  "sample_id": 1,
+  "utc": "2026-10-27T08:50:09+00:00",
+  "valid": true,
+  "player": 1926047035392,
+  "scene_id": 10,
+  "loading": false,
+  "observer_version": "0.5.0",
+  "combat_hooks": {
+    "damage": true,
+    "death_exists": true,
+    "death_remove": true,
+    "resume": true
+  },
+  "flow_hooks": {
+    "request": true,
+    "stop": true,
+    "receiver_label": true,
+    "execution_label": true
+  },
+  "hp": {
+    "current": 0,
+    "max": 140
+  },
+  "mp": {
+    "current": 140,
+    "max": 140
+  },
+  "durability": {
+    "current": 0,
+    "max": 100
+  },
+  "paused": false,
+  "event_playing": false,
+  "event_paused": false,
+  "broken": true,
+  "bound": false,
+  "binder": "",
+  "abnormals": [
+    {
+      "type_raw": 825765986,
+      "level": 1,
+      "name_id": 178,
+      "max_level": 1,
+      "delete_timer": -1,
+      "delete_time": -1,
+      "remove_on_scene_change": false
+    }
+  ],
+  "hook_count": 20,
+  "anim_raw": 6,
+  "gacha": {
+    "active": false,
+    "value": 0,
+    "threshold": 0
+  },
+  "time_scale": 1,
+  "flow": {
+    "valid": false,
+    "key": "",
+    "name": "",
+    "type": "",
+    "group": "",
+    "playing": false,
+    "paused": false,
+    "run": 3,
+    "elapsed": 1.9012661000015214,
+    "timeline_time": null,
+    "timeline_duration": null,
+    "label": "",
+    "label_type": "",
+    "event_value": "Gallery",
+    "next_name": "",
+    "restart_confirmed": false,
+    "boss_battle": false,
+    "defeat_confirmed": false
+  },
+  "gallery": {
+    "available": true,
+    "active": true,
+    "source": "GalleryManager/ButtonGuideUI",
+    "guide_available": true,
+    "guide_open": true,
+    "ui_open": true,
+    "changing": true,
+    "ui_paused": false,
+    "slow": false,
+    "dev_mode": true,
+    "ui_hidden": false,
+    "selected_index_raw": 1,
+    "take_count": 1,
+    "enemy_id": 61,
+    "enemy_name_id": 452,
+    "target_scene_id": -1,
+    "take_selected": true,
+    "take_player": 1926212061536,
+    "take_data": 1926210065008,
+    "take_player_type": "GaEnemyTakePlayer",
+    "take_name": "Hold",
+    "play_type_raw": 0,
+    "animator_loop": false,
+    "combat_event": false,
+    "like_game_scene": true,
+    "accept_hp0": false,
+    "owner_path": "Root",
+    "take_object_active": true,
+    "take_token_active": true,
+    "animator": {
+      "available": false,
+      "error": "No declared animator"
+    }
+  },
+  "cg_playback": {
+    "schema": 1,
+    "available": true,
+    "source": "declared CG references",
+    "hp_used": false,
+    "take_hook": true,
+    "catalog_take_owners": 3,
+    "event": {
+      "object": 0,
+      "type": "",
+      "path": "",
+      "playing": false
+    },
+    "animators": [],
+    "animator_errors": [],
+    "truncated": false,
+    "read_ms": 0.013
+  }
+}

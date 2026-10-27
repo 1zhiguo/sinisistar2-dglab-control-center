@@ -7,8 +7,8 @@ AppButton {
     property string tier: "low"
     readonly property bool fierce: tier==="high"
     readonly property color ritualInk: fierce ? Theme.crimson : tier==="medium" ? "#d0af71" : Theme.silver
-    readonly property bool alive: visible && (primary || hovered) && (!Window.window || Window.window.visibility!==Window.Minimized)
-    property real glow: .45
+    readonly property bool alive: visible && (primary || hovered) && (!Window.window || Window.window.active && Window.window.visibility!==Window.Minimized)
+    readonly property real glow: alive ? .575+.275*Math.sin(Theme.motionTime*Math.PI/(fierce ? 1.1 : 1.9)) : .45
     accent: ritualInk
     implicitHeight: 76
     hoverEnabled: true
@@ -65,25 +65,11 @@ AppButton {
             Rectangle {
                 id: ember; required property int index
                 width: index%2 ? 2 : 1; height: index%2 ? 2 : 4; rotation: 35
-                x: 12+(index+1)*(parent.width-24)/5; y: parent.height-10
-                color: control.fierce ? "#e57b70" : control.ritualInk; opacity: 0
-                SequentialAnimation {
-                    running: control.alive; loops: Animation.Infinite
-                    PauseAnimation { duration: ember.index*260 }
-                    ParallelAnimation {
-                        NumberAnimation { target: ember; property: "y"; from: control.height-10; to: 10; duration: 1800 }
-                        SequentialAnimation {
-                            NumberAnimation { target: ember; property: "opacity"; from: 0; to: .65; duration: 450 }
-                            NumberAnimation { target: ember; property: "opacity"; to: 0; duration: 1350 }
-                        }
-                    }
-                }
+                readonly property real phase: control.alive ? ((Theme.motionTime*1000+index*260)%(1800+index*260))/1800 : 0
+                x: 12+(index+1)*(parent.width-24)/5; y: control.height-10-(control.height-20)*Math.min(1,phase)
+                color: control.fierce ? "#e57b70" : control.ritualInk
+                opacity: control.alive && phase<1 ? .65*Math.sin(phase*Math.PI) : 0
             }
         }
-    }
-    SequentialAnimation on glow {
-        running: control.alive; loops: Animation.Infinite
-        NumberAnimation { from: .3; to: .85; duration: control.fierce ? 1100 : 1900; easing.type: Easing.InOutSine }
-        NumberAnimation { from: .85; to: .3; duration: control.fierce ? 1100 : 1900; easing.type: Easing.InOutSine }
     }
 }

@@ -36,7 +36,11 @@ def main():
     def verify():
         try:
             invoke('cgGalleryTab','clicked');assert find('cgFeedbackPage').property('scope')=='gallery'
-            assert not b.gallerySettings['rule']['enabled'] and find('galleryPauseOnStop').property('checked')
+            assert b.gallerySettings['rule']['enabled'] and find('galleryPauseOnStop').property('checked')
+            combo('cgFeedbackMode_vibration',0)
+            assert find('cgChannelFilterHint_vibration').property('visible')
+            combo('cgFeedbackMode_vibration',2)
+            assert not find('cgChannelFilterHint_vibration').property('visible')
             b._armed=b._ovc_armed=True;toggle('cgMasterEnabled',True)
             assert b.gallerySettings['rule']['enabled'] and not b._armed and not b._ovc_armed
             toggle('galleryPauseOnStop',False);assert not b.gallerySettings['pause_on_stop']

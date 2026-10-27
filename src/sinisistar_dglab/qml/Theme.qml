@@ -1,6 +1,14 @@
 pragma Singleton
 import QtQuick
 QtObject {
+    id: theme
+    // Decoration uses one 30Hz clock, not an animation on every display frame.
+    // Gameplay telemetry and device clocks do not depend on this timer.
+    property real motionTime: 0
+    property Timer motionClock: Timer {
+        interval: 33; repeat: true; running: Qt.application.state===Qt.ApplicationActive
+        onTriggered: theme.motionTime+=.033
+    }
     readonly property color bg: "#11100f"
     readonly property color sidebar: "#161412"
     readonly property color panel: "#1d1a17"

@@ -22,7 +22,7 @@ ApplicationWindow {
     onClosing: close=>{
         if(backend.installState.busy && (backend.installState.phase==="install" || backend.monsterCacheState.busy)){
             close.accepted=false;root.notification="正在安装或生成本地预览，请等待完成后再关闭。";toastTimer.restart();
-        } else backend.requestExit();
+        } else {if(pageLoader.item && typeof pageLoader.item.prepareToLeave==="function")pageLoader.item.prepareToLeave();backend.requestExit();}
     }
     readonly property var s: backend.state
     readonly property var capProfile: backend.simulationSettings
@@ -40,10 +40,14 @@ ApplicationWindow {
     Connections { target: backend; function onHudSettingsRequested() { root.show();root.raise();root.requestActivate();hudDialog.open(); } }
     HudSettingsDialog { id: hudDialog }
     HotkeySettingsDialog { id: hotkeyDialog }
-    SimulationSettingsDialog { id: simulationDialog }
+    Loader { id: simulationDialog; active: backend.developerTools; sourceComponent: Component { SimulationSettingsDialog {} }
+        function open(){if(item)item.open();}
+    }
     Connections { target: backend; function onTutorialRequested(){tutorialDialog.open();} }
     Connections { target: backend; function onTrainerRequested(){ root.show();root.raise();root.requestActivate();trainerDialog.open(); } }
-    TrainerDialog { id: trainerDialog }
+    Loader { id: trainerDialog; active: backend.developerTools; sourceComponent: Component { TrainerDialog {} }
+        function open(){if(item)item.open();}
+    }
     EventDetectorWindow { ownerWindow: root }
     Timer { id: toastTimer; interval: 4500; onTriggered: root.notification="" }
     Shortcut { sequence: backend.hotkeySettings.sequence; enabled: !backend.emergencyHotkeyRegistered && !backend.hotkeySettings.capturing; onActivated: backend.emergencyStop() }
@@ -155,7 +159,7 @@ ApplicationWindow {
         }
         Column { id: sidebarFooter; anchors.bottom: parent.bottom; anchors.bottomMargin: 30; x: 26; spacing: 12
             AppText { text: "✦   原生独立联动"; color: Theme.gold; font.pixelSize: 11 }
-            AppText { text: "v0.6  ·  PULSE & OVC"; color: Theme.muted; font.pixelSize: 9 }
+            AppText { text: "v"+backend.appVersion+"  ·  PULSE & OVC"; color: Theme.muted; font.pixelSize: 9 }
         }
     }
     Item {
@@ -191,7 +195,7 @@ ApplicationWindow {
                     }
                 }
                 GothicActionButton { objectName: "topPulseControl"; anchors.verticalCenter: parent.verticalCenter; text: s.armed ? "暂停 Pulse" : "启动 Pulse"; enabled: s.armed || !!s.pulseSetup.canEnable; illuminated: s.armed; onClicked: backend.toggleArm() }
-                GothicActionButton { objectName: "topEmergencyStop"; anchors.verticalCenter: parent.verticalCenter; text: "紧急归零"; danger: true; illuminated: s.emergency; onClicked: backend.emergencyStop() }
+                GothicActionButton { objectName: "topEmergencyStop"; anchors.verticalCenter: parent.verticalCenter; text: s.emergency ? "恢复输出" : "紧急归零"; danger: !s.emergency; accent: s.emergency ? Theme.green : Theme.crimson; illuminated: s.emergency; onClicked: s.emergency ? backend.resumeAfterEmergency() : backend.emergencyStop() }
                 GothicActionButton { id: settingsGear; objectName: "openAppSettings"; implicitWidth: 44; anchors.verticalCenter: parent.verticalCenter; leftPadding: 6; rightPadding: 6
                     Accessible.name: backend.translate("控制中心设置",backend.language); ToolTip.visible: hovered; ToolTip.text: backend.translate("控制中心设置",backend.language); onClicked: appSettings.open()
                     contentItem: Canvas { implicitWidth: 22; implicitHeight: 22
@@ -207,7 +211,7 @@ ApplicationWindow {
         Item {
             id: pageStage; anchors.left: parent.left; anchors.right: parent.right; anchors.top: topbar.bottom; anchors.bottom: tutorialDialog.visible ? tutorialDialog.top : footer.top; anchors.margins: 26; clip: true
             Loader {
-                id: pageLoader; objectName: "animatedPageLoader"; anchors.fill: parent
+                id: pageLoader; objectName: "animatedPageLoader"; anchors.fill: parent; asynchronous: true
                 transform: Translate { id: pageShift; x: 0 }
                 onLoaded: Qt.callLater(function(){if(tutorialDialog.visible){pageEntrance.stop();pageLoader.opacity=1;pageShift.x=0;pageGleam.opacity=0;}else pageEntrance.restart();})
             }
@@ -251,7 +255,7 @@ ApplicationWindow {
             AppButton { objectName: "openHotkeySettings"; text: "急停快捷键"; Layout.fillWidth: true; onClicked: {appSettings.close();hotkeyDialog.open();} }
             AppText { text: backend.hotkeySettings.sequence; color: Theme.silver; font.pixelSize: 11 }
             Rectangle { Layout.fillWidth: true; height: 1; color: Theme.border }
-            AppButton { objectName: "openSimulationSettings"; text: "模拟与测试"; Layout.fillWidth: true; onClicked: {appSettings.close();simulationDialog.open();} }
+            AppButton { visible: backend.developerTools; objectName: "openSimulationSettings"; text: "模拟与测试"; Layout.fillWidth: true; onClicked: {appSettings.close();simulationDialog.open();} }
         }
     }
 

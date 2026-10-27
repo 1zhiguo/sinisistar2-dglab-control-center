@@ -1,6 +1,7 @@
 """Read-only gallery playback observations. This module grants no output."""
 import math,time
 from .telemetry import TYPES
+from .cg_playback import valid_animator
 
 SCENES={int(k):v for k,v in TYPES['SceneID'].items() if v.startswith(('Ga_','Gallery'))}
 
@@ -17,9 +18,27 @@ def describe_gallery(s,now=None):
     # Verified in 0.4.2: 0 is the preview, positive indices match [1]/[2]/[3],
     # and returning to the list leaves stale take pointers behind at index -1.
     selected=bool(dedicated and guide_open and type(index) is int and index>0)
-    playing=bool(inside and not s.get('loading') and f.get('valid') is True and f.get('playing') is True
+    global_playing=bool(inside and not s.get('loading') and f.get('valid') is True and f.get('playing') is True
         and f.get('type') in ('HierarchyEventPlayer','PlayableDirectorPlayer') and bool(f.get('name')) and f['name']!='Init'
         and (not dedicated or selected))
+    # 0.4.2 can omit the entire optional flow payload when a Timeline getter
+    # throws. A selected, loaded EventPlayer take plus the manager's live play
+    # flag is independent evidence; never infer playback from selection alone.
+    dedicated_playing=bool(inside and not s.get('loading') and not f and selected
+        and s.get('event_playing') is True and type(g.get('play_type_raw')) is int and g['play_type_raw']==1
+        and g.get('take_selected') is True and g.get('take_player_type') in ('GaSceneTakePlayer','GaTakePlayer','GaEnemyTakePlayer')
+        and all(type(g.get(k)) is int and g[k]>0 for k in ('take_player','take_data','take_count'))
+        and type(g.get('enemy_id')) is int and g['enemy_id']>=0 and index<=g['take_count']
+        and isinstance(g.get('take_name'),str) and bool(g['take_name'].strip()) and g['take_name']!='Init')
+    animator_playing=bool(inside and not s.get('loading') and selected and g.get('play_type_raw')==0
+        and g.get('take_selected') is True and type(g.get('take_count')) is int and 0<index<=g['take_count']
+        and all(type(g.get(k)) is int and g[k]>0 for k in ('take_player','take_data')) and valid_animator(g.get('animator')))
+    take_session_playing=bool(inside and not s.get('loading') and selected and g.get('take_selected') is True
+        and g.get('play_type_raw') in (0,1) and g.get('take_object_active') is True and g.get('take_token_active') is True
+        and g.get('take_name') and g['take_name']!='Init' and g.get('owner_path')
+        and type(g.get('take_count')) is int and 0<index<=g['take_count']
+        and all(type(g.get(k)) is int and g[k]>0 for k in ('take_player','take_data')))
+    playing=global_playing or dedicated_playing or animator_playing or take_session_playing
     phase='outside' if fresh else 'unavailable'
     if inside:phase='loading' if s.get('loading') else 'playing' if playing else 'preparing' if s.get('event_playing') or f.get('playing') else 'idle'
     rate=s.get('time_scale');game_paused=bool(s.get('paused'))
@@ -39,13 +58,17 @@ def describe_gallery(s,now=None):
     position=f.get('timeline_time');duration=f.get('timeline_duration')
     timeline=lambda x:x if type(x) in (int,float) and math.isfinite(x) and x>=0 else None
     identity=(s.get('session'),s.get('pid'),s.get('scene_id'),s.get('player'),f.get('run'),f.get('key')) if playing else None
+    if dedicated_playing:identity=(s.get('session'),s.get('pid'),s.get('scene_id'),'gallery_take',g['take_player'],g['take_data'],g['take_name'])
+    if animator_playing:identity=(s.get('session'),s.get('pid'),s.get('scene_id'),'gallery_animator',g['take_player'],g['take_data'])
+    if take_session_playing and not (global_playing or dedicated_playing or animator_playing):identity=(s.get('session'),s.get('pid'),s.get('scene_id'),'gallery_take_session',g['take_player'],g['take_data'])
     # Selection changes before the old take is replaced. Track these separately
     # so a new button index is never presented as a newly loaded old take.
     selection_id=(s.get('session'),s.get('pid'),g.get('enemy_id'),index) if selected else None
     take_id=(s.get('session'),s.get('pid'),g.get('take_player'),g.get('take_data'),g.get('take_name')) if selected and g.get('take_selected') is True else None
     controls={k:g.get(k) for k in ('ui_paused','slow','dev_mode','ui_hidden')} if dedicated else {}
     return dict(inGallery=inside,playing=playing,phase=phase,label=label,playerValid=bool(s.get('valid')) if fresh else False,
-        name=f.get('name','') if playing else '',type=f.get('type','') if playing else '',identity=identity,
+        name=g.get('take_name','') if dedicated_playing or animator_playing or take_session_playing else f.get('name','') if playing else '',type='GalleryAnimator' if animator_playing else 'GalleryEventPlayer' if dedicated_playing else f.get('type','') if global_playing else 'GalleryTakeSession' if take_session_playing else '',identity=identity,
+        playbackEvidence='declared_animator_state' if animator_playing else 'gallery_take_and_event_flag' if dedicated_playing else 'global_event_player' if global_playing else 'loaded_take_session' if take_session_playing else '',
         run=f.get('run') if playing else None,scene=s.get('scene','') if inside else '',
         timelineTime=timeline(position) if playing else None,timelineDuration=timeline(duration) if playing else None,
         manualPauseConfirmed=bool(selected and type(g.get('ui_paused')) is bool),uniqueCgIdAvailable=False,
@@ -56,7 +79,7 @@ def describe_gallery(s,now=None):
         playType={0:'Animator',1:'EventPlayer'}.get(g.get('play_type_raw'),'未知') if dedicated else '',
         changing=g.get('changing') is True if dedicated else False,controls=controls,
         controlLabel=('Stop 已开启' if controls.get('ui_paused') is True else 'Stop 未开启') if dedicated else '等待新版观察插件',
-        coverage='已验证 EventPlayer 图鉴切换与 Space；Animator 直接动画仍需验证')
+        coverage='EventPlayer 与声明的 Animator 播放信号；实战对应关系见 CG 覆盖检查')
 
 class GalleryPlayback:
     def __init__(self):self.previous=None

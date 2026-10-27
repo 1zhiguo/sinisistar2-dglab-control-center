@@ -8,13 +8,32 @@ ScrollView {
     clip: true; contentWidth: availableWidth
     property string scope: "cg"
     readonly property bool gallery: scope==="gallery"
+    readonly property bool coverage: scope==="coverage"
+    readonly property bool batch: scope==="batch"
+    function prepareToLeave(){if(batchLoader.item)batchLoader.item.flushNote();}
     readonly property string prefix: gallery ? "gallery/" : ""
     readonly property var config: gallery ? backend.gallerySettings : backend.cgSettings
     ColumnLayout { width: page.availableWidth; spacing: 16
         RowLayout { objectName: "tutorialCgTabs"; Layout.fillWidth: true; spacing: 10
-            AppButton { objectName: "cgGameTab"; Layout.fillWidth: true; text: "游戏 CG / 互动"; primary: !page.gallery; onClicked: page.scope="cg" }
+            AppButton { objectName: "cgGameTab"; Layout.fillWidth: true; text: "游戏 CG / 互动"; primary: page.scope==="cg"; onClicked: page.scope="cg" }
             AppButton { objectName: "cgGalleryTab"; Layout.fillWidth: true; text: "图鉴独立反馈"; primary: page.gallery; onClicked: page.scope="gallery" }
+            AppButton { visible: backend.developerTools; objectName: "cgBatchTab"; Layout.fillWidth: true; text: "批量测试"; primary: page.batch; onClicked: page.scope="batch" }
+            AppButton { visible: backend.developerTools; objectName: "cgCoverageTab"; Layout.fillWidth: true; text: "参考目录"; primary: page.coverage; onClicked: page.scope="coverage" }
         }
+        Panel { visible: backend.developerTools && !page.batch; Layout.fillWidth: true; Layout.preferredHeight: detection.implicitHeight+28
+            ColumnLayout { id: detection; anchors.left: parent.left; anchors.right: parent.right; anchors.top: parent.top; anchors.margins: 14; spacing: 8
+                RowLayout { Layout.fillWidth: true
+                    AppText { text: "CG 识别模式"; color: Theme.silver; font.pixelSize: 14 }
+                    AppCombo { objectName: "cgDetectionMode"; Layout.fillWidth: true; model: ["正常 · CG 播放信号 + HP 兜底","消融测试 · 仅 CG 播放信号（无 HP）"]; currentIndex: backend.simulationSettings.cg_detection_mode==="playback_only" ? 1 : 0; onActivated: backend.setCgDetectionMode(currentIndex===1 ? "playback_only" : "hybrid") }
+                }
+                AppText { Layout.fillWidth: true; text: backend.simulationSettings.cg_detection_mode==="playback_only" ? "仅使用 CG 播放信号：优先核对共享 Animator 与动画状态，并要求有效演出上下文。HP、抓取和异常兜底均不参与。修改模式会暂停输出。" : "优先识别共享动画和已知演出；未匹配时保留原有 HP 与互动规则。图鉴始终使用独立播放信号。"; color: Theme.muted; font.pixelSize: 11; wrapMode: Text.Wrap; elide: Text.ElideNone }
+                AppText { Layout.fillWidth: true; text: backend.state.cgPlayback.recognized ? "当前 CG："+backend.state.cgPlayback.name+" · "+(backend.state.cgPlayback.kind==="SharedAnimator" ? "共享动画" : backend.state.cgPlayback.kind)+" · 无 HP" : backend.state.galleryPlayback.inGallery ? backend.state.galleryPlayback.label : backend.state.cgPlayback.reason || "等待 CG 观察插件"; color: Theme.gold; font.pixelSize: 11 }
+            }
+        }
+        Loader { active: page.coverage; visible: active; Layout.fillWidth: true; sourceComponent: Component { CgCoveragePanel {} } }
+        Loader { id: batchLoader; active: page.batch; visible: active; Layout.fillWidth: true; sourceComponent: Component { CgBatchPanel {} } }
+        Loader { active: !page.coverage && !page.batch; visible: active; asynchronous: true; Layout.fillWidth: true
+        sourceComponent: Component { ColumnLayout { spacing: 16
         Panel { Layout.fillWidth: true; Layout.preferredHeight: header.implicitHeight+32
             ColumnLayout { id: header; anchors.left: parent.left; anchors.right: parent.right; anchors.top: parent.top; anchors.margins: 16; spacing: 11
                 RowLayout { Layout.fillWidth: true
@@ -41,7 +60,7 @@ ScrollView {
                     AppSwitch { objectName: "galleryPauseOnStop"; accent: Theme.gold; checked: !!page.config.pause_on_stop; onToggled: backend.setGalleryPauseOnStop(checked) }
                 }
                 AppText { Layout.fillWidth: true; text: page.config.pause_on_stop ? "开启：按 Space 停止输出并冻结队列与渐强进度，恢复后继续。演出内部等待仍持续反馈。" : "关闭：按 Space 暂停图鉴画面时仍继续输出，队列与渐强照常推进。"; color: Theme.muted; font.pixelSize: 11; wrapMode: Text.Wrap; elide: Text.ElideNone }
-                AppText { Layout.fillWidth: true; text: "切换 [1]/[2]/[3]：等待新片段载入后重置队列与渐强。返回图鉴列表或预览页立即停止；暂支持已验证的 EventPlayer 回放。游戏暂停、加载、失联与急停仍停止输出。"; color: Theme.muted; font.pixelSize: 10; wrapMode: Text.Wrap; elide: Text.ElideNone }
+                AppText { Layout.fillWidth: true; text: "切换 [1]/[2]/[3]：等待新片段载入后重置队列与渐强。返回列表或预览页立即停止。支持演出、声明动画和有效片段会话；游戏暂停、加载、失联与急停仍停止输出。"; color: Theme.muted; font.pixelSize: 10; wrapMode: Text.Wrap; elide: Text.ElideNone }
             }
         }
         Panel { visible: !page.gallery; Layout.fillWidth: true; Layout.preferredHeight: sameHpBody.implicitHeight+28
@@ -56,13 +75,15 @@ ScrollView {
                     CgNumber { objectName: "cgSameHpTimeout"; amount: page.config.same_hp_timeout; minimum: .5; maximum: 30; onEdited: amount=>backend.setSameHpTimeout(amount) }
                     AppText { text: "秒"; color: Theme.silver; font.pixelSize: 11 }
                 }
-                AppText { Layout.fillWidth: true; text: "两次独立通知确认，至少间隔 0.2 秒。演出结束立即停止；若仍停留对话，则在断流超时后停止。默认关闭，启用或调整会暂停设备输出。"; color: Theme.muted; font.pixelSize: 10; wrapMode: Text.Wrap; elide: Text.ElideNone }
+                AppText { Layout.fillWidth: true; text: "两次独立通知确认，至少间隔 0.2 秒。演出结束立即停止；若仍停留对话，则在断流超时后停止。默认开启，启用或调整会暂停设备输出。"; color: Theme.muted; font.pixelSize: 10; wrapMode: Text.Wrap; elide: Text.ElideNone }
             }
         }
         RowLayout { Layout.fillWidth: true; spacing: 16; Layout.alignment: Qt.AlignTop
             CgRouteEditor { scope: page.scope; route: "pulse"; Layout.alignment: Qt.AlignTop }
             CgRouteEditor { scope: page.scope; route: "vibration"; Layout.alignment: Qt.AlignTop }
         }
-        AppText { Layout.fillWidth: true; text: page.gallery ? "图鉴反馈默认关闭。启用本规则后仍需启用设备输出；强度受全局、通道及 APP 上限约束。" : "适用于已识别的 GO 场景、战败演出与 1 HP 锁血互动。检测逻辑保持不变，暂停、加载、失联与急停仍归零；强度受全局、通道及 APP 上限约束。"; color: Theme.muted; font.pixelSize: 11; wrapMode: Text.Wrap; elide: Text.ElideNone }
+        AppText { Layout.fillWidth: true; text: page.gallery ? "图鉴反馈默认开启，设备输出仍需单独启用；强度受全局、通道及 APP 上限约束。" : "适用于已识别的 CG 播放；正常模式保留 GO、锁血和同值 HP 兜底。暂停、加载、失联与急停仍归零。"; color: Theme.muted; font.pixelSize: 11; wrapMode: Text.Wrap; elide: Text.ElideNone }
+        }
+        } }
     }
 }

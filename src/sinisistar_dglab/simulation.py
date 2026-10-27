@@ -13,6 +13,7 @@ from .cg_policy import make_cg,sanitize_cg,effective_cg,cg_stage,select_wave,ram
 from .channel_policy import defaults as channel_defaults,sanitize as sanitize_channels,allows as channel_allows
 from .same_hp import same_hp_flow,same_hp_feedback
 from .gallery_policy import make_gallery,sanitize_gallery,GalleryClock,is_gallery,gallery_gate
+from .cg_playback import describe_game_cg,CgPlaybackClock
 
 TYPES=json.loads((Path(__file__).parent/'assets/types.json').read_text(encoding='utf-8'))['AbnormalType']
 VIBRATION_WAVES=[
@@ -55,7 +56,7 @@ def default_profile():
     abnormal={name:base_rule(name,status_label(name),priority=20)
               for name in TYPES.values() if name!='None'}
     for rule in abnormal.values():rule['enabled']=False;normalize_abnormal(rule)
-    return dict(version=11,feedback_preset_version=1,gallery=make_gallery(rules['defeat_hold']),channel_feedback=channel_defaults(),cg=make_cg(rules['defeat_hold']),mix='priority',zero_hp_mode='capture',quick_presets=default_presets(),quick_active_preset='',pulse_abnormal_base=10.,pulse_cap_a=20.,pulse_cap_b=20.,vibration_cap_a=50.,vibration_cap_b=50.,
+    return dict(version=11,cg_detection_mode='hybrid',feedback_preset_version=1,gallery=make_gallery(rules['defeat_hold']),channel_feedback=channel_defaults(),cg=make_cg(rules['defeat_hold']),mix='priority',zero_hp_mode='capture',quick_presets=default_presets(),quick_active_preset='',pulse_abnormal_base=10.,pulse_cap_a=20.,pulse_cap_b=20.,vibration_cap_a=50.,vibration_cap_b=50.,
                 pulse_stack_bonus=10.,vibration_stack_bonus=0.,rules=rules,abnormals=abnormal,flows=[])
 
 def initial_profile():
@@ -92,6 +93,7 @@ def sanitize_profile(raw):
     if not isinstance(raw,dict):p['cg']=make_cg(p['rules']['defeat_hold'],split=True);p['gallery']=make_gallery(p['rules']['defeat_hold']);return p
     p['quick_presets']=sanitize_presets(raw.get('quick_presets'))
     p['channel_feedback']=sanitize_channels(raw.get('channel_feedback'))
+    p['cg_detection_mode']='playback_only' if raw.get('cg_detection_mode')=='playback_only' else 'hybrid'
     p['quick_active_preset']=raw.get('quick_active_preset') if raw.get('quick_active_preset') in ('low','medium','high') else ''
     p['mix']=raw.get('mix') if raw.get('mix') in ('priority','max','sum') else p['mix']
     p['zero_hp_mode']=raw.get('zero_hp_mode') if raw.get('zero_hp_mode') in ('stop','capture','states') else p['zero_hp_mode']
@@ -186,8 +188,9 @@ def mix_parts(parts,mode,quarter=None):
     return combine(p[1] for p in chosen),combine(amplitude(p) for p in chosen),dominant[5][0 if quarter is None else quarter],[p[3] for p in chosen]
 
 class Simulator:
-    def __init__(self):self.gallery_clock=GalleryClock();self.reset()
+    def __init__(self):self.gallery_clock=GalleryClock();self.cg_clock=CgPlaybackClock();self.reset()
     def reset(self,*,keep_death=False):
+        self.cg_clock.reset()
         if not keep_death:self.gallery_clock.reset()
         self.death_started_at=getattr(self,'death_started_at',None) if keep_death else None
         self.death_identity=getattr(self,'death_identity',None) if keep_death else None
@@ -218,6 +221,11 @@ class Simulator:
         now=time.monotonic() if now is None else now
         if is_gallery(s):return self.evaluate_gallery(s,profile,waves,now,enabled,emergency,vibration_waves=vibration_waves)
         self.gallery_clock.reset()
+        observed=describe_game_cg(s,now)
+        if observed['recognized']:return self.evaluate_cg_playback(s,profile,waves,now,enabled,emergency,observed,vibration_waves)
+        self.cg_clock.reset()
+        if profile.get('cg_detection_mode')=='playback_only':
+            return self.blank('急停已锁定' if emergency else '输出已暂停' if not enabled else '无 HP 测试 · '+observed['reason'],'CG 播放消融测试')
         self.sync_death(s,now)
         flow=s.get('flow') or {}
         fresh=bool(s.get('live') and 0<=now-s.get('sampled_at',0)<.6)
@@ -373,11 +381,29 @@ class Simulator:
                 if frame_peak>0:result[route+'_stream'][key[-1]]=dict(peak=frame_peak,samples=samples,frequencies=frequencies)
             self.traces[key]=(self.traces[key]+[result[key]/100])[-64:]
         result.update(generated_at=now,active=display,traces=deepcopy(self.traces),reason=('匹配 '+str(len(display))+' 条规则'+(' · 已限幅' if result['clipped'] else '')) if display else '当前没有匹配规则')
+        if display and not any(contributions.values()) and any(
+            a['rule']['key'] in ('defeat_hold','cg_hold') and a['rule'][route+'_enabled']
+            and any(not channel_allows(profile,route,c,a['rule']['key']) for c in a['rule'][route+'_channel'])
+            for a in active for route in ('pulse','vibration')):
+            result['reason']='通道策略仅受伤，已过滤 CG 反馈；请改为 CG 或受伤+CG 反馈'
         if not gallery and (s.get('hp') or {}).get('current')==0:
             result['reason']=('零血受制 · CG 未确认 · ' if zero_hp_capture(s) else '零血阶段 · CG 未确认 · ')+result['reason']
         if not gallery and death_penalty_stage(s) and penalty_rule.get('death_mode')=='timed' and self.death_started_at is not None and now-self.death_started_at>=penalty_rule['death_seconds']:
             result['reason']=('本次 CG 定时反馈已结束 · ' if cg_config and not cg_config.get('inherit_death',True) else '本次死亡定时惩罚已结束 · ')+result['reason']
         return result
+    def evaluate_cg_playback(self,s,profile,waves,now,enabled,emergency,observed,vibration_waves=None):
+        episode=self.cg_clock.update(s,observed,now)
+        reason='急停已锁定' if emergency else '输出已暂停' if not enabled else episode['reason']
+        if emergency:self.cg_clock.reset()
+        if reason or not episode['ready']:return self.blank(reason or '等待 CG 播放','CG 播放信号')
+        config=effective_cg(profile);rule=deepcopy(config['rule']);rule.update(key='cg_hold',name='CG 播放反馈')
+        if not rule['enabled']:return self.blank('CG 反馈未启用','CG 播放信号')
+        if rule.get('death_mode')=='timed' and episode['age']>=rule['death_seconds']:return self.blank('本次 CG 定时反馈已结束','CG 播放信号')
+        active=[dict(rule=rule,token='cg_playback',detail=observed['name'],level=1,stack=0,amount=0.,age=episode['age'],seed=episode['seed'],remaining=float('inf'),cg_options=config['routes'])]
+        result=self.render(s,profile,waves,active,now,vibration_waves,gallery=True)
+        result.update(source='CG 播放信号 · 无 HP',cg_age=episode['age'],cg_ids=observed['ids'],hp_used=False)
+        return result
+
     def evaluate_gallery(self,s,profile,waves,now,enabled,emergency,*,vibration_waves=None,route=None):
         config=profile.get('gallery') or {}
         episode=self.gallery_clock.update(s,config,now)
@@ -390,7 +416,7 @@ class Simulator:
         active=[dict(rule=rule,token='gallery',detail=episode['name'],level=1,stack=0,amount=0.,age=episode['age'],
                      seed=episode['seed'],remaining=float('inf'),cg_options=config['routes'])]
         result=self.render(s,profile,waves,active,now,vibration_waves,gallery=True)
-        result.update(source='图鉴独立反馈',gallery_age=episode['age'])
+        result.update(source='图鉴独立反馈',gallery_age=episode['age'],hp_used=False)
         return result
 
     def trigger(self,key,amount,profile,now):

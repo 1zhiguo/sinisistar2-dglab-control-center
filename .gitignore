@@ -11,3 +11,7 @@ trainer/bin/
 trainer/obj/
 .openai/
 public_repo/
+build/
+release/
+.release-tools/
+*.lnk

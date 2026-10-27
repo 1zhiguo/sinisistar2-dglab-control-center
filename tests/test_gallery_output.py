@@ -24,14 +24,24 @@ def state(t,frame=2):
     s=deepcopy(FIXTURE[frame]);s.update(sampled_at=t,sample_id=int(t*1000));return s
 
 class GalleryOutput(unittest.TestCase):
-    def test_config_migrates_disabled_and_independent_with_split_minute_defaults(self):
-        p=initial_profile();c=p['gallery'];self.assertFalse(c['rule']['enabled']);self.assertTrue(c['pause_on_stop'])
+    def test_config_defaults_enabled_and_independent_with_split_minute_defaults(self):
+        p=initial_profile();c=p['gallery'];self.assertTrue(c['rule']['enabled']);self.assertTrue(c['pause_on_stop'])
         for route in ('pulse','vibration'):
             self.assertNotEqual(c['routes'][route]['A']['queue'],c['routes'][route]['B']['queue'])
             self.assertEqual(sum(x['seconds'] for x in c['routes'][route]['A']['queue']),60)
         c['rule']['enabled']=True;c['routes']['pulse']['A']['ramp_seconds']=1000
         migrated=sanitize_profile(p);self.assertEqual(migrated['gallery']['routes']['pulse']['A']['ramp_seconds'],1000)
-        del p['gallery'];self.assertFalse(sanitize_profile(p)['gallery']['rule']['enabled'])
+        c['rule']['enabled']=False;self.assertFalse(sanitize_profile(p)['gallery']['rule']['enabled'])
+        del p['gallery'];self.assertTrue(sanitize_profile(p)['gallery']['rule']['enabled'])
+
+    def test_damage_only_ovc_reports_cg_filter_and_never_sends(self):
+        p=profile();p['channel_feedback']['vibration']={'A':'damage','B':'damage'}
+        engine=OvcPlanner();out=engine.update(state(10),p,WAVES,now=10,enabled=True)
+        self.assertFalse(any(out['vibration_stream'].values()))
+        self.assertIn('通道策略仅受伤',out['reason'])
+        p['channel_feedback']['vibration']['A']='both'
+        out=engine.update(state(10.2),p,WAVES,now=10.2,enabled=True)
+        self.assertTrue(out['vibration_stream']['A']);self.assertIsNone(out['vibration_stream']['B'])
     def test_both_adapters_ramp_without_valid_player_or_hp_damage(self):
         for cls,route in ((PulsePlanner,'pulse'),(OvcPlanner,'vibration')):
             planner=cls();p=profile()
@@ -89,3 +99,40 @@ class GalleryOutput(unittest.TestCase):
         self.assertEqual([x['name'] for x in plan['active']],['图鉴回放反馈'])
         self.assertFalse(planner.update(state(10.6),p,WAVES,now=10.6,enabled=False)['pulse_stream']['A'])
         self.assertFalse(planner.update(state(10.7),p,WAVES,now=10.7,enabled=True,emergency=True)['pulse_stream']['A'])
+
+    def test_loaded_event_take_can_play_when_optional_flow_read_fails(self):
+        p=profile();s=state(10);s.pop('flow')
+        s['gallery']['take_player_type']='GaSceneTakePlayer'
+        self.assertEqual(gallery_gate(s,10,p['gallery']),'')
+        engine=PulsePlanner();first=engine.update(s,p,WAVES,now=10,enabled=True)
+        self.assertTrue(first['pulse_stream']['A']);self.assertTrue(first['pulse_stream']['B'])
+        s.update(sampled_at=10.4);later=engine.update(s,p,WAVES,now=10.4,enabled=True)
+        self.assertGreater(later['peaks']['pulseA'],first['peaks']['pulseA'])
+        for frame in (3,4,7,8,9):
+            raw=state(10+frame/10,frame);raw.pop('flow');raw['gallery']['take_player_type']='GaSceneTakePlayer'
+            expected=frame in (4,8)
+            self.assertEqual(bool(engine.update(raw,p,WAVES,now=10+frame/10,enabled=True)['pulse_stream']['A']),expected,frame)
+
+    def test_missing_flow_fallback_requires_every_live_take_signal(self):
+        from sinisistar_dglab.gallery import describe_gallery
+        p=profile();base=state(10);base.pop('flow');base['gallery']['take_player_type']='GaSceneTakePlayer'
+        self.assertEqual(describe_gallery(base,10)['playbackEvidence'],'gallery_take_and_event_flag')
+        for key,value in (('play_type_raw',0),('guide_open',False),('active',False),('take_selected',False),('enemy_id',None),
+                          ('take_player',0),('take_data',0),('take_player_type','Unknown'),('take_name',''),('selected_index_raw',0),('selected_index_raw',999)):
+            s=deepcopy(base);s['gallery'][key]=value
+            self.assertTrue(gallery_gate(s,10,p['gallery']),(key,value))
+
+        for key,value in (('event_playing',False),('loading',True),('sampled_at',0),('scene','Monastery'),('flow',dict(valid=False,playing=False))):
+            s=deepcopy(base);s[key]=value
+            self.assertTrue(gallery_gate(s,10,p['gallery']),(key,value))
+
+    def test_actual_042_missing_flow_capture_does_not_require_player(self):
+        from datetime import datetime
+        from sinisistar_dglab.plugin_bridge import PluginObserver
+        from sinisistar_dglab.gallery import describe_gallery
+        raw=json.loads((Path(__file__).parent/'fixtures/gallery-0.4.2-missing-flow.json').read_text(encoding='utf-8'))
+        s=PluginObserver.decode(raw,now=datetime.fromisoformat(raw['utc']));now=s['sampled_at'];p=profile()
+        self.assertNotIn('flow',raw);self.assertEqual(s['player'],0);self.assertFalse(s['valid'])
+        self.assertEqual(describe_gallery(s,now)['name'],'Load_2_0_GO')
+        self.assertEqual(gallery_gate(s,now,p['gallery']),'')
+        self.assertTrue(PulsePlanner().update(s,p,WAVES,now=now,enabled=True)['pulse_stream']['A'])

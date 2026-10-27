@@ -29,7 +29,7 @@ def make_cg(death,*,inherit=True,split=False):
                    queue=[dict(wave=rule[r+'_wave'],seconds=10.,period=rule[r+'_period'])]) for r in ('pulse','vibration')}
     if split:
         routes={r:{c:default_channel(r,c,rule) for c in 'AB'} for r in routes}
-    return dict(version=2 if split else 1,inherit_death=inherit,same_hp_enabled=False,same_hp_timeout=3.,rule=rule,routes=routes)
+    return dict(version=2 if split else 1,inherit_death=inherit,same_hp_enabled=True,same_hp_timeout=3.,rule=rule,routes=routes)
 
 
 def default_channel(route,channel,rule):
@@ -64,7 +64,7 @@ def sanitize_cg(raw,death,sanitize_rule):
     c=make_cg(death,split=True)
     if not isinstance(raw,dict):return c
     c['inherit_death']=raw.get('inherit_death',True) is True
-    c['same_hp_enabled']=raw.get('same_hp_enabled',False) is True
+    c['same_hp_enabled']=raw.get('same_hp_enabled',True) is True
     c['same_hp_timeout']=number(raw.get('same_hp_timeout',3),.5,30,3)
     c['rule']=sanitize_rule(raw.get('rule'),c['rule']);c['rule'].update(key='cg_hold',name='CG 观看反馈',pulse_max=False,vibration_max=False)
     source=raw.get('rule') if isinstance(raw.get('rule'),dict) else {}
@@ -92,7 +92,7 @@ def effective_cg(profile):
     raw=profile.get('cg') or {}
     if raw.get('inherit_death',True):
         c=deepcopy(raw) if raw.get('version')==2 else make_cg(profile['rules']['defeat_hold'])
-        c['same_hp_enabled']=raw.get('same_hp_enabled',False) is True
+        c['same_hp_enabled']=raw.get('same_hp_enabled',True) is True
         c['same_hp_timeout']=number(raw.get('same_hp_timeout',3),.5,30,3)
         c['rule']=deepcopy(profile['rules']['defeat_hold'])
         return c

@@ -99,6 +99,27 @@ class V4Backend(unittest.IsolatedAsyncioTestCase):
         for route,prefix in (('pulse','custom_ga_'),('vibration','vib_custom_ga_')):
             for channel in 'AB':c['routes'][route][channel].update(mode='fixed',wave=prefix+('flat' if channel=='A' else 'half'),period=1.,ramp_seconds=.3,ramp_mode='linear',ramp_scope='episode')
         return c
+    async def test_hp_ablation_event_playback_drives_four_channels_then_stops(self):
+        from cg_fixture import event_state
+        config=self.configure_gallery();self.b._sim_profile['cg']=deepcopy(config)
+        self.b._sim_profile['cg_detection_mode']='playback_only';self.game.s=event_state(time.monotonic())
+        since=time.monotonic();await self.drive(.55);await self.until_outputs_acknowledged([8,12],[30,40],since=since)
+        self.assertFalse(self.b._pulse_plan['hp_used']);self.assertFalse(self.b._ovc_plan['hp_used'])
+        for hp in (1,0):
+            self.game.s['hp']['current']=hp;await self.drive(.2);await self.until_outputs_acknowledged([8,12],[30,40])
+        self.game.s['cg_playback']['event']['playing']=False;self.game.s['bound']=True
+        self.game.s['feedback_evidence']=dict(locked_hp_active=True)
+        await self.drive(.4);await self.until_outputs_acknowledged([0,0],[0,0])
+    async def test_hp_ablation_gallery_animator_and_take_session_reach_four_channels(self):
+        from cg_fixture import animator
+        self.configure_gallery();self.b._sim_profile['cg_detection_mode']='playback_only';self.gallery_fixture(2)
+        self.game.s.update(hp=None,event_playing=False,flow={})
+        self.game.s['gallery'].update(play_type_raw=0,animator=animator())
+        since=time.monotonic();await self.drive(.6);await self.until_outputs_acknowledged([8,12],[30,40],since=since)
+        self.game.s['gallery']['ui_paused']=True;await self.drive(.3);await self.until_outputs_acknowledged([0,0],[0,0])
+        self.game.s['gallery'].update(ui_paused=False,animator={},take_object_active=True,take_token_active=True,owner_path='Root')
+        since=time.monotonic();await self.drive(.4);await self.until_outputs_acknowledged([8,12],[30,40],since=since)
+        self.game.s['gallery']['selected_index_raw']=-1;await self.drive(.3);await self.until_outputs_acknowledged([0,0],[0,0])
     async def test_gallery_real_fields_drive_four_channels_and_space_freezes_then_resumes(self):
         self.configure_gallery();self.gallery_fixture(2)
         self.assertFalse(self.game.s['valid'])

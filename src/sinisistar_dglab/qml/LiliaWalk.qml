@@ -12,7 +12,7 @@ Item {
     property real travel: 0
     property real gait: 0
     property real pixelScale: 1.55
-    readonly property bool motionEnabled: visible && (!Window.window || Window.window.visibility!==Window.Minimized)
+    readonly property bool motionEnabled: visible && (!Window.window || Window.window.active && Window.window.visibility!==Window.Minimized)
     readonly property real stride: walking && !paused ? Math.sin(gait) : 0
     readonly property real actorX: 12+travel*Math.max(0,width-Lilia.width*pixelScale-24)
     readonly property real floorY: height-13
@@ -50,18 +50,16 @@ Item {
         ToolTip.visible: actorMouse.containsMouse
         ToolTip.text: backend.translate((root.paused ? "莉莉娅 · 点击继续走动" : "莉莉娅 · 点击停留"),backend.language)
     }
-    SequentialAnimation {
-        id: patrol; objectName: "liliaPatrol"; running: root.motionEnabled; paused: root.paused; loops: Animation.Infinite
-        PropertyAction { target: root; property: "facingRight"; value: true }
-        PropertyAction { target: root; property: "walking"; value: true }
-        NumberAnimation { target: root; property: "travel"; from: 0; to: 1; duration: 6200; easing.type: Easing.InOutSine }
-        PropertyAction { target: root; property: "walking"; value: false }
-        PauseAnimation { duration: 900 }
-        PropertyAction { target: root; property: "facingRight"; value: false }
-        PropertyAction { target: root; property: "walking"; value: true }
-        NumberAnimation { target: root; property: "travel"; from: 1; to: 0; duration: 6200; easing.type: Easing.InOutSine }
-        PropertyAction { target: root; property: "walking"; value: false }
-        PauseAnimation { duration: 900 }
+    Timer {
+        id: patrol; objectName: "liliaPatrol"; interval: 33; repeat: true
+        running: root.motionEnabled && !root.paused
+        property real elapsed: 0
+        onTriggered: {
+            elapsed=(elapsed+.033)%14.2;
+            var forward=elapsed<7.1,t=forward ? Math.min(1,elapsed/6.2) : Math.min(1,(elapsed-7.1)/6.2);
+            var eased=(1-Math.cos(t*Math.PI))/2;
+            root.facingRight=forward;root.walking=t<1;root.travel=forward ? eased : 1-eased;
+            if(root.walking)root.gait=(root.gait+Math.PI*2*.033/.82)%(Math.PI*2);
+        }
     }
-    NumberAnimation on gait { running: root.motionEnabled && root.walking; paused: root.paused; from: 0; to: Math.PI*2; duration: 820; loops: Animation.Infinite }
 }

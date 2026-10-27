@@ -25,6 +25,18 @@ class V4RouteService:
         self._error=''
         self._rpc_error=''
         self._selection_epoch_requested=0
+        self._wake_event=None;self._wake_scheduled=False;self._loop_passes=0
+
+    def wake_output(self):
+        """Coalesce cross-thread notifications; never queue a waveform here."""
+        route=self.route
+        with self._lock:
+            if self._wake_event is None or self._wake_scheduled or not route._loop or not route._loop.is_running():return
+            self._wake_scheduled=True
+        def wake():
+            with self._lock:self._wake_scheduled=False;event=self._wake_event
+            if event:event.set()
+        route._loop.call_soon_threadsafe(wake)
 
     @property
     def route(self):return self.owner._hub.channel(self.role)
@@ -50,7 +62,7 @@ class V4RouteService:
                     selected_slot_id=route.selected_slot_id,channel_a_reason=channel_block_reason(device,'A'),
                     channel_b_reason=channel_block_reason(device,'B'),readiness_failed=route._readiness_failure_latched and not selecting,selection_pending=selecting,
                     limit_source='device-range' if device.get('type')=='OVC_1' else 'app',
-                    error=self._rpc_error or self._error or self.owner._error)
+                    error=self._rpc_error or self._error or self.owner._error,output_loop_passes=self._loop_passes)
 
     def _invalidate(self,reason='输出已暂停'):
         with self._lock:
@@ -61,6 +73,7 @@ class V4RouteService:
             # epoch; a late cancellation from the old lease cannot cancel a
             # freshly resumed electrical stream.
             route._loop.call_soon_threadsafe(route._request_emergency_in_loop)
+        self.wake_output()
 
     def set_output_permission(self,allowed,reason='',hard_limits=None):
         maximum=200 if self.role=='ovc' else 100
@@ -82,6 +95,8 @@ class V4RouteService:
         # Only this worker uses the protocol's auto-enabled guard; never call
         # Ricca's repeating waveform queue/update API.
         route._auto_enabled=True
+        # submit_plan supplies the wake for renewed permission. An initial
+        # grant alone has no descriptor to send.
         return True
 
     def submit_plan(self,frames,generated_at=None):
@@ -107,17 +122,25 @@ class V4RouteService:
                     self._serial+=1;value.update(seq=self._serial,epoch=self._epoch,selection=route._selection_epoch,
                                                 generation=route._generation,client=route.selected_client_id,slot=route.selected_slot_id)
             self._desired=clean
+        self.wake_output()
         return True
 
     def stop_channel(self,channel):
         if channel not in 'AB' or len(channel)!=1:return
         with self._lock:self._desired[channel]=None
+        self.wake_output()
         route=self.route
         if route._loop and route._loop.is_running() and route.selected_slot_id:
             route._loop.call_soon_threadsafe(route._start_channel_zero,route.selected_client_id,route.selected_slot_id,1 if channel=='B' else 0)
 
     def emergency_zero(self):
         self._invalidate('紧急归零');self.route.emergency_stop()
+
+    def latch_emergency_stop(self):
+        self._invalidate('急停已锁定');self.route.latch_global_emergency_stop()
+
+    def clear_emergency_stop(self):
+        self._invalidate('正在解除急停');self.route.clear_global_emergency_stop()
 
     def stop(self):
         self._invalidate('设备已断开');self.route.stop()
@@ -147,20 +170,23 @@ class V4RouteService:
         return frequency+amplitude
 
     async def _output_loop(self,route):
+        self._wake_event=asyncio.Event()
         last_seq={c:-1 for c in 'AB'};last_send={c:0. for c in 'AB'};active={c:False for c in 'AB'}
         while True:
-            await asyncio.sleep(.015);now=time.monotonic()
+            self._wake_event.clear();now=time.monotonic();self._loop_passes+=1
             for req_id,pending in list(route._pending.items()):
                 if pending['deadline']<now:
                     route._finish_pending(req_id,error=TimeoutError('V4 response timed out'))
                     if pending['method']=='device.op' and not pending['safety']:
+                        route._resync_after_timeout()
                         self._invalidate('APP 输出确认超时');route._request_emergency_in_loop()
-                        self._error='V4 APP 输出任务确认超时';self.events.put(dict(event='error',error=self._error))
+                        self._error='V4 APP 输出任务确认超时';self.events.put(dict(event='error',error=self._error,recoverable=True))
             with self._lock:
                 expired=self._allowed and now-self._permission_at>=OUTPUT_LEASE_SECONDS
             if expired:self._invalidate('输出授权已过期')
             for channel in 'AB':
-                with self._lock:frame=deepcopy(self._desired[channel])
+                # Submitted descriptors are immutable and replaced atomically.
+                with self._lock:frame=self._desired[channel]
                 code=1 if channel=='B' else 0
                 valid=self._valid(frame,channel,now)
                 strength=self._strength(frame,channel) if valid else 0
@@ -191,7 +217,21 @@ class V4RouteService:
                     self.events.put(dict(event='command_sent',command='pulse-'+channel+':'+json.dumps([encoded]),channel=channel,protocol='v4',role=self.role,strength=strength))
                 except Exception as error:
                     self._invalidate('V4 输出链路异常');route._request_emergency_in_loop()
-                    self._error=str(error)[:240];self.events.put(dict(event='error',error=self._error));break
+                    self._error=str(error)[:240];self.events.put(dict(event='error',error=self._error,recoverable=route._resync_required));break
+            # Idle routes need no poll. Wake on new plans/status, or the next
+            # frame/lease/RPC deadline. The 20ms floor avoids Windows asyncio
+            # repeatedly servicing timers inside its 15.6ms clock look-ahead.
+            now=time.monotonic();deadlines=[now+.25]
+            with self._lock:
+                if self._allowed:deadlines.append(self._permission_at+OUTPUT_LEASE_SECONDS)
+                for c,frame in self._desired.items():
+                    if frame and frame['expires_at']>now:
+                        deadlines.append(frame['expires_at'])
+                        if frame['seq']!=last_seq[c] and self._valid(frame,c,now):deadlines.append(last_send[c]+FRAME_MS/1000)
+            deadlines.extend(p['deadline'] for p in list(route._pending.values()))
+            delay=max(.02,min(deadlines)-now)
+            try:await asyncio.wait_for(self._wake_event.wait(),delay)
+            except asyncio.TimeoutError:pass
 
 class V4ConnectionService:
     """Shared V4 APP Socket with explicit independent Coyote/OVC slot selection."""
@@ -219,7 +259,8 @@ class V4ConnectionService:
     def refresh_lan_ips(self):self._hub.refresh_lan_ips()
     def devices_snapshot(self):return self._hub.devices_snapshot()
     def snapshot(self):
-        while True:
+        # Bound a GUI read even if an APP is continuously publishing patches.
+        for _ in range(256):
             try:
                 _,event=self._wire_events.get_nowait();role=event.get('role')
                 if event['event'] in ('error','server_error'):

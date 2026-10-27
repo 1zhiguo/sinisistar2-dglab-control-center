@@ -53,7 +53,11 @@ def verify():
         walker.setProperty('paused',False);app.processEvents();QTest.qWait(160)
         assert walker.property('travel')>frozen
         assert b._sim_profile==before
-        page(2);QTest.qWait(50)
+        page(2)
+        # Incubation can finish after a few display frames on a busy host.
+        # Assert the actual transition rather than an arbitrary 50ms snapshot.
+        deadline=__import__('time').monotonic()+2
+        while not 0<find('animatedPageLoader').property('opacity')<1 and __import__('time').monotonic()<deadline:QTest.qWait(10)
         assert 0<find('animatedPageLoader').property('opacity')<1
         QTest.qWait(400);assert find('animatedPageLoader').property('opacity')==1
         inks={tier:find('choosePreset_'+tier).property('ritualInk').name() for tier in ('low','medium','high')}

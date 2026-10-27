@@ -63,14 +63,20 @@ class _RoleBridge(DGLabV4Bridge):
     def _close_for_route_error(self, client_id: str, reason: str) -> None:
         # A route-level RPC rejection/timeout is not proof that the shared APP
         # is dead. Discard this role's authority without cutting off its peer.
+        if reason == 'output_link_timeout':
+            self._resync_after_timeout()
         self._discard_outputs()
         self.connected = self._baseline_ready = False
-        self._selection_waiting_for_ready = False
-        self._readiness_failure_latched = True
+        self._selection_waiting_for_ready = self._resync_required
+        self._readiness_failure_latched = not self._resync_required
         self._waiting_signature = None
         audit.record("socket.v4_route_failure", role=self.role,
                      app_client_id=client_id, slot_id=self.selected_slot_id, reason=reason)
         self._emit("disconnected", reason=reason)
+
+    def _resync_after_timeout(self) -> None:
+        if self.selected_slot_id:
+            self._hub._invalidate_device(self.selected_client_id, self.selected_slot_id, 'device-response-timeout')
 
     def _attach(self, hub: "DGLabV4Hub") -> None:
         self._loop = hub._loop
@@ -105,6 +111,7 @@ class _RoleBridge(DGLabV4Bridge):
         self._readiness_failure_latched = False
         self._waiting_signature = None
         self.connected = self._baseline_ready = False
+        self._resync_required = False
         self.selected_client_id = self.selected_slot_id = self.device_type = self.target_id = ""
 
 
@@ -116,6 +123,28 @@ class DGLabV4Hub(DGLabV4Bridge):
         self.role = "hub"
         self._request_id_prefix = "hub:"
         self._channels = {role: _RoleBridge(self, role) for role in ROLE_TYPES}
+        self._discovery_due = {}
+        self._discovery_interval = 2.0
+
+    def _invalidate_device(self, client_id: str, slot_id: str, reason: str) -> None:
+        device = self._devices.get(client_id, {}).get(slot_id)
+        if device is None or device.get('_connectionUnconfirmed'):
+            return
+        device['_connectionUnconfirmed'] = True
+        device['_connectionUnconfirmedAt'] = time.monotonic()
+        for route in self._channels.values():
+            if (route.selected_client_id, route.selected_slot_id) == (client_id, slot_id):
+                route._resync_required = True
+                route._readiness_failure_latched = False
+                # This synchronously closes output guards before UI updates.
+                route._check_selected()
+        self._discovery_due[client_id] = min(self._discovery_due.get(client_id, 0), time.monotonic() + .25)
+        audit.record('socket.v4_device_unconfirmed', app_client_id=client_id, slot_id=slot_id, reason=reason)
+        self._publish_devices()
+
+    def _invalidate_catalog(self, client_id: str) -> None:
+        for slot_id in list(self._devices.get(client_id, {})):
+            self._invalidate_device(client_id, slot_id, 'discovery-response-timeout')
 
     def channel(self, role: str) -> DGLabV4Bridge:
         if role not in self._channels:
@@ -160,6 +189,21 @@ class DGLabV4Hub(DGLabV4Bridge):
     def _handle_app_data(self, client_id: str, data: dict) -> None:
         if data.get("t") == "resp":
             req_id = data.get("reqId")
+            pending = self._pending.get(req_id) if isinstance(req_id, str) else None
+            if pending and pending['client_id'] == client_id and pending['method'] == 'devices.get':
+                result = data.get('result')
+                if data.get('error') is not None or not isinstance(result, dict) or not isinstance(result.get('devices'), list):
+                    self._finish_pending(req_id, error=ValueError('Invalid device discovery response'))
+                    self._invalidate_catalog(client_id)
+                    self._discovery_due[client_id] = time.monotonic() + 5.0
+                    return
+                if any(d.get('_connectionUnconfirmedAt', 0) > pending.get('sent_at', 0)
+                       for d in self._devices.get(client_id, {}).values()):
+                    # A response to a pre-failure read cannot establish a new
+                    # baseline. Request a catalog actually read after the fault.
+                    self._finish_pending(req_id, result=result)
+                    self._discovery_due[client_id] = time.monotonic() + .25
+                    return
             for channel in self._channels.values():
                 if isinstance(req_id, str) and req_id in channel._pending:
                     channel._handle_app_data(client_id, data)
@@ -177,6 +221,8 @@ class DGLabV4Hub(DGLabV4Bridge):
                     channel._finish_pending(req_id, error=ConnectionError("APP disconnected"))
             channel._check_selected()
             channel._publish_devices()
+            adapter=getattr(channel,'stream_adapter',None)
+            if adapter:adapter.wake_output()
 
     async def _request_watchdog(self) -> None:
         # Discovery requests belong to the hub rather than an output worker.
@@ -185,6 +231,25 @@ class DGLabV4Hub(DGLabV4Bridge):
             for req_id, pending in list(self._pending.items()):
                 if pending["deadline"] < time.monotonic():
                     self._finish_pending(req_id, error=TimeoutError("V4 discovery timed out"))
+                    self._invalidate_catalog(pending['client_id'])
+                    self._discovery_due[pending['client_id']] = time.monotonic() + 5.0
+            # Socket heartbeat only proves the APP is alive. Read-only catalog
+            # polling also catches sleeping devices when no waveform is sent.
+            now = time.monotonic()
+            for client_id in list(self._clients):
+                if now < self._discovery_due.get(client_id, now + self._discovery_interval):
+                    self._discovery_due.setdefault(client_id, now + self._discovery_interval)
+                    continue
+                if any(p['client_id'] == client_id and p['method'] == 'devices.get' for p in self._pending.values()):
+                    continue
+                self._discovery_due[client_id] = now + self._discovery_interval
+                try:
+                    await self._rpc('devices.get', None, client_id=client_id)
+                except (ConnectionError, TimeoutError, websockets.ConnectionClosed):
+                    self._invalidate_catalog(client_id)
+                    self._discovery_due[client_id] = time.monotonic() + 5.0
+            for client_id in set(self._discovery_due) - self._clients.keys():
+                self._discovery_due.pop(client_id, None)
 
     async def _run(self) -> None:
         self._loop = asyncio.get_running_loop()
@@ -192,6 +257,7 @@ class DGLabV4Hub(DGLabV4Bridge):
         self._clients.clear()
         self._devices.clear()
         self._pending.clear()
+        self._discovery_due.clear()
         self.app_connected = False
         self.controller_id = str(uuid.uuid4())
         for channel in self._channels.values():

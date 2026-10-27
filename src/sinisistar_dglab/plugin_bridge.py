@@ -10,7 +10,7 @@ STATUS_NAMES=json.loads((Path(__file__).parent/'assets/status-name-ids.json').re
 class PluginObserver:
     def __init__(self,directory=None):
         self.directory=Path(directory) if directory else ROOT/'SiNiSistar2_v1_3_1/WIN/BepInEx/plugins/SiNiSistarDGLab/telemetry'
-        self.events=queue.Queue();self._stop=threading.Event();self._lock=threading.Lock();self._thread=None
+        self.events=queue.Queue();self.output_events=queue.Queue();self._stop=threading.Event();self._lock=threading.Lock();self._thread=None
         self._state={'live':False,'valid':False,'source':'bepinex','error':'等待 BepInEx 插件心跳','sample_id':0}
         self._offset=None;self._partial=b''
 
@@ -74,7 +74,9 @@ class PluginObserver:
                 for line in lines:
                     try:
                         e=json.loads(line)
-                        if isinstance(e,dict) and isinstance(e.get('event_type'),str) and self.events.qsize()<1000:self.events.put(e)
+                        if isinstance(e,dict) and isinstance(e.get('event_type'),str):
+                            for target in (self.events,self.output_events):
+                                if target.qsize()<1000:target.put(e)
                     except (ValueError,UnicodeDecodeError):continue
             except OSError:pass
             self._stop.wait(.1)

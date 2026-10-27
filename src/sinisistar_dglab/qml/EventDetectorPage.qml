@@ -14,7 +14,7 @@ ColumnLayout {
     property var frozenEvents: []
     property var frozenCatalog: []
     property var frozenLogs: []
-    readonly property var s: backend.state
+    readonly property var s: suspended ? ({gameStatus:"",reader:"",scene:"",sourceLabel:"",error:"",flow:({}),galleryPlayback:({controls:({})}),cgPlayback:({}),observerVersion:"",pluginStatus:""}) : backend.state
     readonly property bool currentPlayer: !suspended && !!s.pluginFresh && !!s.valid
     readonly property var currentAbnormals: currentPlayer ? s.abnormals || [] : []
     readonly property var eventRows: suspended ? [] : frozen ? frozenEvents : backend.monitorEvents

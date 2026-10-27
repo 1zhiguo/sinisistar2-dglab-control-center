@@ -21,8 +21,8 @@ Panel {
     function save(field,v){backend.setCgRule(scopePrefix+route+"_"+field,v);}
     function waveIndex(key){return catalog.findIndex(function(w){return w.key===key;});}
     function wave(key){return catalog[waveIndex(key)] || ({name:"波形缺失",points:[]});}
-    function peak(c){var v=value("strength_"+c);return v===null ? value("strength") : v;}
-    function start(c){var v=value("start_strength_"+c);if(v===null)v=value("start_strength");return v===null ? peak(c) : Math.min(v,peak(c));}
+    function peak(c){var v=value("strength_"+c);if(v===null || v===undefined)v=value("strength");return isFinite(Number(v)) ? Math.max(0,Number(v)) : 0;}
+    function start(c){var v=value("start_strength_"+c);if(v===null || v===undefined)v=value("start_strength");return v===null || v===undefined || !isFinite(Number(v)) ? peak(c) : Math.min(Math.max(0,Number(v)),peak(c));}
     Layout.fillWidth: true; Layout.preferredHeight: body.implicitHeight+32
     ColumnLayout {
         id: body; anchors.left: parent.left; anchors.right: parent.right; anchors.top: parent.top; anchors.margins: 16; spacing: 12
@@ -40,6 +40,11 @@ Panel {
             }
         }
         AppText { Layout.fillWidth: true; text: "正在编辑 "+card.channel+" 通道 · "+(card.value("channel").indexOf(card.channel)>=0 ? "已参与输出" : "未参与输出，可在上方选择通道"); color: card.ink; font.pixelSize: 11 }
+        RowLayout { Layout.fillWidth: true
+            AppText { text: "本通道反馈范围"; color: Theme.muted; font.pixelSize: 11 }
+            AppCombo { objectName: "cgFeedbackMode_"+card.route; accent: card.ink; Layout.fillWidth: true; model: ["受伤反馈","CG 反馈","受伤+CG 反馈"]; currentIndex: ["damage","cg","both"].indexOf(backend.simulationSettings.channel_feedback[card.route][card.channel]); onActivated: backend.setChannelFeedback(card.route,card.channel,["damage","cg","both"][currentIndex]) }
+        }
+        AppText { objectName: "cgChannelFilterHint_"+card.route; visible: backend.simulationSettings.channel_feedback[card.route][card.channel]==="damage"; Layout.fillWidth: true; text: "当前通道仅受伤，不参与游戏 CG 和图鉴反馈。请在上方改为 CG 或受伤+CG 反馈。"; color: card.ink; font.pixelSize: 11; wrapMode: Text.Wrap; elide: Text.ElideNone }
         StrengthRange { Layout.fillWidth: true; identifier: "cg_"+card.route+"_"+card.channel.toLowerCase(); accent: card.ink; maximum: card.strengthLimit; step: card.route==="pulse" ? 1 : 10; low: card.start(card.channel.toLowerCase()); high: card.peak(card.channel.toLowerCase()); onEdited: (low,high)=>backend.setCgStrengthRange(card.scopePrefix+card.route,card.channel.toLowerCase(),low,high) }
         AppText { Layout.fillWidth: true; text: "强度范围 0–"+card.strengthLimit+" · "+(backend.quickPolicy.active ? ({low:"低",medium:"中",high:"高"})[backend.quickPolicy.active]+"档预设" : "自定义")+" · 起始和峰值可分别调整"; color: Theme.muted; font.pixelSize: 10; wrapMode: Text.Wrap; elide: Text.ElideNone }
         AppText { visible: card.peak(card.channel.toLowerCase())>card.strengthLimit; Layout.fillWidth: true; text: "当前峰值超过本通道上限，实际输出按上限限制。"; color: Theme.violet; font.pixelSize: 10 }

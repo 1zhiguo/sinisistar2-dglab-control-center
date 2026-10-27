@@ -4,6 +4,7 @@ from pathlib import Path
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--developer-tools',action='store_true',help='显示开发用的模拟、CG 测试与游戏辅助界面')
     parser.add_argument('--offline',action='store_true');parser.add_argument('--screenshot',type=Path)
     parser.add_argument('--page',type=int,default=0,help='页面索引：0 总览 / 1 设备与游戏 / 2 快速设置 / 3 联动策略 / 4 波形 / 5 检测器 / 6 演出 / 7 CG 反馈 / 8 怪物图鉴');parser.add_argument('--size',default='1440x940')
     parser.add_argument('--settings-file',type=Path);parser.add_argument('--smoke-test',action='store_true')
@@ -14,6 +15,9 @@ def main():
     parser.add_argument('--simulate-live',action='store_true',help='启动实时只读模拟，保持设备服务关闭')
     parser.add_argument('--mock-app',action='store_true',help='启动回环模拟 APP；按自动启用设置运行')
     parser.add_argument('--gallery-mock',action='store_true',help='在主窗口打开图鉴反馈，连接四通道本机模拟 APP 并持续记录')
+    parser.add_argument('--cg-ablation',action='store_true',help='使用当前预设的测试副本，只启用无 HP 的 CG 识别和四通道本机模拟 APP')
+    parser.add_argument('--cg-live-ablation',action='store_true',help='保留真实 APP 连接和当前策略，仅测试无 HP 的实战 CG 播放识别；不启动模拟 APP')
+    parser.add_argument('--cg-batch',action='store_true',help='自动识别当前图鉴 CG，用有/无反馈按钮记录整轮测试并导出')
     parser.add_argument('--connect-v4',action='store_true',help='启动 DG-LAB 4 扫码服务；按自动启用设置运行')
     parser.add_argument('--connect-v3',action='store_true',help='启动 DG-LAB V3 扫码服务；按自动启用设置运行')
     parser.add_argument('--hud-adjust',action='store_true',help='以可拖动的桌面调整模式显示 HUD')
@@ -25,11 +29,24 @@ def main():
     parser.add_argument('--trainer-statuses',action='store_true',help='打开游戏辅助里的当前异常移除页')
     parser.add_argument('--abnormal-policy',action='store_true',help='打开中文异常筛选与批量启用设置')
     args=parser.parse_args();os.environ.setdefault('QT_QUICK_CONTROLS_STYLE','Basic')
+    if args.cg_live_ablation and (args.cg_ablation or args.cg_batch or args.mock_app or args.gallery_mock or args.simulation_demo or args.simulate_live or args.offline):
+        parser.error('Real-game CG testing cannot be combined with mock/demo/offline modes')
+    if args.cg_batch:args.cg_ablation=True
     from PySide6.QtCore import QObject,QTimer,QUrl,qInstallMessageHandler,QAbstractNativeEventFilter
     from PySide6.QtGui import QGuiApplication,QFont,QIcon
     from PySide6.QtQml import QQmlApplicationEngine
     from PySide6.QtQuick import QQuickItem
     from .backend import Backend,ROOT
+    if args.cg_live_ablation:
+        from .cg_test_profile import prepare_live
+        args.settings_file,mode=prepare_live(ROOT);args.page=7
+        args.connect_v4=mode=='v4';args.connect_v3=mode=='v3'
+        import json
+        (ROOT/'artifacts/cg-realplay-current.json').write_text(json.dumps(dict(directory=str(args.settings_file.parent)),ensure_ascii=False,indent=2),encoding='utf-8')
+    if args.cg_ablation:
+        if args.connect_v4 or args.connect_v3:parser.error('CG ablation only supports the loopback mock APP')
+        from .cg_test_profile import prepare
+        args.settings_file=prepare(ROOT);args.gallery_mock=True;args.mock_app=False
     log=ROOT/'artifacts/ui/runtime.log';log.parent.mkdir(parents=True,exist_ok=True)
     def message(kind,context,text):
         with log.open('a',encoding='utf-8') as f:f.write(str(kind)+' '+text+'\n')
@@ -37,9 +54,22 @@ def main():
             try:print(text,file=sys.stderr,flush=True)
             except UnicodeEncodeError:pass
     qInstallMessageHandler(message)
-    app=QGuiApplication(sys.argv[:1]);app.setApplicationName('SiNiSistar2 × DG-LAB');app.setOrganizationName('SiNiSistarDGLab');app.setFont(QFont('Microsoft YaHei UI',10))
-    app.setWindowIcon(QIcon(str(Path(__file__).parent/'assets/portrait.png')))
-    backend=Backend(offline=args.offline or bool(args.simulation_demo) or (bool(args.screenshot or args.hud_screenshot) and not args.live_preview) or args.smoke_test,settings=args.settings_file)
+    if sys.platform=='win32':
+        try:
+            identify=ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID
+            identify.argtypes=[ctypes.c_wchar_p];identify.restype=ctypes.c_long
+            identify('SiNiSistar2.DGLab.ControlCenter')
+        except (OSError,AttributeError):pass
+    from . import __version__
+    app=QGuiApplication(sys.argv[:1]);app.setApplicationName('SiNiSistar2 × DG-LAB');app.setApplicationVersion(__version__);app.setOrganizationName('SiNiSistarDGLab');app.setFont(QFont('Microsoft YaHei UI',10))
+    app.setWindowIcon(QIcon(str(Path(__file__).parent/'assets/app-icon.ico')))
+    developer_tools=args.developer_tools or args.cg_ablation or args.cg_live_ablation or args.cg_batch or args.trainer or args.trainer_statuses
+    backend=Backend(offline=args.offline or bool(args.simulation_demo) or (bool(args.screenshot or args.hud_screenshot) and not args.live_preview) or args.smoke_test,settings=args.settings_file,developer_tools=developer_tools)
+    # Development profiles can be copied into a release. Never leave ordinary
+    # play stuck in a previous no-HP ablation mode.
+    if not developer_tools and backend._sim_profile.get('cg_detection_mode')!='hybrid':
+        backend.setCgDetectionMode('hybrid')
+    if args.cg_ablation:backend.beginCgBatch()
     if args.simulation_demo:backend.simulationSource(args.simulation_demo);backend.toggleSimulation()
     elif args.simulate_live:backend.toggleSimulation()
     if args.mock_app:backend.startMockPulse()
@@ -53,12 +83,15 @@ def main():
     window=engine.rootObjects()[0];window.setProperty('pageIndex',max(0,min(8,args.page)))
     if args.gallery_mock:
         window.setProperty('pageIndex',7)
-        def select_gallery():
+        def select_gallery(attempt=0):
             pending=[window.contentItem()]
             while pending:
                 item=pending.pop();pending.extend(item.childItems())
-                if item.objectName()=='cgFeedbackPage':item.setProperty('scope','gallery');return
+                if item.objectName()=='cgFeedbackPage':item.setProperty('scope','batch' if args.cg_ablation else 'gallery');return
+            if attempt<100:QTimer.singleShot(50,lambda:select_gallery(attempt+1))
         QTimer.singleShot(100,select_gallery)
+    if args.cg_ablation:window.setTitle('SiNiSistar2 × DG-LAB · CG 批量测试 · 无 HP 模拟')
+    if args.cg_live_ablation:window.setTitle('SiNiSistar2 × DG-LAB · 实战 CG 动画测试 · 无 HP')
     if args.trainer or args.trainer_statuses:
         window.setProperty('pageIndex',1)
         def open_trainer():
@@ -105,12 +138,28 @@ def main():
     from .hud_window import HudWindowController
     hud_controller=HudWindowController(backend,monitor);app.aboutToQuit.connect(hud_controller.shutdown)
     if args.hud_settings:backend.openHudSettings()
+    journal=None
+    if args.cg_live_ablation and backend._observer:
+        from .cg_live_journal import LiveCgJournal
+        journal=LiveCgJournal(backend._observer,args.settings_file.parent);journal.start()
+        app.aboutToQuit.connect(journal.close)
+        (ROOT/'artifacts/cg-realplay-current.json').write_text(json.dumps(dict(directory=str(args.settings_file.parent),recording_directory=str(journal.directory)),ensure_ascii=False,indent=2),encoding='utf-8')
     target=args.hud_screenshot or args.screenshot
     if target:
         target.parent.mkdir(parents=True,exist_ok=True)
         def capture():
             capture_window=engine.rootObjects()[1] if args.hud_screenshot else window
-            frame=capture_window.grabWindow();ok=not frame.isNull() and frame.save(str(target.resolve()));print(str(target.resolve()));app.exit(0 if ok else 3)
+            frame=capture_window.grabWindow();ok=not frame.isNull() and frame.save(str(target.resolve()))
+            import json
+            names={'cgBatchTab','cgCoverageTab','cgDetectionMode','openGameTrainer','openSimulationSettings'}
+            pending=[window.contentItem()];controls={}
+            while pending:
+                item=pending.pop();pending.extend(item.childItems())
+                if item.objectName() in names:controls[item.objectName()]=bool(item.isVisible())
+            target.with_suffix('.ui.json').write_text(json.dumps(dict(version=__version__,developer_tools=backend.developerTools,
+                cg_detection_mode=backend._sim_profile['cg_detection_mode'],test_controls=controls,
+                trainer_dialog_loaded=bool(window.findChild(QObject,'trainerDialog'))),indent=2),encoding='utf-8')
+            print(str(target.resolve()));app.exit(0 if ok else 3)
         QTimer.singleShot(7200 if args.simulation_demo else 4500 if window.property('pageIndex')==1 else 1100,capture)
     elif args.smoke_test:QTimer.singleShot(1200,app.quit)
     return app.exec()

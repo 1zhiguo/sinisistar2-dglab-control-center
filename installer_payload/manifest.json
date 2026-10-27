@@ -2,7 +2,7 @@
   "schema": 1,
   "owner": "SiNiSistar2-x-DGlab",
   "runtime": "BepInEx 6.0.0-be.754 IL2CPP x64 / .NET 6",
-  "plugin_version": "0.4.2",
+  "plugin_version": "0.6.0",
   "source": "https://github.com/akiloneus/SiNiSistar2-HeatSeekar/releases/tag/v0.9.0",
   "source_archive_sha256": "437a0ea8f52f7a9aacfda5eb4718d5422db4f9b048eea7bef296f5c7a5fae10b",
   "scope": "Runtime only; no HeatSeekar feature plugin or patcher is installed",
@@ -17,8 +17,8 @@
       "size": 2436955
     },
     "SiNiSistarDGLab.Observer.dll": {
-      "sha256": "73535003a763274fcbca68a6c5fa5cbd2c72fce23a6801a0b809048d93543f9f",
-      "size": 52224
+      "sha256": "ea5e0c05c0ce4ecf8424955a44c6938414a401b3ab985d7e68992e4c12aced7f",
+      "size": 69632
     }
   },
   "runtime_files": [

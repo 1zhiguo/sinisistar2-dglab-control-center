@@ -8,8 +8,8 @@ def is_gallery(s):
 
 def make_gallery(death):
     c=make_cg(death,inherit=False,split=True)
-    c.update(pause_on_stop=True)
-    c['rule'].update(enabled=False,name='图鉴回放反馈',death_mode='until_end')
+    c.update(pause_on_stop=True,same_hp_enabled=False)
+    c['rule'].update(enabled=True,name='图鉴回放反馈',death_mode='until_end')
     return c
 
 def sanitize_gallery(raw,death,sanitize_rule):
@@ -33,7 +33,10 @@ def gallery_gate(s,now,config,*,ignore_pause=False):
     if type(g.get('take_count')) is not int or not 0<g['selected_index_raw']<=g['take_count']:return '图鉴片段索引无效'
     if not ignore_pause and s.get('paused'):return '游戏已暂停'
     if not ignore_pause and config.get('pause_on_stop',True) and g.get('ui_paused'):return '图鉴 Space 已停止输出'
-    if g.get('play_type_raw')!=1:return '此类图鉴动画尚未验证'
+    if g.get('play_type_raw') not in (0,1):return '此类图鉴动画尚未验证'
+    if g.get('play_type_raw')==0:
+        from .cg_playback import valid_animator
+        if not valid_animator(g.get('animator')) and view['playbackEvidence']!='loaded_take_session':return '等待图鉴 Animator 动画匹配 · 需要观察插件 0.5.0'
     if not view['takeSelected'] or any(type(g.get(k)) is not int or g[k]<=0 for k in ('take_player','take_data')):return '等待图鉴片段载入'
     # CurrentTake can survive list exit. The UI selection AND live player are
     # required. Internal event waits intentionally remain eligible.

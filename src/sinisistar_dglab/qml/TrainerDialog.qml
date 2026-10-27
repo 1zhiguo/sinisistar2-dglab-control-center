@@ -8,7 +8,7 @@ Dialog {
     parent: Overlay.overlay; anchors.centerIn: parent
     width: Math.min(850,parent.width-40); height: Math.min(730,parent.height-40)
     padding: 22; modal: true; closePolicy: Popup.CloseOnEscape
-    readonly property var state: backend.trainerState || ({})
+    readonly property var state: visible ? backend.trainerState || ({}) : ({})
     property int tabIndex: 0
     readonly property var currentStatuses: state.abnormals || []
     onOpened: { hpCard.sync();mpCard.sync();attackCard.sync(); }

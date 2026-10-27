@@ -7,6 +7,16 @@ CG feedback queues, a game HUD and an event inspector. Chinese / English / Japan
 Website: https://sinisistar2-dglab.web.app/
 Game hub: https://dglab-x-game.web.app/
 
+## Windows 1.0.1 test build
+
+Download the portable Windows x64 ZIP from Releases (tag `v1.0.1`). Extract the
+entire folder and run `SiNiSistar2-x-DGlab.exe`; no separate Python installation
+is needed. The release includes plugin installation resources and uses clean
+default settings. No game, personal settings, logs or saves are included.
+Development, batch-testing and gameplay-helper controls are hidden by default.
+Observer 0.6.0 combines shared animation and declared CG playback signals with
+HP/grab fallback. Gallery feedback uses independent playback and take sessions.
+
 ## Run from source
 
 Use Windows x64 and Python 3.10 or newer. Extract the entire source ZIP, open
@@ -29,7 +39,7 @@ affect the connection, policy or waveform code. Launch the game, connect phone a
 PC to the same LAN and pair with the corresponding V3 / V4 app. Configure presets
 and caps in the app. `Ctrl+F12` zeros and locks both outputs; `Ctrl+F11` adjusts HUD.
 
-The observer reads game state. The separately installed optional trainer can change
+The observer reads game state. The separately installed optional trainer (development tools only) can change
 HP, MP, attack multiplier and status effects only after explicit in-app actions.
 Its source is in `trainer/`; it is not part of the read-only observer.
 

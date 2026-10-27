@@ -1,0 +1,2 @@
+-r requirements-native.txt
+PyInstaller==6.22.3

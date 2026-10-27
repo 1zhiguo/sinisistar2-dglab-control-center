@@ -1,10 +1,10 @@
 """Fingerprint-bound, external read-only observer. No injected calls or writes."""
 from __future__ import annotations
-import hashlib, json, threading, time
+import hashlib, json, threading, time, sys
 from copy import deepcopy
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(sys.executable).resolve().parent if getattr(sys,'frozen',False) else Path(__file__).resolve().parents[2]
 TYPES = json.loads((Path(__file__).parent/'assets/types.json').read_text(encoding='utf-8'))
 BUILD = 'b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d'
 METADATA = 'a56278d0162b6c148312b56fbe208b54ba9af2d3bad609ebf9349b7ae7ddc84b'

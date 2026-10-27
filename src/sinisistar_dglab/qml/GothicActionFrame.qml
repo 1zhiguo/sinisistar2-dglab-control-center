@@ -9,8 +9,8 @@ Item {
     property bool pressed: false
     property bool danger: false
     property bool available: true
-    readonly property bool animated: visible && available && (hovered || active) && (!Window.window || Window.window.visibility!==Window.Minimized)
-    property real glow: .4
+    readonly property bool animated: visible && available && (hovered || active) && (!Window.window || Window.window.active && Window.window.visibility!==Window.Minimized)
+    readonly property real glow: animated ? .55+.25*Math.sin(Theme.motionTime*Math.PI/1.4) : .4
     opacity: available ? 1 : .4
     Rectangle { anchors.fill: parent; anchors.margins: -2; radius: 7; color: "transparent"; border.width: 3; border.color: frame.ink; opacity: frame.animated ? frame.glow*.22 : 0 }
     Rectangle {
@@ -34,9 +34,4 @@ Item {
     }
     Rectangle { anchors.top: parent.top; anchors.topMargin: -1; anchors.horizontalCenter: parent.horizontalCenter; width: 3; height: 3; rotation: 45; color: frame.ink; opacity: frame.animated ? frame.glow : .45 }
     Rectangle { anchors.bottom: parent.bottom; anchors.bottomMargin: 1; anchors.horizontalCenter: parent.horizontalCenter; width: frame.width*.3; height: 1; color: frame.ink; opacity: frame.animated ? frame.glow*.65 : .12 }
-    SequentialAnimation on glow {
-        running: frame.animated; loops: Animation.Infinite
-        NumberAnimation { from: .3; to: .8; duration: 1400; easing.type: Easing.InOutSine }
-        NumberAnimation { from: .8; to: .3; duration: 1400; easing.type: Easing.InOutSine }
-    }
 }

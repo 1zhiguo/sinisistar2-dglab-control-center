@@ -87,6 +87,8 @@ def _abandon_rpc_future(future) -> None:
 
 
 def channel_block_reason(device: dict, channel: str) -> str:
+    if device.get('_connectionUnconfirmed'):
+        return 'device-unresponsive'
     if device.get("type") == "COYOTE_020":
         return "unsupported-waveformat"
     if device.get("type") not in SUPPORTED_TYPES:
@@ -145,6 +147,8 @@ class DGLabV4Bridge(DGLabBridge):
         self._public_devices: list[dict] = []
         self._last_device_state_signature = None
         self._rpc_send_locks = {}
+        self._resync_required = False
+        self._resync_retry_at = 0.0
 
     def _build_qr_url(self) -> str:
         address = f"ws://{self.lan_ip}:{self.port}/?tid={self.controller_id}"
@@ -217,8 +221,10 @@ class DGLabV4Bridge(DGLabBridge):
         self._selection_waiting_for_ready = bool(client_id and slot_id)
         self._waiting_signature = None
         self._readiness_failure_latched = False
+        self._resync_retry_at = 0.0
         self.selected_client_id, self.selected_slot_id = client_id, slot_id
         device = self._devices.get(client_id, {}).get(slot_id, {})
+        self._resync_required = bool(device.get('_connectionUnconfirmed'))
         self.device_type = str(device.get("type", ""))
         self.target_id = client_id
         if self._selection_task and not self._selection_task.done():
@@ -278,6 +284,8 @@ class DGLabV4Bridge(DGLabBridge):
                 self._audit_readiness("state-blocked-after-zero")
                 return
             self._baseline_ready = self.connected = True
+            self._resync_required = False
+            self._resync_retry_at = 0.0
             self._selection_waiting_for_ready = False
             self._waiting_signature = None
             self._discard_outputs()  # A fresh backend update is still required.
@@ -289,11 +297,12 @@ class DGLabV4Bridge(DGLabBridge):
         except (TimeoutError, ConnectionError, ValueError) as error:
             if epoch == self._selection_epoch:
                 self.connected = self._baseline_ready = False
-                self._selection_waiting_for_ready = False
-                self._readiness_failure_latched = True
+                self._selection_waiting_for_ready = self._resync_required
+                self._readiness_failure_latched = not self._resync_required
+                self._resync_retry_at = time.monotonic() + 2.0
                 self._waiting_signature = None
                 self._audit_readiness("zero-confirmation-failed")
-                self._emit("error", detail=f"V4 设备归零确认失败：{type(error).__name__} · {str(error)[:240]}")
+                self._emit("error", detail=f"V4 设备归零确认失败：{type(error).__name__} · {str(error)[:240]}",recoverable=self._resync_required)
 
     def _selected_device(self) -> dict:
         return self._devices.get(self.selected_client_id, {}).get(self.selected_slot_id, {})
@@ -302,8 +311,8 @@ class DGLabV4Bridge(DGLabBridge):
         """Keep an existing electrical slot selected, but revoke its output.
 
         A transient Bluetooth/mute tick isn't a catalog removal. Only a fresh,
-        acknowledged baseline can make this route ready again; backend still
-        requires explicit user resume. Stable waiting ticks do no new work.
+        acknowledged baseline can make this route ready again; the backend
+        independently owns the user's pause/enable intent.
         """
         signature = (self.selected_client_id, self.selected_slot_id, reason)
         preparing = self._selection_task is not None and not self._selection_task.done()
@@ -344,14 +353,16 @@ class DGLabV4Bridge(DGLabBridge):
         if (not device or device.get("type") != self.device_type
                 or (self.device_type == "COYOTE_030" and self.selected_client_id not in self._clients)):
             self._lose_selection("selected-device-disconnected")
+        elif reasons['A'] == 'device-unresponsive':
+            self._wait_for_selected_coyote('device-unresponsive')
         elif self.device_type == "COYOTE_030" and all(reasons.values()):
             if not self._readiness_failure_latched:
                 reason = (reasons["A"] if reasons["A"] == reasons["B"]
                           else "all-channels-blocked")
                 self._wait_for_selected_coyote(reason)
         elif reasons["A"] == "bluetooth-not-connected":
-            # OVC retains the original fail-closed/deselect behavior.
-            self._lose_selection("selected-device-disconnected")
+            # Keep identity for a fresh zero barrier when Bluetooth returns.
+            self._wait_for_selected_coyote('bluetooth-not-connected')
         elif self.connected and all(channel_block_reason(device, channel) for channel in ("A", "B")):
             # Both channels are inhibited. Keep selection, but stop now;
             # unmuting requires selecting the device again, not an auto-resume.
@@ -361,6 +372,7 @@ class DGLabV4Bridge(DGLabBridge):
             asyncio.create_task(self._safe_zero_async())
             self._emit("disconnected", reason="all-channels-blocked")
         elif (self._selection_waiting_for_ready and not self.connected
+              and time.monotonic() >= self._resync_retry_at
               and any(not channel_block_reason(device, channel) for channel in ("A", "B"))
               and (self._selection_task is None or self._selection_task.done())):
             # Selection is explicit, but an APP may announce the slot before
@@ -382,6 +394,7 @@ class DGLabV4Bridge(DGLabBridge):
         self._waiting_signature = None
         self._readiness_failure_latched = False
         self.selected_client_id = self.selected_slot_id = self.device_type = self.target_id = ""
+        self._resync_required = False
         if old[0] in self._clients:
             asyncio.create_task(self._zero_route(*old))
         if was_connected or old[1]:
@@ -496,11 +509,17 @@ class DGLabV4Bridge(DGLabBridge):
                 return
             error = data.get("error")
             if error is not None:
-                self._emit("error", detail=f"DG-LAB APP：{str(error)[:240]}",rpc_error=str(error)[:240],method=pending['method'])
+                missing = 'slot_not_found' in str(error) and bool(pending.get('slot_id'))
+                if missing:
+                    owner = getattr(self, '_hub', self)
+                    invalidate = getattr(owner, '_invalidate_device', None)
+                    if invalidate:
+                        invalidate(client_id, pending['slot_id'], 'slot-not-found')
+                self._emit("error", detail=f"DG-LAB APP：{str(error)[:240]}",rpc_error=str(error)[:240],method=pending['method'],recoverable=missing)
                 self._finish_pending(req_id, error=ValueError(str(error)[:100]))
                 if pending["method"] == "device.op" and not pending["safety"]:
                     self._request_emergency_in_loop()
-                    self._emit("error", detail=f"V4 APP 拒绝输出任务：{str(error)[:100]}")
+                    self._emit("error", detail=f"V4 APP 拒绝输出任务：{str(error)[:100]}",recoverable=missing)
                 return
             result = data.get("result")
             if pending["method"] == "device.op" and not pending["safety"]:
@@ -510,8 +529,8 @@ class DGLabV4Bridge(DGLabBridge):
                         or result.get("slotId", pending.get("slot_id")) != pending.get("slot_id")
                         or result.get("channel", pending.get("channel")) != pending.get("channel")):
                     self._finish_pending(req_id, error=ValueError("Output task cancelled or invalid completion"))
-                    stale_coyote_cancel = (
-                        self.device_type == "COYOTE_030" and isinstance(result, dict)
+                    stale_cancel = (
+                        self.device_type in SUPPORTED_TYPES and isinstance(result, dict)
                         and result.get("reason") == "cancelled"
                         and result.get("type") == pending.get("action_type")
                         and result.get("slotId", pending.get("slot_id")) == pending.get("slot_id")
@@ -520,9 +539,17 @@ class DGLabV4Bridge(DGLabBridge):
                         and pending.get("client_id") == self.selected_client_id
                         and type(pending.get("generation")) is int
                         and pending["generation"] < self._generation)
-                    if not stale_coyote_cancel:
-                        self._emit("error",detail="APP 任务取消或回执不匹配："+str(result)[:240])
-                        self._lose_selection("output-task-cancelled-or-invalid")
+                    if not stale_cancel:
+                        cancelled = (isinstance(result, dict) and result.get('reason') == 'cancelled'
+                                     and result.get('slotId') == self.selected_slot_id
+                                     and result.get('channel') == pending.get('channel')
+                                     and result.get('type') == pending.get('action_type'))
+                        owner = getattr(self, '_hub', self)
+                        if cancelled and hasattr(owner, '_invalidate_device'):
+                            owner._invalidate_device(client_id, self.selected_slot_id, 'output-task-cancelled')
+                        else:
+                            self._lose_selection("output-task-cancelled-or-invalid")
+                        self._emit("error",detail="APP 任务取消或回执不匹配："+str(result)[:240],recoverable=cancelled)
                     # A Bluetooth/mute wait revokes the previous generation.
                     # Its delayed cancellation must not erase a retained (or
                     # freshly re-baselined) electrical selection.
@@ -618,6 +645,7 @@ class DGLabV4Bridge(DGLabBridge):
         # bound, fire-and-forget safety requests are still sent but not cached.
         if len(self._pending) < MAX_PENDING or wait:
             self._pending[req_id] = {"client_id": client_id, "method": method, "safety": safety,
+                                     "sent_at": time.monotonic(),
                                      "deadline": time.monotonic() + RPC_TIMEOUT, "future": future,
                                      "action_type": data.get("t") if data else None,
                                      "generation": self._generation,
@@ -702,11 +730,13 @@ class DGLabV4Bridge(DGLabBridge):
                     if not isinstance(result, dict):
                         raise ValueError("Invalid clear acknowledgment")
                     await self._zero_channels(client_id, slot_id, (0, 1))
-        except (websockets.ConnectionClosed, ConnectionError, TimeoutError, ValueError):
-            if client_id == self.selected_client_id:
+        except (websockets.ConnectionClosed, ConnectionError, TimeoutError, ValueError) as error:
+            if (client_id, slot_id) == (self.selected_client_id, self.selected_slot_id):
+                if isinstance(error, TimeoutError) and hasattr(self, '_resync_after_timeout'):
+                    self._resync_after_timeout()
                 self._discard_outputs()
                 self.connected = self._baseline_ready = False
-            self._close_for_route_error(client_id, "zero_barrier_failed")
+                self._close_for_route_error(client_id, "zero_barrier_failed")
             raise
 
     async def _zero_channels(self, client_id: str, slot_id: str, channels: tuple[int, ...]) -> None:

@@ -84,10 +84,13 @@ class GallerySignals(unittest.TestCase):
         self.assertEqual([e['key'] for e in monitor.update(sample(10.4,scene='Monastery',scene_id=7,flow={}),10.4)],['gallery_leave'])
         monitor.update(sample(10.5),10.5)
         self.assertEqual([e['key'] for e in monitor.update({},11)],['gallery_play_end','gallery_signal_lost'])
-    def test_signal_detection_cannot_enable_either_existing_output_adapter(self):
+    def test_incomplete_gallery_signal_still_cannot_drive_either_output_adapter(self):
         s=sample(player=2,valid=True,hp=dict(current=0,max=120));self.assertTrue(describe_gallery(s,10)['playing'])
         p=initial_profile()
         for planner,catalog,route in ((PulsePlanner(),WAVES,'pulse'),(OvcPlanner(),VIBRATION_WAVES,'vibration')):
             plan=planner.update(s,p,catalog,now=10,enabled=True)
             self.assertFalse(any(plan[route+'_stream'].values()))
-            self.assertIn('回想模式',plan['reason'])
+            self.assertIn('等待图鉴专用字段',plan['reason'])
+            p['gallery']['rule']['enabled']=False
+            self.assertIn('回想模式',planner.update(s,p,catalog,now=10,enabled=True)['reason'])
+            p['gallery']['rule']['enabled']=True

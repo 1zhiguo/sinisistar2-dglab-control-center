@@ -15,8 +15,8 @@ using BepInEx.Unity.IL2CPP.Hook;
 
 namespace SiNiSistarDGLab;
 
-[BepInPlugin("local.sinisistar.dglab.observer", "SiNiSistar2 DG-LAB Observer", "0.4.2")]
-public sealed class Plugin : BasePlugin
+[BepInPlugin("local.sinisistar.dglab.observer", "SiNiSistar2 DG-LAB Observer", "0.6.0")]
+public sealed partial class Plugin : BasePlugin
 {
     const string Fingerprint="b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d";
     readonly List<INativeDetour> hooks=new();
@@ -198,8 +198,9 @@ public sealed class Plugin : BasePlugin
             V1 original=null!;V1 callback=(self,label,method)=>{Guard(()=>ObserveLabel(self,label));original(self,label,method);};
             Attach(api.Method(api.Class("SiNiSistar2.EventLabel","LabelEvent"),"LabelEvent_Execution",1,"String"),callback,out original);
         });
+        InstallCgObservation();
         writer=new Thread(WriteLoop){IsBackground=true,Name="SiNiSistarDGLab IPC"};writer.Start();
-        Emit("observer_loaded",new(){["hook_count"]=hooks.Count,["version"]="0.4.2",["combat_hooks"]=CombatHooks(),["flow_hooks"]=FlowHooks(),["game_build"]="1.3.1"});
+        Emit("observer_loaded",new(){["hook_count"]=hooks.Count,["version"]="0.6.0",["combat_hooks"]=CombatHooks(),["flow_hooks"]=FlowHooks(),["game_build"]="1.3.1"});
         Log.LogInfo($"Observer loaded: {hooks.Count} hooks. Local IPC: {directory}. No DG-LAB output.");
     }
 
@@ -263,7 +264,10 @@ public sealed class Plugin : BasePlugin
         var key=name.Length==0?"":JsonSerializer.Serialize(new object[]{scene,group,name,type});
         double? position=null,duration=null;var director=P(ev,"m_EventPlayableDirector");
         if(director!=IntPtr.Zero&&B(ev,"<IsPlayingPlayableDirector>k__BackingField")){
-            position=api.DoubleProperty(director,"get_time");duration=api.DoubleProperty(director,"get_duration");
+            // Optional Timeline getters can be stripped. Never discard core
+            // playback identity when either optional query is unavailable.
+            try{position=api.DoubleProperty(director,"get_time");}catch{}
+            try{duration=api.DoubleProperty(director,"get_duration");}catch{}
         }
         return new(){["valid"]=!loading&&playing&&current!=IntPtr.Zero&&name.Length>0,["key"]=key,["name"]=name,["type"]=type,["group"]=group,
             ["playing"]=playing,["paused"]=paused,["run"]=flowRun,["elapsed"]=flowElapsed,["timeline_time"]=position,["timeline_duration"]=duration,
@@ -345,7 +349,7 @@ public sealed class Plugin : BasePlugin
         var row=new Dictionary<string,object?>{["available"]=manager!=IntPtr.Zero,["active"]=active,["source"]="GalleryManager/ButtonGuideUI"};
         if(!active)return row;
         var ui=P(manager,"<GalleryUI>k__BackingField");var guide=P(ui,"m_ButtonGuideUI");
-        var take=P(manager,"<CurrentTakePlayer>k__BackingField");if(take==IntPtr.Zero)take=P(guide,"<TakePlayer>k__BackingField");
+        var take=ResolveGalleryTake(manager,out var takeSource);
         var data=P(take,"<PlayingTakeData>k__BackingField");var enemy=P(guide,"<EnemyData>k__BackingField");
         var array=P(enemy,"m_AnimationTakeArray");var count=array==IntPtr.Zero?0:Math.Clamp(Marshal.ReadInt64(array,24),0,256);
         row["guide_available"]=guide!=IntPtr.Zero;row["guide_open"]=api.BoolProperty(guide,"get_IsOpen");
@@ -356,9 +360,13 @@ public sealed class Plugin : BasePlugin
         row["enemy_id"]=api.IntProperty(enemy,"get_GalleryEnemyID");row["enemy_name_id"]=I(enemy,"m_LocalizeID_Name");
         row["target_scene_id"]=I(guide,"<CurrentSceneID>k__BackingField");row["take_selected"]=take!=IntPtr.Zero&&data!=IntPtr.Zero;
         row["take_player"]=take.ToInt64();row["take_data"]=data.ToInt64();row["take_player_type"]=api.ObjectName(take);
+        row["take_source"]=takeSource;
         row["take_name"]=api.String(P(data,"m_TakeName"));row["play_type_raw"]=I(data,"m_PlayType");
         row["animator_loop"]=B(data,"m_IsAnimatorLoop");row["combat_event"]=B(data,"m_IsCombatEvent");
         row["like_game_scene"]=B(data,"m_LikeGameSceneMode");row["accept_hp0"]=B(manager,"<AcceptHP0>k__BackingField");
+        // A destroyed/unavailable global EventPlayer must not suppress gallery
+        // take/session fields. Populate them on the same resolved take here.
+        PopulateGalleryPlayback(row,manager,take,data);
         return row;
     }
     void Snapshot()
@@ -386,7 +394,7 @@ public sealed class Plugin : BasePlugin
             }}
         }
         var data=new Dictionary<string,object?>{
-            ["schema"]=1,["source"]="bepinex",["fingerprint"]=Fingerprint,["session"]=session,["pid"]=Environment.ProcessId,["sample_id"]=++sample,["utc"]=DateTimeOffset.UtcNow.ToString("O"),["valid"]=valid,["player"]=player.ToInt64(),["scene_id"]=scene,["loading"]=loading,["observer_version"]="0.4.2",["combat_hooks"]=CombatHooks(),["flow_hooks"]=FlowHooks(),
+            ["schema"]=1,["source"]="bepinex",["fingerprint"]=Fingerprint,["session"]=session,["pid"]=Environment.ProcessId,["sample_id"]=++sample,["utc"]=DateTimeOffset.UtcNow.ToString("O"),["valid"]=valid,["player"]=player.ToInt64(),["scene_id"]=scene,["loading"]=loading,["observer_version"]="0.6.0",["combat_hooks"]=CombatHooks(),["flow_hooks"]=FlowHooks(),
             ["hp"]=Parameter(hp),["mp"]=Parameter(P(ps,"<MP>k__BackingField")),["durability"]=Parameter(P(ps,"<Durability>k__BackingField")),["paused"]=RB(P(ui,"<IsPauseProp>k__BackingField")),
             ["event_playing"]=B(ev,"<IsEventPlaying>k__BackingField"),["event_paused"]=B(ev,"<EventPause>k__BackingField"),["broken"]=RB(P(dress,"<IsBrokenRp>k__BackingField")),["bound"]=false,
             ["binder"]=api.ObjectName(P(bind,"<BinderEnemy>k__BackingField")),["abnormals"]=abnormal,["hook_count"]=hooks.Count};
@@ -399,6 +407,7 @@ public sealed class Plugin : BasePlugin
         if(rates!=IntPtr.Zero&&Marshal.ReadInt64(rates,24)>1){var setting=Marshal.ReadIntPtr(rates,40);var prop=P(setting,"<ScaleProp>k__BackingField");data["time_scale"]=F(prop,"latestValue");}
         Guard(()=>data["flow"]=ReadFlow(ev,ui,scene,loading));
         try{data["gallery"]=ReadGallery(root);}catch(Exception e){data["gallery"]=new Dictionary<string,object?>{["available"]=false,["error"]=e.Message};}
+        try{data["cg_playback"]=ReadCgObservation(root,ev,scene,data);}catch(Exception e){data["cg_playback"]=new Dictionary<string,object?>{["available"]=false,["error"]=e.Message};}
         latest=data;
     }
     void WriteLoop()
@@ -416,10 +425,10 @@ public sealed class Plugin : BasePlugin
             Thread.Sleep(50);
         }
     }
-    public override bool Unload(){stopping=true;writer?.Join(1000);for(var i=hooks.Count-1;i>=0;i--)hooks[i].Dispose();api.Release(playerHandle);api.Release(abnormalHandle);return true;}
+    public override bool Unload(){stopping=true;writer?.Join(1000);for(var i=hooks.Count-1;i>=0;i--)hooks[i].Dispose();ReleaseCgObservation();api.Release(playerHandle);api.Release(abnormalHandle);return true;}
 }
 
-internal sealed class Native
+internal sealed partial class Native
 {
     readonly IntPtr module;
     readonly Dictionary<string,Delegate> exportCache=new();

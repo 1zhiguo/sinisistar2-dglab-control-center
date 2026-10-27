@@ -173,7 +173,7 @@ ScrollView {
     }
     Dialog {
         id: replaceDialog; objectName: "replaceCustomPresetDialog"; parent: Overlay.overlay; anchors.centerIn: parent
-        width: Math.min(500,parent.width-40); modal: true; padding: 24; closePolicy: Popup.CloseOnEscape
+        width: Math.min(500,(parent ? parent.width : page.width)-40); modal: true; padding: 24; closePolicy: Popup.CloseOnEscape
         background: Rectangle { color: Theme.panel; border.color: Theme.gold; radius: 5 }
         contentItem: ColumnLayout { spacing: 18
             AppText { text: "替换当前自定义设置？"; color: Theme.gold; font.pixelSize: 21 }

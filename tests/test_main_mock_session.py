@@ -2,17 +2,20 @@ import asyncio,json,socket,tempfile,time,unittest
 from pathlib import Path
 from PySide6.QtGui import QGuiApplication
 from sinisistar_dglab.backend import Backend,ROOT
+from sinisistar_dglab.telemetry import BUILD
 from test_v4_backend import Game
 from test_gallery_output import state
 
 class MainMockSession(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls):cls.qt=QGuiApplication.instance() or QGuiApplication([])
-    async def test_same_window_uses_saved_policy_records_packets_and_closes_cleanly(self):
+    async def test_same_window_missing_flow_uses_saved_policy_records_packets_and_closes_cleanly(self):
         asyncio.get_running_loop().set_debug(False)
         with tempfile.TemporaryDirectory(dir=ROOT/'artifacts/test-temp') as folder:
             b=Backend(offline=True,settings=Path(folder)/'settings.json');b._timer.stop()
             b._observer=Game();b._observer.s=state(time.monotonic());b.offline=False
+            b._observer.s['fingerprint']=BUILD
+            b._observer.s.pop('flow');b._observer.s['gallery']['take_player_type']='GaSceneTakePlayer'
             g=b._sim_profile['gallery'];g['rule'].update(enabled=True,pulse_channel='AB',vibration_channel='AB')
             g['rule'].update(pulse_strength_a=8,pulse_strength_b=12,pulse_start_strength_a=8,pulse_start_strength_b=12,
                 vibration_strength_a=40,vibration_strength_b=60,vibration_start_strength_a=40,vibration_start_strength_b=60)
@@ -24,9 +27,13 @@ class MainMockSession(unittest.IsolatedAsyncioTestCase):
                     if fn():return
                 self.fail('Main-window mock did not settle: '+str(b.mockValidation))
             try:
-                b._sim_running=True;b.startMockBoth();session=b._mock_session;hub=b._v4
+                b.beginCgBatch();b._sim_running=True;b.startMockBoth();session=b._mock_session;hub=b._v4
                 self.assertFalse(b._sim_running);self.assertTrue(hub.local_only)
                 await until(lambda:all(b.mockValidation.get(k,0)>0 for k in ('pulsesA','pulsesB','ovcPulsesA','ovcPulsesB')))
+                await until(lambda:any(len(r['latest_received'])==4 for r in b._cg_batch.rows()))
+                for key in ('pulseA','pulseB','vibrationA','vibrationB'):
+                    self.assertGreater(session.snapshot()['receipts'][key]['count'],0)
+                self.assertTrue(all(r['verdict']=='' for r in b._cg_batch.rows()))
                 self.assertEqual(b._sim_profile,profile)
                 b.save();self.assertEqual(json.loads(b.settings.read_text(encoding='utf-8'))['connections'],connection)
                 self.assertEqual(json.loads((session.directory/'preset.json').read_text(encoding='utf-8'))['simulation'],profile)

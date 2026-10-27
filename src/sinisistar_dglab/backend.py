@@ -25,10 +25,14 @@ from .cg_policy import effective_cg,make_cg,sanitize_cg
 from .monster_catalog import MonsterCatalog
 from .resource_preview import build_cache as build_monster_cache
 from .same_hp import SameHpFlowEvidence,same_hp_flow,same_hp_feedback
+from .cg_playback import describe_game_cg
+from .cg_coverage import CgCoverage
+from .cg_batch import CgBatchRecorder
 from .gallery import GalleryPlayback,describe_gallery
 from .gallery_policy import sanitize_gallery,is_gallery
 from .localization import Localizer,LANGUAGES
 from .tutorial import STEP_COUNT,TUTORIAL_VERSION
+from . import __version__
 
 WAVES=[
  {'key':'impact','name':'余烬 · 冲击','points':[0,.9,1,.65,.3,.12,0,0,.48,.3,.12,0,0,0,0,0]},
@@ -47,19 +51,23 @@ def default_rules():
     return [dict(key=k,name=n,description=d,evidence=e,output=o,enabled=o,channel='A' if o else 'B',strength=8,duration=.8,wave='impact' if o else 'breath') for k,n,d,e,o in specs]
 
 class Backend(QObject):
-    changed=Signal(); configChanged=Signal(); eventsChanged=Signal(); flowsChanged=Signal(); exitRequested=Signal(); hudChanged=Signal(); hudSettingsRequested=Signal(); trainerRequested=Signal(); detectorRequested=Signal(); installChanged=Signal(); monsterCatalogChanged=Signal(); toast=Signal(str); languageChanged=Signal(); tutorialRequested=Signal(); hotkeyChanged=Signal()
-    def __init__(self,*,offline=False,settings=None,parent=None):
+    panicDetected=Signal()
+    changed=Signal(); configChanged=Signal(); eventsChanged=Signal(); flowsChanged=Signal(); exitRequested=Signal(); hudChanged=Signal(); hudSettingsRequested=Signal(); trainerRequested=Signal(); detectorRequested=Signal(); installChanged=Signal(); monsterCatalogChanged=Signal(); toast=Signal(str); languageChanged=Signal(); tutorialRequested=Signal(); hotkeyChanged=Signal(); cgCoverageChanged=Signal(); cgBatchChanged=Signal()
+    def __init__(self,*,offline=False,settings=None,parent=None,developer_tools=False):
         super().__init__(parent);self.offline=offline;self.settings=Path(settings) if settings else ROOT/'artifacts/settings.json'
+        self._developer_tools=bool(developer_tools);self._cg_batch_active=False
         self._localizer=Localizer();self._language='zh-CN';self._tutorial_first_run=not self.settings.exists()
         self._tutorial=dict(version=TUTORIAL_VERSION,step=0,seen=False,completed=False);self._hotkey_manager=None;self._emergency_shortcut={'sequence':'Ctrl+F12','modifiers':2,'vk':123}
         self._event_batch=False;self._events_dirty=False;self._flows_dirty=False;self._event_lines=[];self._semantic_flows_cache=None
-        self._shutdown_started=False;self._shutdown_errors=[]
+        self._shutdown_started=False;self._shutdown_errors=[];self._output_worker=None;self._state_for_publish=None;self._ui_publish_at=0.
         self._rules=default_rules();self._channels=[{'key':'A','limit':20,'frequency':30},{'key':'B','limit':20,'frequency':20}]
         self._waves=deepcopy(WAVES);self._vibration_custom=[];self._editing_route='pulse';self._selected='impact';self._points=list(WAVES[0]['points']);self._events=[]
-        self._armed=False;self._emergency=False;self._service=None;self._qr='';self._qrurl='';self._observer=None
+        self._armed=False;self._emergency=False;self._emergency_resume={};self._service=None;self._qr='';self._qrurl='';self._observer=None
         self._live={};self._last={};self._detector=EventDetector();self._identity=None;self._warm=0;self._stamp=None;self._monitor=EventMonitor()
         self._locked_hp=LockedHpEvidence();self._same_hp=SameHpFlowEvidence()
         self._gallery=GalleryPlayback()
+        self._cg_info={};self._cg_coverage=CgCoverage(self.settings.parent/'cg-coverage.json');self._cg_coverage_rows=self._cg_coverage.rows();self._cg_coverage_at=0.
+        self._cg_batch=CgBatchRecorder(self.settings.parent/'cg-batch');self._cg_batch_state=self._cg_batch.snapshot();self._cg_batch_at=0.;self._cg_batch_export=''
         self._traces={'A':[0.0]*64,'B':[0.0]*64};self._trace_at=time.monotonic();self._trace_new=set()
         self._hud=False;self._ip='';self._port=10002;self._reason='输出已暂停';self._last_error='';self._status='等待游戏启动'
         self._sim_profile=initial_profile();self._simulator=Simulator();self._sim_running=False;self._sim_source='live';self._demo_start=0.
@@ -78,7 +86,7 @@ class Backend(QObject):
         self._ovc_planner=OvcPlanner();self._ovc_plan=self._ovc_planner.engine.blank('负鼠已暂停');self._ovc_warm=0;self._ovc_stamp=None;self._ovc_identity=None
         self._ovc_traces={'A':[0.]*64,'B':[0.]*64};self._ovc_trace_new=set()
         self._connection={'pulse_backend':'mock','v3_port':10002,'v4_port':9998,'lan_ip':'','auto_enable':True};self._available_ips=[]
-        self._auto_present=set();self._auto_pending={};self._auto_v3=None;self._auto_v3_pending=None;self._requested_devices={};self._diagnostics_at=0.
+        self._auto_present=set();self._auto_pending={};self._auto_suppressed=set();self._auto_v3=None;self._auto_v3_pending=None;self._requested_devices={};self._diagnostics_at=0.
         self._dialogue_until=0.;self._dialogue_identity=None
         self._game_directory=ROOT/'SiNiSistar2_v1_3_1/WIN'
         self._install_manager=None;self._install_queue=queue.Queue();self._install_thread=None;self._game_candidates=[]
@@ -90,6 +98,35 @@ class Backend(QObject):
         self._load();self._history();self.log('system','控制中心已启动 · 输出保持暂停','系统')
         self._timer=QTimer(self);self._timer.setInterval(100);self._timer.timeout.connect(self.tick);self._timer.start()
         if not offline:self._observer=PluginObserver(self._telemetry_directory());self._observer.start()
+        if not offline:self._start_output_worker()
+
+    def _start_output_worker(self):
+        from .output_worker import OutputWorker
+        if self._output_worker:return
+        self._output_worker=OutputWorker(on_panic=self.panicDetected.emit)
+        self.panicDetected.connect(self.emergencyStop)
+        self.configChanged.connect(self._publish_output_config)
+        self.changed.connect(self._publish_output_controls)
+        self.hotkeyChanged.connect(self._publish_output_controls)
+        self._publish_output_config();self._publish_output_controls();self._output_worker.start()
+
+    def _publish_output_config(self):
+        if self._output_worker:
+            self._output_worker.configure(self._sim_profile,self._waves,self._vibration_custom,self._channels,self._ovc_limits)
+            self._publish_output_controls()
+
+    def _publish_output_controls(self):
+        if self._output_worker and not self._shutdown_started:
+            self._output_worker.controls(observer=self._observer,service=self._service,ovc_service=self._ovc_service,
+                armed=self._armed,ovc_armed=self._ovc_armed,emergency=self._emergency,sim_running=self._sim_running,sim_source=self._sim_source,
+                connection=self._connection,pulse_channels=self._pulse_channels,ovc_channels=self._ovc_channels,
+                shortcut=self._emergency_shortcut,hotkey_active=self._emergency_hotkey_registered and not bool(self._hotkey_manager and self._hotkey_manager.capturing))
+
+    @Property(str,constant=True)
+    def appVersion(self):return __version__
+
+    @Property(bool,constant=True)
+    def developerTools(self):return self._developer_tools
 
     @Property(str,notify=languageChanged)
     def language(self):return self._language
@@ -103,7 +140,7 @@ class Backend(QObject):
     @Slot(str)
     def setLanguage(self,language):
         if language not in LANGUAGES or language==self._language:return
-        self._language=language;self.save();self.languageChanged.emit();self.changed.emit()
+        self._language=language;self.save();self.languageChanged.emit();self._emit_changed()
 
     @Property('QVariantMap',notify=configChanged)
     def tutorialState(self):return dict(self._tutorial,autoShow=bool(not self.offline and self._tutorial_first_run and not self._tutorial['seen']))
@@ -234,8 +271,21 @@ class Backend(QObject):
         if self._event_batch:self._flows_dirty=True
         else:self.flowsChanged.emit()
 
+    def _emit_changed(self,*,live=False):
+        now=time.monotonic()
+        if live and now-self._ui_publish_at<.2:return
+        self._ui_publish_at=now
+        # All QML consumers see one coherent snapshot per notification. The
+        # temporary cache is cleared afterwards, so direct API reads stay fresh.
+        if self._state_for_publish is not None:
+            self.changed.emit();return
+        self._state_for_publish=self.state
+        try:self.changed.emit()
+        finally:self._state_for_publish=None
+
     @Property('QVariantMap',notify=changed)
     def state(self):
+        if self._state_for_publish is not None:return self._state_for_publish
         live=self._live;fresh=live.get('live') and time.monotonic()-live.get('sampled_at',0)<.6
         valid=bool(fresh and live.get('valid'));s=live if valid else self._last
         con=self._service.snapshot() if self._service else {}
@@ -277,6 +327,7 @@ class Backend(QObject):
                 'nonDamageLabel':('同值 HP 演出 · '+str((live.get('flow') or {}).get('name',''))) if fresh and same_hp_flow(live,(self._sim_profile.get('cg') or {}).get('same_hp_timeout',3.)) else '',
                 'lockedHpEvidence':deepcopy(live.get('feedback_evidence') or {}) if fresh else {},
                 'galleryPlayback':gallery,
+                'cgPlayback':dict(self._cg_info),'cgDetectionMode':self._sim_profile.get('cg_detection_mode','hybrid'),
                 'reader':'BepInEx · IL2CPP v1.3.1','pluginStatus':('插件在线 · '+str(live.get('hook_count',0))+' 个观察钩子') if fresh else '等待重启游戏并加载观察插件'}
 
     @Property('QVariantList',notify=configChanged)
@@ -312,6 +363,69 @@ class Backend(QObject):
     @Property('QVariantMap',notify=configChanged)
     def gallerySettings(self):
         return sanitize_gallery(self._sim_profile.get('gallery'),self._sim_profile['rules']['defeat_hold'],sanitize_rule)
+
+    @Property('QVariantList',notify=cgCoverageChanged)
+    def cgCoverage(self):return deepcopy(self._cg_coverage_rows)
+
+    @Property('QVariantMap',notify=cgBatchChanged)
+    def cgBatch(self):return dict(deepcopy(self._cg_batch_state),exportPath=self._cg_batch_export)
+
+    def _batch_profile(self):return dict(simulation=self._sim_profile,channels=self._channels,ovc_limits=self._ovc_limits,
+        custom_waves=[w for w in self._waves if w['key'].startswith('custom_')],custom_vibration_waves=self._vibration_custom)
+
+    def _refresh_batch(self):self._cg_batch_state=self._cg_batch.snapshot();self.cgBatchChanged.emit()
+
+    @Slot()
+    def beginCgBatch(self):
+        self._cg_batch_active=True
+        self._cg_batch.ensure(self._batch_profile());self._cg_batch.profile(self._batch_profile());self._cg_batch.save(force=True);self._refresh_batch()
+
+    @Slot()
+    def newCgBatch(self):self._cg_batch_active=True;self._cg_batch.new(self._batch_profile());self._refresh_batch()
+
+    @Slot()
+    def toggleCgBatch(self):
+        if self._cg_batch.recording:self._cg_batch.pause()
+        else:self._cg_batch.resume()
+        self._refresh_batch()
+
+    @Slot(str,str)
+    def markCgBatch(self,key,verdict):
+        ok=self._cg_batch.mark(key,verdict);self._refresh_batch()
+        if not ok:self.toast.emit(self._cg_batch.error or '请先打开要测试的 CG')
+
+    @Slot(str,str)
+    def noteCgBatch(self,key,note):self._cg_batch.note(key,note);self._refresh_batch()
+
+    @Slot(bool)
+    def exportCgBatch(self,finish):
+        try:
+            if finish:self._cg_batch.finish()
+            target=self._cg_batch.export();self._cg_batch_export=str(target)
+            if finish and self._mock_session:self.stopMockBoth()
+            self._refresh_batch();self.toast.emit('测试记录已导出：'+str(target))
+        except (OSError,ValueError) as error:self.toast.emit('导出失败：'+str(error))
+
+    @Slot()
+    def openCgBatchFolder(self):
+        path=Path(self._cg_batch_export).parent if self._cg_batch_export else self._cg_batch.root/'exports';path.mkdir(parents=True,exist_ok=True)
+        QDesktopServices.openUrl(QUrl.fromLocalFile(str(path)))
+
+    @Slot(str)
+    def setCgDetectionMode(self,mode):
+        if mode not in ('hybrid','playback_only'):return
+        self._sim_profile['cg_detection_mode']=mode;self._simulation_changed()
+        self._pulse_planner.engine.reset();self._ovc_planner.engine.reset()
+        self.log('cg_ablation','仅 CG 播放信号 · 已屏蔽 HP、抓取和异常输出' if mode=='playback_only' else '恢复 CG 播放 + HP 兜底','系统')
+
+    @Slot()
+    def clearCgCoverage(self):
+        self._cg_coverage.clear();self._cg_coverage_rows=self._cg_coverage.rows();self.cgCoverageChanged.emit()
+
+    @Slot()
+    def exportCgCoverage(self):
+        data=dict(self._cg_coverage.report(),rows=self._cg_coverage.rows(),mode=self._sim_profile.get('cg_detection_mode','hybrid'),observer_version=self._live.get('observer_version'),mock_directory=self._last_mock_path)
+        path=self.settings.parent/'cg-coverage-export.json';path.write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding='utf-8');self.toast.emit('覆盖报告已保存：'+str(path))
 
     @staticmethod
     def _cg_scope(selector):return 'gallery' if selector.startswith('gallery/') else 'cg'
@@ -521,7 +635,7 @@ class Backend(QObject):
         if self.offline:self.toast.emit('离线预览不安装游戏辅助');return
         try:self._trainer.message=install_trainer(self._game_directory);self._trainer.error=''
         except Exception as error:self._trainer.error=str(error)
-        self.changed.emit()
+        self._emit_changed()
 
     @Slot(str,str,float)
     def modifyGameValue(self,attribute,mode,value):
@@ -531,7 +645,7 @@ class Backend(QObject):
             self._trainer.poll(self._game_directory/'BepInEx/plugins/SiNiSistarTrainer/ipc')
             self._trainer.send(attribute,mode,value)
         except Exception as error:self._trainer.error=str(error)
-        self.changed.emit()
+        self._emit_changed()
     @Property('QVariantList',notify=installChanged)
     def gameCandidates(self):return deepcopy(self._game_candidates)
 
@@ -611,7 +725,7 @@ class Backend(QObject):
             if self._observer:self._observer.stop()
             self._game_directory=Path(path);self._live={};self._last={};self._identity=None;self._dialogue_until=0.
             if not self.offline:self._observer=PluginObserver(self._telemetry_directory());self._observer.start()
-            self.save();self.changed.emit()
+            self.save();self._emit_changed()
         self._apply_monster_cache(info.get('monster_cache'))
 
     @Slot()
@@ -625,7 +739,7 @@ class Backend(QObject):
 
     def _begin_game_install(self,launch):
         if self._install_state['busy'] or not self._install_state['selectedPath']:return
-        self._armed=False;self._ovc_armed=False;self._reset_output();self.changed.emit()
+        self._armed=False;self._ovc_armed=False;self._reset_output();self._emit_changed()
         path=self._install_state['selectedPath']
         self._launch_after_install=path if launch else None
         def install():
@@ -765,7 +879,7 @@ class Backend(QObject):
         if key=='enabled':
             self._hud=self._hud_settings['enabled']
             if not self._hud:self._hud_adjusting=False
-            self.changed.emit()
+            self._emit_changed()
         self.save();self.hudChanged.emit()
 
     @Slot(bool)
@@ -781,7 +895,7 @@ class Backend(QObject):
     def openHudSettings(self):self.setHudAdjusting(True);self.hudSettingsRequested.emit()
 
     @Slot()
-    def resetHudSettings(self):self._hud_settings=dict(HUD_DEFAULTS);self._hud=True;self.save();self.hudChanged.emit();self.changed.emit()
+    def resetHudSettings(self):self._hud_settings=dict(HUD_DEFAULTS);self._hud=True;self.save();self.hudChanged.emit();self._emit_changed()
 
     @Slot(float,float,float,float,float,float,float,float)
     def saveHudPosition(self,x,y,origin_x,origin_y,client_width,client_height,width,height):
@@ -807,7 +921,7 @@ class Backend(QObject):
         self._cancel_auto('pulse');self._cancel_auto('ovc')
         was_armed=self._armed or self._ovc_armed;self._armed=False;self._ovc_armed=False;self._reset_output()
         if was_armed:self.toast.emit('策略已修改，输出已暂停；检查后可重新启动')
-        self._simulator.reset();self.save();self.configChanged.emit();self.changed.emit()
+        self._simulator.reset();self.save();self._cg_batch.profile(self._batch_profile());self.configChanged.emit();self._emit_changed()
 
     @Slot(str,str,float)
     def setQuickPresetValue(self,name,key,value):
@@ -960,12 +1074,12 @@ class Backend(QObject):
         if self._emergency:self.toast.emit('请先解除急停锁定');return
         if not self._sim_running:
             self.stopConnection();self._armed=False
-        self._sim_running=not self._sim_running;self._simulator.reset();self.changed.emit()
+        self._sim_running=not self._sim_running;self._simulator.reset();self._emit_changed()
 
     @Slot(str)
     def simulationSource(self,source):
         if source not in ('live','grab_hp','abnormals','flow'):return
-        self._sim_source=source;self._demo_start=time.monotonic();self._simulator.reset();self.changed.emit()
+        self._sim_source=source;self._demo_start=time.monotonic();self._simulator.reset();self._emit_changed()
 
     @Slot(int)
     def addFlowRule(self,index):
@@ -985,7 +1099,7 @@ class Backend(QObject):
     def toggleArm(self):
         self._cancel_auto('pulse')
         if self._armed:
-            self._armed=False;self._reset_output(ovc=False);self.log('armed','已暂停 Pulse 输出','系统');self.changed.emit()
+            self._armed=False;self._reset_output(ovc=False);self.log('armed','已暂停 Pulse 输出','系统');self._emit_changed()
         else:self._enable_device('pulse')
 
     def _device_setup(self,role,snapshot=None):
@@ -1004,10 +1118,11 @@ class Backend(QObject):
         if not status['canEnable']:
             if not automatic:self.toast.emit(status['reason'])
             return False
+        if not automatic:self._auto_suppressed.discard(role)
         if role=='pulse':self._armed=True;self._reset_output(ovc=False)
         else:self._ovc_armed=True;self._ovc_planner.reset();self._ovc_warm=0;self._ovc_stamp=None
         self.log('armed',('自动启用' if automatic else '已启用')+('郊狼 Pulse' if role=='pulse' else '负鼠')+' · 可用通道 '+status['usableChannels'],'系统')
-        self.changed.emit();return True
+        self._emit_changed();return True
 
     @Slot(str)
     def explainOutputUnavailable(self,role):
@@ -1024,11 +1139,13 @@ class Backend(QObject):
         client,slot=self._requested_devices.get(role,(s.get('selected_client_id',''),s.get('selected_slot_id','')))
         if not client or not slot:self.explainOutputUnavailable(role);return
         if self._select_v4_device(role,client,slot,automatic=True):
+            self._auto_suppressed.discard(role)
             self._auto_pending[role]=(id(self._v4),client,slot)
             self.toast.emit('正在重新同步并确认归零；就绪后将启用对应设备。')
 
     def _cancel_auto(self,role):
         self._auto_pending.pop(role,None)
+        self._auto_suppressed.add(role)
         if self._v4:
             kind='COYOTE_030' if role=='pulse' else 'OVC_1'
             self._auto_present.update((id(self._v4),d['clientId'],d['slotId']) for d in self.v4Devices if d.get('type')==kind)
@@ -1039,7 +1156,9 @@ class Backend(QObject):
     def _sync_auto_devices(self):
         if self.offline or not self._connection['auto_enable']:return
         devices=self.v4Devices;present={(id(self._v4),d['clientId'],d['slotId']) for d in devices
-            if (d.get('slotState') or {}).get('hasDevice') is True or (d.get('props') or {}).get('connectState')=='connected'}
+            if not d.get('_connectionUnconfirmed') and (d.get('slotState') or {}).get('hasDevice') is not False
+            and (d.get('props') or {}).get('connectState')!='disconnected'
+            and ((d.get('slotState') or {}).get('hasDevice') is True or (d.get('props') or {}).get('connectState')=='connected')}
         added=present-self._auto_present;self._auto_present=present
         blocked=self._emergency or self._trainer.pending or self._sim_running or self._sim_source!='live'
         for role,kind in (('pulse','COYOTE_030'),('ovc','OVC_1')):
@@ -1048,9 +1167,14 @@ class Backend(QObject):
             if not service:continue
             s=service.snapshot();selected=(s.get('selected_client_id'),s.get('selected_slot_id'))
             candidates=[d for d in devices if d.get('type')==kind and (id(self._v4),d['clientId'],d['slotId']) in added]
-            if candidates and not blocked and not (self._armed if role=='pulse' else self._ovc_armed):
+            armed=self._armed if role=='pulse' else self._ovc_armed
+            if candidates and not blocked and role not in self._auto_suppressed and (not armed or not s.get('connected')):
                 # Retain an existing selection; a second device must not steal it.
                 item=next((d for d in candidates if (d['clientId'],d['slotId'])==selected),None) if all(selected) else candidates[0]
+                if armed:
+                    # A reconnect may allocate a new slot on the same APP.
+                    previous=self._requested_devices.get(role,selected)
+                    item=next((d for d in candidates if d['clientId']==previous[0]),None)
                 if item and self._select_v4_device(role,item['clientId'],item['slotId'],automatic=True):
                     self._auto_pending[role]=(id(self._v4),item['clientId'],item['slotId'])
             pending=self._auto_pending.get(role)
@@ -1069,6 +1193,7 @@ class Backend(QObject):
                 elif self._enable_device('pulse',automatic=True):self._auto_v3_pending=None
 
     def _reset_output(self,*,ovc=True):
+        if self._output_worker:self._output_worker.invalidate(ovc=ovc)
         self._detector.reset();self._warm=0;self._stamp=None
         self._pulse_planner.reset();self._pulse_plan=self._pulse_planner.engine.blank('Pulse 已暂停 / 状态变化')
         if self._service:self._service.set_output_permission(False,'配置或运行状态变化')
@@ -1078,15 +1203,39 @@ class Backend(QObject):
 
     @Slot()
     def emergencyStop(self):
+        if not self._emergency:
+            self._emergency_resume={role:self._resume_identity(service) for role,service,armed in
+                (('pulse',self._service,self._armed),('ovc',self._ovc_service,self._ovc_armed)) if armed and service}
+        if self._output_worker:self._output_worker.panic()
         self._cancel_auto('pulse');self._cancel_auto('ovc')
         self._sim_running=False;self._simulator.reset();self._sim_plan=self._simulator.blank('急停已锁定')
         self._emergency=True;self._armed=False;self._ovc_armed=False;self._reset_output()
-        if self._service:self._service.emergency_zero()
-        if self._ovc_service:self._ovc_service.emergency_zero()
-        self.log('emergency','紧急归零并锁定输出','系统');self.changed.emit()
+        for service in (self._service,self._ovc_service):
+            if service:
+                (service.latch_emergency_stop if hasattr(service,'latch_emergency_stop') else service.emergency_zero)()
+        self.log('emergency','紧急归零并锁定输出','系统');self._emit_changed()
 
     @Slot()
-    def unlock(self):self._emergency=False;self._armed=False;self._ovc_armed=False;self._reset_output();self.toast.emit('已解除锁定，输出仍保持暂停');self.changed.emit()
+    def unlock(self):
+        self._emergency=False;self._armed=False;self._ovc_armed=False;self._reset_output()
+        if self._output_worker:self._output_worker.unlock()
+        for service in (self._service,self._ovc_service):
+            if service and hasattr(service,'clear_emergency_stop'):service.clear_emergency_stop()
+        self.toast.emit('已解除锁定，输出仍保持暂停');self._emit_changed()
+
+    @staticmethod
+    def _resume_identity(service):
+        s=service.snapshot()
+        return (id(service),s.get('controller_id'),s.get('target_id'),s.get('selected_client_id'),s.get('selected_slot_id'))
+
+    @Slot()
+    def resumeAfterEmergency(self):
+        if not self._emergency:return
+        targets=dict(self._emergency_resume);self.unlock();restored=[]
+        for role,service in (('pulse',self._service),('ovc',self._ovc_service)):
+            if role in targets and service and self._resume_identity(service)==targets[role] and self._enable_device(role):restored.append(role)
+        self._emergency_resume={}
+        self.toast.emit('已恢复急停前启用的通道' if restored else '已解除急停；请在设备就绪后启用输出');self._emit_changed()
 
     @Slot(int,str,'QVariant')
     def setRule(self,index,field,value):
@@ -1098,12 +1247,12 @@ class Backend(QObject):
         elif field=='duration':r[field]=round(self._clamp(value,.1,5),1)
         elif field=='wave' and str(value) in [w['key'] for w in self._waves]:r[field]=str(value)
         else:return
-        self._reset_output(ovc=False);self.save();self.configChanged.emit();self.changed.emit()
+        self._reset_output(ovc=False);self.save();self.configChanged.emit();self._emit_changed()
 
     @Slot(int,str,float)
     def setChannel(self,index,field,value):
         if index not in (0,1) or field not in ('limit','frequency'):return
-        self._channels[index][field]=int(self._clamp(value,0 if field=='limit' else 1,100));self._reset_output();self.save();self.configChanged.emit();self.changed.emit()
+        self._channels[index][field]=int(self._clamp(value,0 if field=='limit' else 1,100));self._reset_output();self.save();self.configChanged.emit();self._emit_changed()
 
     @Slot(str)
     def selectWave(self,key):
@@ -1184,14 +1333,14 @@ class Backend(QObject):
         if sum(w['key'].startswith(('custom_','vib_custom_')) for w in catalog)>=20:self.toast.emit('自定义波形最多保存 20 个');return
         vibration=self._editing_route=='vibration';key=('vib_custom_' if vibration else 'custom_')+str(time.time_ns())
         (self._vibration_custom if vibration else self._waves).append({'key':key,'name':name.strip()[:32] or ('自定义负鼠波形' if vibration else '自定义波形'),'points':list(self._points)})
-        self._selected=key;self.save();self.configChanged.emit();self.changed.emit();self.toast.emit('波形已保存，可在对应模拟策略中选用')
+        self._selected=key;self.save();self.configChanged.emit();self._emit_changed();self.toast.emit('波形已保存，可在对应模拟策略中选用')
 
     @Slot()
     def startConnection(self):
         if self._sim_running:self.toast.emit('模拟期间不启动设备服务');return
         if self.offline:self.toast.emit('离线预览不打开设备服务');return
         if self._connection['pulse_backend']=='v4':
-            self.startV4();self._service=self._v4.channel('pulse') if self._v4 else None;self.changed.emit();return
+            self.startV4();self._service=self._v4.channel('pulse') if self._v4 else None;self._emit_changed();return
         if self._service and self._service.snapshot()['server_ready']:return
         from .dglab import ConnectionService
         if self._service:self._service.stop()
@@ -1231,7 +1380,7 @@ class Backend(QObject):
         if self._mock_app:self._mock_app.stop();self._mock_app=None
         self._connection['pulse_backend']=mode;self._qr='';self._qrurl=''
         if mode=='v4' and self._v4:self._service=self._v4.channel('pulse')
-        self._reset_output(ovc=False);self.save();self.configChanged.emit();self.changed.emit()
+        self._reset_output(ovc=False);self.save();self.configChanged.emit();self._emit_changed()
 
     @Slot()
     def startV4(self):
@@ -1244,7 +1393,7 @@ class Backend(QObject):
         except (ValueError,OSError) as error:self.toast.emit('V4 服务无法启动：'+str(error));return
         self._ovc_service=self._v4.channel('ovc')
         if self._connection['pulse_backend']=='v4':self._service=self._v4.channel('pulse')
-        self.log('connection','已开启 DG-LAB 4 服务；扫码后自动选择设备，就绪后自动启用','系统');self.changed.emit()
+        self.log('connection','已开启 DG-LAB 4 服务；扫码后自动选择设备，就绪后自动启用','系统');self._emit_changed()
 
     @Slot()
     def stopV4(self):
@@ -1252,7 +1401,7 @@ class Backend(QObject):
         self._ovc_armed=False
         if self._connection['pulse_backend']=='v4':self._armed=False;self._service=None
         if self._v4:self._v4.stop();self._v4=None
-        self._ovc_service=None;self._ovc_planner.reset();self.changed.emit()
+        self._ovc_service=None;self._ovc_planner.reset();self._emit_changed()
 
     @Slot(str,str,str)
     def selectV4Device(self,role,client_id,slot_id):
@@ -1270,7 +1419,7 @@ class Backend(QObject):
         accepted=self._v4.select_device(role,client_id,slot_id)
         if accepted:self._requested_devices[role]=(client_id,slot_id)
         elif not automatic:self.toast.emit('设备类型不匹配，或该槽位已离线。请在 DG-LAB APP 中连接对应设备。')
-        self.changed.emit();return accepted
+        self._emit_changed();return accepted
 
     @Slot()
     def copyV4Connection(self):
@@ -1282,14 +1431,14 @@ class Backend(QObject):
         if not self._ovc_armed:self._enable_device('ovc');return
         self._ovc_armed=False;self._ovc_planner.reset();self._ovc_warm=0;self._ovc_stamp=None
         if self._ovc_service:self._ovc_service.set_output_permission(False,'负鼠已暂停')
-        self.changed.emit()
+        self._emit_changed()
 
     @Slot(str,bool)
     def setOvcChannelEnabled(self,channel,enabled):
         if channel not in ('A','B'):return
         self._ovc_channels[channel]=enabled
         if not enabled and self._ovc_service:self._ovc_service.stop_channel(channel)
-        self.changed.emit()
+        self._emit_changed()
 
     @Slot(str,int)
     def setOvcLimit(self,channel,value):
@@ -1311,13 +1460,13 @@ class Backend(QObject):
         self._last_mock_path=str(self._mock_session.directory)
         self._mock_session.profile(self._sim_profile,self._channels,self._ovc_limits)
         self._v4.start();self._mock_session.start();self._mock_pending=True
-        self.log('mock','已开启四通道本机模拟 APP 与持续记录 · 使用当前预设','系统');self.changed.emit()
+        self.log('mock','已开启四通道本机模拟 APP 与持续记录 · 使用当前预设','系统');self._emit_changed()
 
     @Slot()
     def resumeMockBoth(self):
         if not self._mock_session or not self._mock_session.snapshot()['connected']:return
         for role in ('pulse','ovc'):self._enable_device(role)
-        self.changed.emit()
+        self._emit_changed()
 
     def _poll_mock_session(self):
         if not self._mock_session or not self._mock_pending:return
@@ -1337,7 +1486,7 @@ class Backend(QObject):
         if self._v4:self._v4.stop()
         self._mock_session.stop();self._mock_session=None;self._v4=self._service=self._ovc_service=None
         if self._mock_restore:self._connection=dict(self._mock_restore)
-        self._mock_restore=None;self.log('mock','模拟 APP 已归零并保存记录 · '+self._last_mock_path,'系统');self.changed.emit()
+        self._mock_restore=None;self.log('mock','模拟 APP 已归零并保存记录 · '+self._last_mock_path,'系统');self._emit_changed()
 
     @Slot()
     def openMockRecords(self):
@@ -1369,14 +1518,14 @@ class Backend(QObject):
             from .mock_app import MockAppRunner
             if self._mock_app:self._mock_app.stop()
             self._mock_app=MockAppRunner(self._service,ROOT/'artifacts/pulse-validation/live-mock-app.json');self._mock_app.start()
-        self.changed.emit()
+        self._emit_changed()
 
     @Slot(str,bool)
     def setPulseChannelEnabled(self,channel,enabled):
         if channel not in ('A','B'):return
         self._pulse_channels[channel]=enabled
         if not enabled and self._service:self._service.stop_channel(channel)
-        self.changed.emit()
+        self._emit_changed()
 
     @Slot()
     def stopConnection(self):
@@ -1385,13 +1534,13 @@ class Backend(QObject):
         if self._mock_app:self._mock_app.stop();self._mock_app=None
         if self._v4:self._v4.stop();self._v4=None
         self._ovc_service=None;self._ovc_armed=False
-        self._qr='';self._qrurl='';self._armed=False;self._reset_output();self.changed.emit()
+        self._qr='';self._qrurl='';self._armed=False;self._reset_output();self._emit_changed()
 
     @Slot(str)
     def selectIp(self,ip):
         if self._service and hasattr(self._service,'set_lan_ip'):self._service.set_lan_ip(ip)
         if self._v4:self._v4.set_lan_ip(ip)
-        self._ip=ip;self._connection['lan_ip']=ip;self.save();self.configChanged.emit();self.changed.emit()
+        self._ip=ip;self._connection['lan_ip']=ip;self.save();self.configChanged.emit();self._emit_changed()
 
     @Slot()
     def copyConnection(self):
@@ -1444,6 +1593,8 @@ class Backend(QObject):
         self._live=self._locked_hp.update(self._live,callbacks,now=now)
         self._live=self._same_hp.update(self._live,callbacks,now=now)
         self._live.setdefault('feedback_evidence',{})['same_hp_timeout']=(self._sim_profile.get('cg') or {}).get('same_hp_timeout',3.)
+        self._cg_info=describe_game_cg(self._live,now)
+        self._live['feedback_evidence']['cg_detection']=dict(mode=self._sim_profile.get('cg_detection_mode','hybrid'),**self._cg_info)
         s=self._live;fresh=s.get('live') and now-s.get('sampled_at',0)<.6
         valid=bool(fresh and s.get('valid'))
         plugin_online=bool(fresh and s.get('observer_version') and self._install_state.get('selectedPath')==str(self._game_directory))
@@ -1486,48 +1637,20 @@ class Backend(QObject):
         if fresh and self._flows.observe(s):self._notify_flows()
         self._status=('已暂停' if s.get('paused') else '同值 HP 演出' if same_hp_flow(s,(self._sim_profile.get('cg') or {}).get('same_hp_timeout',3.)) else '死亡惩罚阶段' if death_penalty_stage(s) else '正在观察') if valid else '独立战败 CG' if fresh and scripted_go_penalty(s) else '离线预览' if self.offline else '等待游戏就绪'
         if self._gallery.previous['inGallery']:self._status=self._gallery.previous['label']
+        elif self._cg_info.get('recognized'):self._status='CG 播放 · '+self._cg_info['name']
         if valid:self._last=deepcopy(s)
         if self._v4:self._v4.snapshot()  # Drain shared APP status into route queues.
         self._poll_mock_session();self._sync_auto_devices()
+        vibration_waves=VIBRATION_WAVES+self._vibration_custom
+        if self._output_worker:
+            self._publish_output_controls()
+            output=self._output_worker.snapshot()
+            self._pulse_plan=output['pulse'];self._ovc_plan=output['ovc'];self._reason=output['reason']
+        else:
+            from .output_runtime import plan_outputs
+            plan_outputs(self,s,now)
         con=self._service.snapshot() if self._service else {}
-        game_feedback_identity=(s.get('session'),s.get('pid'),'gallery') if is_gallery(s) else (s.get('session'),s.get('pid'),s.get('player'),s.get('scene_id'),(s.get('hp') or {}).get('max'))
-        identity=(game_feedback_identity,con.get('controller_id'),con.get('target_id'))
-        if identity!=self._identity:self._identity=identity;self._detector.reset();self._pulse_planner.reset();self._warm=0
-        gate=pulse_gate(s,now,self._sim_profile['zero_hp_mode'],has_pulse_abnormal(s,self._sim_profile),same_hp_feedback(s,self._sim_profile),profile=self._sim_profile);ready=not gate
-        if not ready:self._warm=0
-        elif self._stamp!=s.get('sample_id'):self._warm+=1
-        self._stamp=s.get('sample_id')
-        enabled=bool(ready and self._warm>=2 and self._armed and not self._emergency and not self._sim_running and self._sim_source=='live')
-        pulse_profile=deepcopy(self._sim_profile)
-        for channel in self._channels:
-            key=channel['key'].lower()
-            pulse_profile['pulse_cap_'+key]=min(pulse_profile['pulse_cap_'+key],channel['limit'],con.get('limit_'+key) or 0)
-        self._pulse_plan=self._pulse_planner.update(s,pulse_profile,self._waves,now=now,enabled=enabled,emergency=self._emergency)
-        local=con.get('local_only') is True
-        route_ok=local if self._connection['pulse_backend']=='mock' else (con.get('protocol')=='v4' if self._connection['pulse_backend']=='v4' else True)
-        self._reason='急停已锁定' if self._emergency else '输出已暂停' if not self._armed else gate if gate else '等待状态基线' if self._warm<2 else '连接模式不匹配' if not route_ok else '等待 APP 配对与强度回报' if not con.get('feedback_known') else self._pulse_plan['reason']
-        permitted=bool(enabled and route_ok and con.get('feedback_known'))
-        if self._service:
-            caps={c['key']:min(c['limit'],self._sim_profile['pulse_cap_'+c['key'].lower()]) for c in self._channels}
-            allowed=self._service.set_output_permission(permitted,self._reason,hard_limits=caps)
-            if allowed:
-                frames={c:frame if self._pulse_channels[c] else None for c,frame in self._pulse_plan['pulse_stream'].items()}
-                self._service.submit_plan(frames,generated_at=self._pulse_plan['generated_at'])
         ovc=self._ovc_service.snapshot() if self._ovc_service else {}
-        ovc_identity=(game_feedback_identity,ovc.get('controller_id'),ovc.get('target_id'),ovc.get('selected_slot_id'))
-        if ovc_identity!=self._ovc_identity:self._ovc_identity=ovc_identity;self._ovc_planner.reset();self._ovc_warm=0
-        ovc_gate=pulse_gate(s,now,self._sim_profile['zero_hp_mode'],has_ovc_abnormal(s,self._sim_profile),same_hp_feedback(s,self._sim_profile),profile=self._sim_profile)
-        if ovc_gate:self._ovc_warm=0
-        elif self._ovc_stamp!=s.get('sample_id'):self._ovc_warm+=1
-        self._ovc_stamp=s.get('sample_id')
-        ovc_enabled=bool(not ovc_gate and self._ovc_warm>=2 and self._ovc_armed and not self._emergency and not self._sim_running and self._sim_source=='live')
-        ovc_profile=deepcopy(self._sim_profile)
-        for channel in ('A','B'):
-            key=channel.lower();ovc_profile['vibration_cap_'+key]=min(ovc_profile['vibration_cap_'+key],self._ovc_limits[channel],ovc.get('limit_'+key) or 0)
-        self._ovc_plan=self._ovc_planner.update(s,ovc_profile,self.vibrationWaves,now=now,enabled=ovc_enabled,emergency=self._emergency)
-        if self._ovc_service:
-            accepted=self._ovc_service.set_output_permission(ovc_enabled and ovc.get('feedback_known'),self._ovc_plan['reason'],hard_limits={c:min(self._ovc_limits[c],self._sim_profile['vibration_cap_'+c.lower()]) for c in ('A','B')})
-            if accepted:self._ovc_service.submit_plan({c:f if self._ovc_channels[c] else None for c,f in self._ovc_plan['vibration_stream'].items()},generated_at=self._ovc_plan['generated_at'])
         for e in self._detector.update(s):
             self.log(e['key'],e['text'],'已验证' if e['verified'] else '候选')
         if self._observer:
@@ -1554,7 +1677,7 @@ class Backend(QObject):
             sim_state=demo_state(self._sim_source,now-self._demo_start,now);sim_events=[]
             if self._sim_source=='flow':
                 sim_profile=deepcopy(self._sim_profile);sim_profile['flows']=[base_rule('DEMO|flow','演出样例',priority=60)]
-        self._sim_plan=self._simulator.evaluate(sim_state,sim_profile,self._waves,now=now,enabled=self._sim_running,emergency=self._emergency,events=sim_events,demo=self._sim_source!='live',vibration_waves=self.vibrationWaves)
+        self._sim_plan=self._simulator.evaluate(sim_state,sim_profile,self._waves,now=now,enabled=self._sim_running,emergency=self._emergency,events=sim_events,demo=self._sim_source!='live',vibration_waves=vibration_waves)
         if self._service:
             url=(('ws://127.0.0.1:'+str(con['port'])+'/'+con['controller_id']) if con.get('local_only') else con.get('qr_url','')) if con.get('server_ready') else ''
             if url!=self._qrurl:
@@ -1573,7 +1696,7 @@ class Backend(QObject):
                         self._traces[channel]=(self._traces[channel]+samples)[-64:];self._trace_new.add(channel)
                     except (ValueError,TypeError,IndexError,KeyError):pass
                 if e['event'] in ('connected','disconnected','error','feedback_started','feedback_end','zero_sent'):
-                    if e['event']=='error':
+                    if e['event']=='error' and not e.get('recoverable'):
                         self._armed=False;self._auto_pending.pop('pulse',None);self._reset_output(ovc=False)
                     self.log('device',{'connected':'APP 配对完成','disconnected':'APP 已断开','error':e.get('error') or e.get('detail') or e.get('reason') or '连接异常','feedback_started':'设备波形输出开始','feedback_end':'设备波形输出结束','zero_sent':'已发送归零和清队列'}.get(e['event'],e['event']),'设备')
         if self._ovc_service:
@@ -1586,7 +1709,8 @@ class Backend(QObject):
                         self._ovc_traces[channel]=(self._ovc_traces[channel]+samples)[-64:];self._ovc_trace_new.add(channel)
                     except (ValueError,TypeError,IndexError,KeyError):pass
                 elif e.get('event')=='error':
-                    self._ovc_armed=False;self._auto_pending.pop('ovc',None)
+                    if not e.get('recoverable'):
+                        self._ovc_armed=False;self._auto_pending.pop('ovc',None)
                     self._ovc_service.set_output_permission(False,'负鼠输出错误')
                     self.log('ovc',e.get('error') or e.get('detail') or e.get('reason') or '负鼠连接异常','设备')
         if now-self._trace_at>=.1:
@@ -1602,6 +1726,9 @@ class Backend(QObject):
                             pulseArmed=self._armed,ovcArmed=self._ovc_armed,pulseReason=self._reason,ovcReason=self._ovc_plan['reason'],
                             pulseSetup=self._device_setup('pulse',con),ovcSetup=self._device_setup('ovc',ovc),
                             game={k:s.get(k) for k in ('live','valid','paused','hp','scene','event_playing','feedback_evidence')},
+                            galleryPlayback=describe_gallery(s,now),
+                            cgPlayback=self._cg_info,cgDetectionMode=self._sim_profile.get('cg_detection_mode','hybrid'),
+                            outputWorker={k:v for k,v in self._output_worker.snapshot().items() if k not in ('pulse','ovc')} if self._output_worker else {},
                             penaltyClassification=current_penalty_class(s)[0],penaltyLabel=current_penalty_class(s)[1])
             try:
                 path=self.settings.parent/'connection-diagnostics.json';temp=path.with_suffix('.tmp')
@@ -1610,8 +1737,20 @@ class Backend(QObject):
         if self._mock_session:
             self._mock_session.record(s,self._pulse_plan,self._ovc_plan,
                 self._service.snapshot().get('output_channels',{}) if self._service else {},
-                self._ovc_service.snapshot().get('output_channels',{}) if self._ovc_service else {},self._armed,self._ovc_armed)
-        self.changed.emit()
+                self._ovc_service.snapshot().get('output_channels',{}) if self._ovc_service else {},self._armed,self._ovc_armed,compact=self._cg_batch.data is not None)
+        if (self._developer_tools or self._cg_batch_active) and self._cg_batch.data is not None:
+            self._cg_batch.observe(s,self._pulse_plan,self._ovc_plan,con.get('output_channels',{}),ovc.get('output_channels',{}),
+                self._mock_session.snapshot() if self._mock_session else {},self._sim_profile.get('cg_detection_mode','hybrid'),now)
+            self._cg_batch.save(now)
+            if now-self._cg_batch_at>=.5:self._cg_batch_at=now;self._refresh_batch()
+        if self._developer_tools:
+            self._cg_coverage.observe(s,self._pulse_plan,self._ovc_plan,con.get('output_channels',{}),ovc.get('output_channels',{}),self._sim_profile.get('cg_detection_mode','hybrid'),now)
+        if self._developer_tools and now-self._cg_coverage_at>=1 and self._cg_coverage.dirty:
+            self._cg_coverage_at=now
+            try:self._cg_coverage.save(now)
+            except OSError:pass
+            self._cg_coverage_rows=self._cg_coverage.rows();self.cgCoverageChanged.emit()
+        self._emit_changed(live=True)
 
     @Slot()
     def requestExit(self):self.exitRequested.emit()
@@ -1619,6 +1758,10 @@ class Backend(QObject):
     def shutdown(self):
         if self._shutdown_started:return
         self._shutdown_started=True;self._timer.stop();self._armed=False;self._ovc_armed=False
+        if self._output_worker:self._output_worker.close()
+        try:self._cg_coverage.save(force=True)
+        except OSError:pass
+        self._cg_batch.close()
         if self._hotkey_manager:self._hotkey_manager.close()
         def cleanup(name,operation):
             try:operation()

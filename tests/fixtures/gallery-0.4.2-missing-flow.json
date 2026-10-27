@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "source": "bepinex",
+  "fingerprint": "b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d",
+  "session": "54e5080a6c5c489fa97d7761d995941e",
+  "pid": 40444,
+  "sample_id": 5930,
+  "utc": "2026-10-27T05:42:25.4323329+00:00",
+  "valid": false,
+  "player": 0,
+  "scene_id": 10,
+  "loading": false,
+  "observer_version": "0.4.2",
+  "combat_hooks": {
+    "damage": true,
+    "death_exists": true,
+    "death_remove": true,
+    "resume": true
+  },
+  "flow_hooks": {
+    "request": true,
+    "stop": true,
+    "receiver_label": true,
+    "execution_label": true
+  },
+  "hp": {
+    "current": 140,
+    "max": 140
+  },
+  "mp": {
+    "current": 140,
+    "max": 140
+  },
+  "durability": {
+    "current": 0,
+    "max": 100
+  },
+  "paused": false,
+  "event_playing": true,
+  "event_paused": false,
+  "broken": true,
+  "bound": false,
+  "binder": "",
+  "abnormals": [
+    {
+      "type_raw": 825765986,
+      "level": 1,
+      "name_id": 178,
+      "max_level": 1,
+      "delete_timer": -1,
+      "delete_time": -1,
+      "remove_on_scene_change": false
+    },
+    {
+      "type_raw": 808858210,
+      "level": 1,
+      "name_id": 69,
+      "max_level": 1,
+      "delete_timer": -1,
+      "delete_time": -1,
+      "remove_on_scene_change": false
+    }
+  ],
+  "hook_count": 18,
+  "anim_raw": 0,
+  "gacha": null,
+  "time_scale": 1,
+  "gallery": {
+    "available": true,
+    "active": true,
+    "source": "GalleryManager/ButtonGuideUI",
+    "guide_available": true,
+    "guide_open": true,
+    "ui_open": true,
+    "changing": true,
+    "ui_paused": false,
+    "slow": false,
+    "dev_mode": false,
+    "ui_hidden": false,
+    "selected_index_raw": 1,
+    "take_count": 3,
+    "enemy_id": 6,
+    "enemy_name_id": 101,
+    "target_scene_id": -1,
+    "take_selected": true,
+    "take_player": 2364201837424,
+    "take_data": 2364207706320,
+    "take_player_type": "GaSceneTakePlayer",
+    "take_name": "Load_2_0_GO",
+    "play_type_raw": 1,
+    "animator_loop": false,
+    "combat_event": false,
+    "like_game_scene": false,
+    "accept_hp0": false
+  }
+}

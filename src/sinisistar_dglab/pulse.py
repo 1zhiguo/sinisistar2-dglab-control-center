@@ -1,5 +1,5 @@
 """Pulse adapter including zero-HP captivity; named CG rules are not routed."""
-from copy import deepcopy
+from .channel_policy import planner_copy
 import math,time
 from .simulation import Simulator,death_penalty_stage
 from .status_policy import positive_status
@@ -7,6 +7,7 @@ from .locked_hp import locked_hp_penalty
 from .scripted_go import scripted_go_penalty
 from .same_hp import same_hp_feedback
 from .gallery_policy import is_gallery,gallery_gate
+from .cg_playback import describe_game_cg
 
 PULSE_EVENTS=frozenset(('hp_loss','grab_hold','defeat_hold','grab_hp_loss','break'))
 
@@ -19,6 +20,9 @@ def has_pulse_abnormal(s,profile):
 def pulse_gate(s,now,zero_hp_mode='capture',abnormal_feedback=False,non_damage_feedback=False,*,profile=None):
     if not s.get('live') or not 0<=now-s.get('sampled_at',0)<.6:return '等待新鲜游戏数据'
     if is_gallery(s):return gallery_gate(s,now,(profile or {}).get('gallery'))
+    playback=describe_game_cg(s,now)
+    if playback['recognized']:return '游戏已暂停' if s.get('paused') else ''
+    if (profile or {}).get('cg_detection_mode')=='playback_only':return '无 HP 测试 · '+playback['reason']
     if (s.get('source')!='bepinex' or not s.get('valid') or not isinstance(s.get('player'),int) or s['player']<=0) and not scripted_go_penalty(s):return '等待有效玩家'
     if not isinstance(s.get('pid'),int) or s['pid']<=0:return '玩家会话无效'
     if s.get('loading'):return '加载中'
@@ -44,18 +48,19 @@ class PulsePlanner:
         now=time.monotonic() if now is None else now
         if is_gallery(s):return self.engine.evaluate_gallery(s,profile,waves,now,enabled,emergency,route='pulse')
         self.engine.gallery_clock.reset()
+        playback=describe_game_cg(s,now)
         abnormal=bool(s.get('valid') and has_pulse_abnormal(s,profile))
-        reason='急停已锁定' if emergency else 'Pulse 已暂停' if not enabled else pulse_gate(s,now,profile.get('zero_hp_mode','capture'),abnormal,same_hp_feedback(s,profile))
+        reason='急停已锁定' if emergency else 'Pulse 已暂停' if not enabled else pulse_gate(s,now,profile.get('zero_hp_mode','capture'),abnormal,same_hp_feedback(s,profile),profile=profile)
         self.engine.sync_death(s,now)
-        if reason:self.engine.reset(keep_death=True);return self.engine.blank(reason)
-        filtered=deepcopy(profile);filtered['flows']=[];filtered['zero_hp_mode']='states' if abnormal else 'capture'
+        if reason and not playback['recognized']:self.engine.reset(keep_death=True);return self.engine.blank(reason)
+        filtered=planner_copy(profile);filtered['flows']=[];filtered['zero_hp_mode']='states' if abnormal else 'capture'
         if not (filtered.get('cg') or {}).get('inherit_death',True):filtered['cg']['rule']['vibration_enabled']=False
         restricted=bool(s.get('event_playing') or (s.get('flow') or {}).get('playing') or (s.get('hp') or {}).get('current')==0)
         death=death_penalty_stage(s)
         for key,rule in filtered['rules'].items():
-            if key not in PULSE_EVENTS or (restricted and not (death and key=='defeat_hold')):rule['enabled']=False
+            if key not in PULSE_EVENTS or (restricted and not ((death or playback['recognized']) and key=='defeat_hold')):rule['enabled']=False
             rule['vibration_enabled']=False
         for rule in filtered['abnormals'].values():
             rule['vibration_enabled']=False
             if not s.get('valid'):rule['enabled']=False
-        return self.engine.evaluate(s,filtered,waves,now=now,enabled=True)
+        return self.engine.evaluate(s,filtered,waves,now=now,enabled=not bool(reason),emergency=emergency)

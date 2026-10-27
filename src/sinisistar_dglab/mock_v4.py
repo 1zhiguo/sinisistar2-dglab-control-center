@@ -25,6 +25,9 @@ class MockV4App:
         self.client_id=hello['clientId'];self.reader=asyncio.create_task(self._read());return self
     async def send(self,data):await self.socket.send(json.dumps(dict(type='message',data=data)))
     async def patch_slot(self,slot,**fields):
+        from ._v4_protocol import _merge
+        device=next((d for d in self.devices if d['slotId']==slot),None)
+        if device is not None:_merge(device,fields)
         await self.send(dict(t='ev',ev='slots.patch',slots=[dict(slotId=slot,**fields)]))
     async def _read(self):
         try:
@@ -33,6 +36,8 @@ class MockV4App:
                 if outer.get('type')!='message':continue
                 request=outer['data'];self.records.append(dict(at=time.monotonic(),**deepcopy(request)))
                 method=request.get('m');data=request.get('data') or {}
+                if method in ('device.op','device.op.clear') and not any(d['slotId']==data.get('s') for d in self.devices):
+                    await self.send(dict(t='resp',reqId=request['reqId'],error='slot_not_found'));continue
                 if data.get('s')==self.reject_slot and method=='device.op':
                     await self.send(dict(t='resp',reqId=request['reqId'],error='fixture rejected output'));continue
                 if method=='devices.get':result=dict(devices=deepcopy(self.devices))
