@@ -1,0 +1,27 @@
+@font-face {
+  font-family: "SiNiSistar Blackletter";
+  src: local("Old English Text MT"), local("OldEnglishTextMT");
+  font-display: swap;
+}
+:root {
+  --gothic-display: "SiNiSistar Blackletter", "SimSun", "Yu Mincho", serif;
+  --gothic-reading: Georgia, "SimSun", "Yu Mincho", serif;
+}
+body { font-family: var(--gothic-reading); letter-spacing: .025em; }
+h2, h3, .brand, .feature-number, .steps b {
+  font-family: var(--gothic-display);
+  font-weight: 400;
+}
+h2 { letter-spacing: .1em; }
+.hero-heading h2 { font-size: 26px; }
+h3 { font-size: 19px; letter-spacing: .065em; }
+.brand { font-size: 23px; letter-spacing: .02em; }
+nav, .button { font-family: var(--gothic-reading); letter-spacing: .07em; }
+.lead, .features p, .steps p, .download-panel p { line-height: 1.9; }
+.eyebrow { font-family: Georgia, "Times New Roman", serif; letter-spacing: .2em; }
+.feature-number { font-size: 22px; }
+@media(max-width:760px) {
+  .brand { font-size: 20px; }
+  nav { font-size: 14px; letter-spacing: .035em; }
+  .hero-heading h2 { font-size: 24px; }
+}

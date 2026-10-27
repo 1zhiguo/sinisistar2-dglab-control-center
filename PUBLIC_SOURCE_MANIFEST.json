@@ -167,7 +167,7 @@
     "tools/build_lilia_mascot.py": "92c740d87e9f16651dbe351ad4333d559197dcd4e1e48eae6f2f12e6ebaafe13",
     "tools/build_monster_catalog.py": "2ebaf5d0e66a1c7dc100aec110d1ed9f28d1a8b30c7ae24e8bc4e63d49052581",
     "tools/build_observer.py": "720cd4cede5d407ba52a2103af36fa460d4b92b707c6e68bd7e98cff779d20a9",
-    "tools/build_product_site.py": "851870efb4c0885a71fa86c20bcebdf8499ce48ac8b533d648cb49c4aa4d9ad4",
+    "tools/build_product_site.py": "a1ec0a656d769d09f50cba3838134e504204189810925279ae88853d80f38b55",
     "tools/build_trainer.py": "8628b670a46cb63bdd03d063ab5fb52ea6b9cc014f27d80712d3b31fdf0078d5",
     "tools/capture_plugin_validation.py": "bed84d00277a819ac18cb4e3cb9e14df563ed928c4208d17bb9e10ac8f076cd3",
     "tools/catalog_capture_flows.py": "db66b07c74edde9b269b285cbac49d05cad0a8d672bd1bb0ccb521b1fef7fe8e",
@@ -208,7 +208,7 @@
     "trainer/Native.cs": "f2e5ec9f545b1209d0880875e1ebb7bab8149f6a261ce839abad6cbe48d01225",
     "trainer/Plugin.cs": "3c5ce754498abdd9a2e285e68edfb6aa20b7f251b3181d57e1d67771f11818cb",
     "website/README.md": "bd71e3366171c6662ede20db4d306c7e7f05b5dad4dd23f901d42755e32cefa5",
-    "website/dist/index.html": "95f4c852174d9427705f261f9b29e6a2272ab54c2aae4d964c3f67572c363522",
+    "website/dist/index.html": "c100b7be000087f654e8a71e8b1c8df69afe9fdded586b0ee64b1f37c48f6454",
     "website/dist/site.js": "42049d9b539bf3690720f2fdd81aeaada7afef04b2fab7e4074bbc67b115674a",
     "website/dist/styles.css": "51e45f017da0e82cc932904828b00b2d00313e2da9a93c7b6a3ad52ec5a16d4d",
     "website/dist/translations.json": "26f3b72da6b97c96c6cded9d879bae33635691e90331a9fa3366fb3ed45becef",
@@ -221,6 +221,9 @@
     "website/dist/support.css": "e5d425ba53c0428084052841e54d04c2dff151119f9dce4c7e7ae685e9214ae9",
     "website/dist/assets/x-avatar.png": "ea2670258e9001de25f89e2d19bbfab4dc09ba84f32b9e6117e9b9cf9a2c959b",
     "website/dist/assets/qq-group.jpg": "da0c526421c8f3a2981d7f6a2522132dff4102c52736a22cf6567d5d7be08cd7",
-    "website/dist/assets/reward-code.jpg": "88c1976d7b338f5fe1747613866e7d06b5102dd690e0ec09a7b13a055e6afd80"
+    "website/dist/assets/reward-code.jpg": "88c1976d7b338f5fe1747613866e7d06b5102dd690e0ec09a7b13a055e6afd80",
+    "website/dist/gothic.css": "c0c6a2e4d9f29c64fe22ab7f3c57a6a1e49f5c086b95b7cd8e26fa4accacbfa2",
+    "website/dist/brand-lockup.css": "4319026744076ddc876ac86e37aa77552c36a08622631e8366a22f8341d3e5bf",
+    "website/dist/assets/dglab-icon.png": "749d4261ae1b20a340dcaa8161b5fd677ca076896c5c1956e9d29aa9b2fed288"
   }
 }
