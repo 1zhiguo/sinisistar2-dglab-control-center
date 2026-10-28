@@ -61,7 +61,7 @@ def _target(root,relative):
     return target
 
 def game_is_running(executable):
-    """Read executable paths only; inaccessible same-name processes fail closed."""
+    """Read-only process check; None matches any copy sharing LocalLow saves."""
     if sys.platform!='win32':return False
     from ctypes import wintypes
     class Entry(ctypes.Structure):
@@ -76,11 +76,12 @@ def game_is_running(executable):
     api.CloseHandle.argtypes=[wintypes.HANDLE]
     snapshot=api.CreateToolhelp32Snapshot(2,0)
     if snapshot==ctypes.c_void_p(-1).value:raise InstallError('process_check_failed','无法核对游戏进程，请稍后重试')
-    wanted=str(Path(executable).resolve()).casefold();entry=Entry();entry.dwSize=ctypes.sizeof(entry)
+    wanted=str(Path(executable).resolve()).casefold() if executable else None;entry=Entry();entry.dwSize=ctypes.sizeof(entry)
     try:
         exists=api.Process32FirstW(snapshot,ctypes.byref(entry))
         while exists:
             if entry.szExeFile.casefold()==EXE.casefold():
+                if wanted is None:return True
                 handle=api.OpenProcess(0x1000,False,entry.th32ProcessID)
                 if not handle:raise InstallError('process_check_failed','有同名游戏进程，无法确认其路径；请先退出游戏')
                 try:

@@ -1,4 +1,19 @@
 {
+  "game1": {
+    "zh": "游戏截图 01",
+    "en": "Gameplay 01",
+    "ja": "ゲーム画面 01"
+  },
+  "game2": {
+    "zh": "游戏截图 02",
+    "en": "Gameplay 02",
+    "ja": "ゲーム画面 02"
+  },
+  "game3": {
+    "zh": "游戏截图 03",
+    "en": "Gameplay 03",
+    "ja": "ゲーム画面 03"
+  },
   "f0h": {
     "zh": "受伤与战败反馈",
     "en": "Damage and defeat feedback",
@@ -105,9 +120,9 @@
     "ja": "コントロールセンターを起動"
   },
   "step0p": {
-    "zh": "下载源码，安装 requirements-native.txt 后运行 run_native.cmd。",
-    "en": "Download the source, install requirements-native.txt, then run run_native.cmd.",
-    "ja": "ソースをダウンロードし、requirements-native.txt を導入して run_native.cmd を実行。"
+    "zh": "下载 Windows ZIP，完整解压后运行 SiNiSistar2-x-DGlab.exe，无需安装 Python。",
+    "en": "Download the Windows ZIP, extract the entire folder and run SiNiSistar2-x-DGlab.exe. No Python installation is needed.",
+    "ja": "Windows ZIP 全体を解凍し、SiNiSistar2-x-DGlab.exe を起動。Python のインストールは不要です。"
   },
   "step1h": {
     "zh": "安装游戏插件",
@@ -144,6 +159,11 @@
     "en": "Features",
     "ja": "機能"
   },
+  "navgame": {
+    "zh": "游戏截图",
+    "en": "Gameplay",
+    "ja": "ゲーム画面"
+  },
   "navs": {
     "zh": "界面",
     "en": "Interface",
@@ -170,9 +190,9 @@
     "ja": "ダメージ・状態異常・敗北イベントを郊狼と負鼠に連動。チャンネル・強度・波形・時間を個別に設定。"
   },
   "get": {
-    "zh": "获取源码",
-    "en": "Get the source",
-    "ja": "ソースを入手"
+    "zh": "下载 Windows 版",
+    "en": "Download for Windows",
+    "ja": "Windows 版をダウンロード"
   },
   "start": {
     "zh": "查看使用步骤 ↗",
@@ -194,6 +214,16 @@
     "en": "Core features",
     "ja": "主な機能"
   },
+  "gamescreens": {
+    "zh": "游戏截图",
+    "en": "Gameplay screenshots",
+    "ja": "ゲーム画面"
+  },
+  "gameexpand": {
+    "zh": "点击截图可放大查看。",
+    "en": "Select a screenshot to enlarge.",
+    "ja": "画像をクリックして拡大。"
+  },
   "screens": {
     "zh": "程序界面",
     "en": "Application interface",
@@ -210,9 +240,9 @@
     "ja": "導入手順"
   },
   "prereq": {
-    "zh": "源码运行需要 Windows x64、Python 3.10+。首次安装游戏插件前退出游戏；连接后按软件内五步教程设置。",
-    "en": "Source setup requires Windows x64 and Python 3.10+. Close the game before installing its plugin. Follow the five-step tutorial in the app.",
-    "ja": "ソース実行には Windows x64 と Python 3.10+ が必要です。プラグイン導入前にゲームを終了し、アプリ内の 5 ステップガイドに従ってください。"
+    "zh": "需要 Windows x64 与自己的 SiNiSistar2 v1.3.1。安装插件前退出游戏；连接后按软件内五步教程设置。",
+    "en": "Requires Windows x64 and your own SiNiSistar2 v1.3.1. Close the game before installing the plugin, then follow the five-step in-app tutorial.",
+    "ja": "Windows x64 と SiNiSistar2 v1.3.1 が必要です。ゲーム終了中にプラグインを導入し、アプリ内の 5 ステップガイドに従ってください。"
   },
   "download": {
     "zh": "下载与源码",
@@ -220,24 +250,54 @@
     "ja": "ダウンロード・ソース"
   },
   "version": {
-    "zh": "开发版 · 0.6",
-    "en": "Development build · 0.6",
-    "ja": "開発版 · 0.6"
+    "zh": "Windows 免安装版 · 1.0.1",
+    "en": "Windows portable · 1.0.1",
+    "ja": "Windows ポータブル版 · 1.0.1"
+  },
+  "buildbadge": {
+    "zh": "游玩测试版 · Windows x64",
+    "en": "Gameplay test build · Windows x64",
+    "ja": "プレイテスト版 · Windows x64"
   },
   "sourcebody": {
-    "zh": "提供原生界面、观察插件与独立辅助插件源码。运行时和插件构建步骤见仓库说明。",
-    "en": "Includes source for the native UI, observer and optional helper plugin. See the repository for runtime setup and plugin builds.",
-    "ja": "ネイティブ UI、観測プラグイン、任意の補助プラグインのソースを公開。ランタイムの準備とビルド方法はリポジトリに記載。"
+    "zh": "完整解压后双击 EXE 即可运行，BepInEx 与观察插件安装资源已包含，无需另装 Python。",
+    "en": "Extract the whole folder and run the EXE. BepInEx and observer installation resources are included; no separate Python setup is required.",
+    "ja": "フォルダー全体を解凍して EXE を起動。BepInEx と観測プラグインの導入用ファイルを同梱。Python の別途導入は不要です。"
   },
   "sourcenote": {
-    "zh": "下载内容为源码 ZIP，需要安装 Python 依赖；不含游戏本体和运行时二进制。",
-    "en": "This is a source ZIP requiring Python dependencies. Game files and runtime binaries are not included.",
-    "ja": "Python の依存パッケージが必要なソース ZIP です。ゲーム本体とランタイムのバイナリは含みません。"
+    "zh": "三个入口提供同一版本，不含游戏本体、存档或个人配置。升级时先关闭旧控制中心；插件更新前请退出游戏。",
+    "en": "All three links provide the same version, without game files, saves or personal settings. Close the old Control Center before upgrading and exit the game before updating its plugin.",
+    "ja": "3 つのリンクは同じバージョンです。ゲーム本体・セーブ・個人設定は含みません。更新前に旧アプリを閉じ、プラグイン更新時はゲームを終了してください。"
+  },
+  "githubdownload": {
+    "zh": "GitHub · 下载 ZIP ↓",
+    "en": "GitHub · download ZIP ↓",
+    "ja": "GitHub · ZIP ダウンロード ↓"
+  },
+  "baidu": {
+    "zh": "百度网盘 ↓",
+    "en": "Baidu Netdisk ↓",
+    "ja": "Baidu Netdisk ↓"
+  },
+  "baiducode": {
+    "zh": "提取码：hj15",
+    "en": "Access code: hj15",
+    "ja": "抽出コード：hj15"
+  },
+  "cos": {
+    "zh": "腾讯 COS · 国内直链 ↓",
+    "en": "Tencent COS · direct download ↓",
+    "ja": "Tencent COS · 直接ダウンロード ↓"
+  },
+  "releasenotes": {
+    "zh": "版本说明 ↗",
+    "en": "Release notes ↗",
+    "ja": "更新履歴 ↗"
   },
   "zip": {
-    "zh": "下载源码 ZIP ↓",
-    "en": "Download source ZIP ↓",
-    "ja": "ソース ZIP をダウンロード ↓"
+    "zh": "源码 ZIP（开发者）↓",
+    "en": "Source ZIP (developers) ↓",
+    "ja": "ソース ZIP（開発者向け）↓"
   },
   "github": {
     "zh": "查看 GitHub ↗",
@@ -288,5 +348,35 @@
     "zh": "点击二维码可放大查看。",
     "en": "Select a QR code to enlarge.",
     "ja": "QR コードをクリックして拡大。"
+  },
+  "hudplay": {
+    "zh": "播放动图",
+    "en": "Play animation",
+    "ja": "再生"
+  },
+  "hudalt": {
+    "zh": "四通道 HUD 模拟动图：Pulse 与负鼠 A/B 的强度数值和波形信号格独立变化。",
+    "en": "Simulated four-channel HUD: independent Pulse and Opossum A/B intensity values and waveform grids.",
+    "ja": "4 チャンネル HUD の模擬アニメーション：Pulse・負鼠の A/B 強度と波形グリッドが個別に変化。"
+  },
+  "hudtitle": {
+    "zh": "四通道 HUD · 波形与强度",
+    "en": "Four-channel HUD · waves & intensity",
+    "ja": "4 チャンネル HUD · 波形と強度"
+  },
+  "hudsubtitle": {
+    "zh": "Pulse / 负鼠 A/B · 独立数值与信号格",
+    "en": "Pulse / Opossum A/B · independent values and signal grids",
+    "ja": "Pulse・負鼠 A/B · 個別の数値と信号グリッド"
+  },
+  "hudpause": {
+    "zh": "暂停动图",
+    "en": "Pause animation",
+    "ja": "一時停止"
+  },
+  "hudnote": {
+    "zh": "离线模拟演示 · 展示实际 HUD 的显示效果，不代表真实设备输出。",
+    "en": "Offline simulation · shows the actual HUD interface, not physical device output.",
+    "ja": "オフライン模擬デモ · 実際の HUD 表示です。実機への出力ではありません。"
   }
 }

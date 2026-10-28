@@ -53,7 +53,16 @@ game image pixels. At the user's request `assets/monster-previews/` now also
 contains small previews copied from the supplied local game, with identical
 PNG files deduplicated. These graphics retain their original rights and are
 separate from this project's GPL source. Original full-resolution game assets,
-game bundles and saves are not included. Local preview updates remain optional.
+game bundles are not included. Local preview updates remain optional.
+
+`assets/optional-saves/full-cg.zip` is the 1.3.1 completion save supplied by the
+user as `sinisistar2_save_by_Alicelel.zip`, attributed to Alicelel. It contains
+only System, SystemSpare and File01, and is separate from the GPL source code.
+It is an optional data payload, never imported during startup or plugin
+installation. Import backs up the player's files, keeps existing preferences,
+merges system flags and places the completion save in an unused slot. The
+publisher's personal saves and backups are not distributed. Provenance and
+integrity are recorded in `assets/optional-saves/manifest.json`.
 
 `assets/lilia/` contains 13 small visible layers from the supplied game's clothed
 normal player model (SiNiSistar2 v1.3.1). The fully transparent skirt overlay,

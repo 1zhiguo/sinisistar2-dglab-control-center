@@ -28,6 +28,8 @@ def build():
         if digest(ROOT/'installer_payload'/filename)!=expected:raise RuntimeError('Installer payload mismatch: '+filename)
     trainer=json.loads((ROOT/'installer_payload/trainer-manifest.json').read_text(encoding='utf-8'))
     assert digest(ROOT/'installer_payload'/trainer['file'])==trainer['sha256']
+    from sinisistar_dglab.save_import import PAYLOAD,PAYLOAD_SHA256
+    if digest(PAYLOAD)!=PAYLOAD_SHA256:raise RuntimeError('Optional save payload mismatch')
     version_file=work/'version-info.txt'
     numeric_version=tuple(map(int,__version__.split('.')))+(0,)
     version_file.write_text(f"""VSVersionInfo(ffi=FixedFileInfo(filevers={numeric_version},prodvers={numeric_version},mask=0x3f,flags=0x0,OS=0x40004,fileType=0x1,subtype=0x0,date=(0,0)),kids=[StringFileInfo([StringTable('040904B0',[StringStruct('CompanyName','1zhiguo'),StringStruct('FileDescription','SiNiSistar2 x DG-LAB Control Center'),StringStruct('FileVersion','{__version__}'),StringStruct('InternalName','SiNiSistar2-x-DGlab'),StringStruct('OriginalFilename','SiNiSistar2-x-DGlab.exe'),StringStruct('ProductName','SiNiSistar2 x DG-LAB'),StringStruct('ProductVersion','{__version__}')])]),VarFileInfo([VarStruct('Translation',[1033,1200])])])""",encoding='utf-8')
@@ -41,6 +43,8 @@ def build():
     command+=[str(ROOT/'tools/frozen_entry.py')]
     subprocess.run(command,check=True,cwd=ROOT)
     app=work/'dist'/APP_NAME;assert (app/(APP_NAME+'.exe')).is_file()
+    if digest(app/'_internal/sinisistar_dglab/assets/optional-saves/full-cg.zip')!=PAYLOAD_SHA256:
+        raise RuntimeError('Optional save payload missing from frozen application')
     pruning=[]
     def prune(path):
         if path.exists():
@@ -98,12 +102,12 @@ def build():
 若负鼠连接后 CG 不震动，请在 CG 页查看「本通道反馈范围」，仅受伤不会参与 CG。旧配置保留原有选择。
 
 Ctrl+F12：全局急停（可在右上角齿轮中自定义）；Ctrl+F11：调整 / 锁定 HUD。
-日常界面已隐藏模拟、批量测试、无 HP 消融和游戏辅助入口。
+日常界面已隐藏模拟、批量测试和无 HP 消融入口。
 支持已核验的 SiNiSistar2 v1.3.1；观察插件 0.6.0，独立辅助插件 0.2.1。
 游戏反馈使用共享动画识别与 HP / 抓取兜底；图鉴使用独立播放信号。
 支持 EventPlayer、已声明 Animator 和有效片段会话；并非所有实战分支均已实测。
 退出时归零并关闭设备服务。配置和日志保存在本文件夹的 artifacts/ 下。
-发布包使用干净默认配置，不包含游戏、存档或开发者的连接信息。
+发布包使用干净默认配置，不包含游戏或开发者的个人存档、连接信息。
 程序未签名。请保持整个文件夹完整，不要只复制 EXE。
 
 Extract the ENTIRE folder and run {APP_NAME}.exe. No separate Python installation is needed.
@@ -111,13 +115,13 @@ Select your game folder, install the plugin with the game closed, then start the
 Pair the matching V3/V4 APP on the same LAN, enable Pulse, choose a preset and position the HUD.
 Global emergency stop: Ctrl+F12. HUD adjustment: Ctrl+F11. Settings: the top-right gear.
 Gallery playback uses independent EventPlayer, declared Animator and valid take-session signals.
-Development, batch-testing and gameplay-helper controls are hidden in the normal interface.
-Settings/logs stay in artifacts/ beside this EXE. No game or save data is included. Unsigned build.
+Development and batch-testing controls are hidden in the normal interface.
+Settings/logs stay in artifacts/ beside this EXE. No game or developer's personal saves are included. Unsigned build.
 Same-HP and gallery rules default to on. Enable device output separately. Damage-only channel scope excludes CG and gallery feedback.
 
 フォルダー全体を解凍して {APP_NAME}.exe を起動します。Pythonの別途導入は不要です。
 ゲーム終了中にプラグインを導入し、V3/V4 APPで接続、Pulse有効化、プリセット選択、HUD配置の順に設定します。
-緊急停止：Ctrl+F12。HUD調整：Ctrl+F11。開発用・一括テスト・ゲーム補助の画面は通常表示しません。
+緊急停止：Ctrl+F12。HUD調整：Ctrl+F11。開発用・一括テストの画面は通常表示しません。
 図鑑はEventPlayer、登録済みAnimator、有効なクリップ情報で判定します。設定・ログはartifacts/に保存します。
 HP同値通知と図鑑の反応は初期状態で有効です。デバイス出力は別途有効にしてください。「被ダメージのみ」のチャンネルはCGに反応しません。
 
@@ -139,6 +143,7 @@ Source: https://github.com/1zhiguo/sinisistar2-dglab-control-center
     (app/'BUILD_INFO.json').write_text(json.dumps({'version':__version__,'platform':'windows-x64','built_utc':datetime.now(timezone.utc).isoformat(),
         'dependencies':versions,'observer_version':'0.6.0','helper_version':'0.2.1','source_sha256':{p.relative_to(ROOT).as_posix():digest(p) for p in source_files},
         'game_included':False,'personal_settings_included':False,'signed':False,
+        'optional_save_payload':{'file':'sinisistar_dglab/assets/optional-saves/full-cg.zip','sha256':PAYLOAD_SHA256,'automatic_import':False},
         'developer_ui_default':False,'qt_pruning':pruning,'removed_bytes':sum(p['bytes'] for p in pruning)},ensure_ascii=False,indent=2),encoding='utf-8')
     qa=work/'qa';qa.mkdir();env={**os.environ,'PYTHONPATH':'','PYTHONHOME':'','QT_QPA_PLATFORM':'windows',
         'PATH':os.pathsep.join([str(Path(os.environ['SystemRoot'])/'System32'),os.environ['SystemRoot']])}

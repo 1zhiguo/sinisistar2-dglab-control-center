@@ -20,7 +20,7 @@ ApplicationWindow {
     property int selectedRule: 0
     property string notification: ""
     onClosing: close=>{
-        if(backend.installState.busy && (backend.installState.phase==="install" || backend.monsterCacheState.busy)){
+        if(backend.installState.busy && (backend.installState.phase==="install" || backend.installState.phase==="save_import" || backend.installState.phase==="save_restore" || backend.monsterCacheState.busy)){
             close.accepted=false;root.notification="正在安装或生成本地预览，请等待完成后再关闭。";toastTimer.restart();
         } else {if(pageLoader.item && typeof pageLoader.item.prepareToLeave==="function")pageLoader.item.prepareToLeave();backend.requestExit();}
     }
@@ -45,8 +45,13 @@ ApplicationWindow {
     }
     Connections { target: backend; function onTutorialRequested(){tutorialDialog.open();} }
     Connections { target: backend; function onTrainerRequested(){ root.show();root.raise();root.requestActivate();trainerDialog.open(); } }
-    Loader { id: trainerDialog; active: backend.developerTools; sourceComponent: Component { TrainerDialog {} }
-        function open(){if(item)item.open();}
+    Loader { id: trainerDialog; active: false; sourceComponent: Component { TrainerDialog {} }
+        onLoaded: item.open()
+        function open(){if(item)item.open();else active=true;}
+    }
+    Loader { id: assistanceDialog; active: false; sourceComponent: Component { GameAssistanceDialog {} }
+        onLoaded: item.open()
+        function open(){if(item)item.open();else active=true;}
     }
     EventDetectorWindow { ownerWindow: root }
     Timer { id: toastTimer; interval: 4500; onTriggered: root.notification="" }
@@ -256,7 +261,10 @@ ApplicationWindow {
             AppText { text: backend.hotkeySettings.sequence; color: Theme.silver; font.pixelSize: 11 }
             Rectangle { Layout.fillWidth: true; height: 1; color: Theme.border }
             AppButton { visible: backend.developerTools; objectName: "openSimulationSettings"; text: "模拟与测试"; Layout.fillWidth: true; onClicked: {appSettings.close();simulationDialog.open();} }
+            DisclosureHeader { id: moreOptions; objectName: "settingsMoreOptions"; title: "更多选项"; Layout.fillWidth: true; accent: Theme.muted; onVisibleChanged: if(!visible)expanded=false }
+            AppButton { visible: moreOptions.expanded; objectName: "openGameAssistance"; text: "游戏辅助与存档"; Layout.fillWidth: true; onClicked: {appSettings.close();assistanceDialog.open();} }
         }
+        onClosed: moreOptions.expanded=false
     }
 
     Component {

@@ -4,7 +4,7 @@ from pathlib import Path
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--developer-tools',action='store_true',help='显示开发用的模拟、CG 测试与游戏辅助界面')
+    parser.add_argument('--developer-tools',action='store_true',help='显示开发用的模拟与 CG 测试界面')
     parser.add_argument('--offline',action='store_true');parser.add_argument('--screenshot',type=Path)
     parser.add_argument('--page',type=int,default=0,help='页面索引：0 总览 / 1 设备与游戏 / 2 快速设置 / 3 联动策略 / 4 波形 / 5 检测器 / 6 演出 / 7 CG 反馈 / 8 怪物图鉴');parser.add_argument('--size',default='1440x940')
     parser.add_argument('--settings-file',type=Path);parser.add_argument('--smoke-test',action='store_true')
@@ -63,7 +63,7 @@ def main():
     from . import __version__
     app=QGuiApplication(sys.argv[:1]);app.setApplicationName('SiNiSistar2 × DG-LAB');app.setApplicationVersion(__version__);app.setOrganizationName('SiNiSistarDGLab');app.setFont(QFont('Microsoft YaHei UI',10))
     app.setWindowIcon(QIcon(str(Path(__file__).parent/'assets/app-icon.ico')))
-    developer_tools=args.developer_tools or args.cg_ablation or args.cg_live_ablation or args.cg_batch or args.trainer or args.trainer_statuses
+    developer_tools=args.developer_tools or args.cg_ablation or args.cg_live_ablation or args.cg_batch
     backend=Backend(offline=args.offline or bool(args.simulation_demo) or (bool(args.screenshot or args.hud_screenshot) and not args.live_preview) or args.smoke_test,settings=args.settings_file,developer_tools=developer_tools)
     # Development profiles can be copied into a release. Never leave ordinary
     # play stuck in a previous no-HP ablation mode.

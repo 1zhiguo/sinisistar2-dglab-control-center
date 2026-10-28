@@ -51,6 +51,7 @@ def default_rules():
     return [dict(key=k,name=n,description=d,evidence=e,output=o,enabled=o,channel='A' if o else 'B',strength=8,duration=.8,wave='impact' if o else 'breath') for k,n,d,e,o in specs]
 
 class Backend(QObject):
+    saveImportChanged=Signal()
     panicDetected=Signal()
     changed=Signal(); configChanged=Signal(); eventsChanged=Signal(); flowsChanged=Signal(); exitRequested=Signal(); hudChanged=Signal(); hudSettingsRequested=Signal(); trainerRequested=Signal(); detectorRequested=Signal(); installChanged=Signal(); monsterCatalogChanged=Signal(); toast=Signal(str); languageChanged=Signal(); tutorialRequested=Signal(); hotkeyChanged=Signal(); cgCoverageChanged=Signal(); cgBatchChanged=Signal()
     def __init__(self,*,offline=False,settings=None,parent=None,developer_tools=False):
@@ -95,6 +96,7 @@ class Backend(QObject):
         self._hud_settings=dict(HUD_DEFAULTS);self._hud=self._hud_settings['enabled'];self._hud_adjusting=False
         self._hud_hotkey_registered=False;self._emergency_hotkey_registered=False
         self._trainer=TrainerBridge()
+        self._save_importer=None;self._save_state=dict(available=False,canRestore=False,busy=False,message='',error='',directory='',backup='')
         self._load();self._history();self.log('system','控制中心已启动 · 输出保持暂停','系统')
         self._timer=QTimer(self);self._timer.setInterval(100);self._timer.timeout.connect(self.tick);self._timer.start()
         if not offline:self._observer=PluginObserver(self._telemetry_directory());self._observer.start()
@@ -440,6 +442,20 @@ class Backend(QObject):
         self._simulation_changed()
         self._pulse_planner.engine.reset();self._ovc_planner.engine.reset()
 
+    @Slot(str)
+    def syncCgFeedback(self,source):
+        if source not in ('cg','gallery'):return
+        target='gallery' if source=='cg' else 'cg'
+        source_config=self._cg_edit(source);target_config=self._cg_edit(target)
+        target_config['routes']=deepcopy(source_config['routes'])
+        # Copy output strategies only. Each scope keeps its own eligibility,
+        # master switch, end condition, same-HP and Space pause behavior.
+        for field,value in source_config['rule'].items():
+            if field.startswith(('pulse_','vibration_')):
+                target_config['rule'][field]=deepcopy(value)
+        self._cg_save(target_config,target)
+        self.toast.emit('已同步到图鉴独立反馈，输出已暂停' if target=='gallery' else '已同步到游戏 CG 反馈，输出已暂停')
+
     @Slot(bool)
     def setGalleryPauseOnStop(self,enabled):
         c=self._cg_edit('gallery');c['pause_on_stop']=bool(enabled);self._cg_save(c,'gallery')
@@ -630,6 +646,46 @@ class Backend(QObject):
     @Slot()
     def openTrainer(self):self.trainerRequested.emit()
 
+    @Property('QVariantMap',notify=saveImportChanged)
+    def saveImportState(self):return dict(self._save_state)
+
+    def _save_import_manager(self):
+        if self._save_importer is None:
+            from .save_import import SaveImporter
+            self._save_importer=SaveImporter()
+        return self._save_importer
+
+    @Slot()
+    def refreshSaveImport(self):
+        try:self._save_state.update(self._save_import_manager().status())
+        except Exception as error:self._save_state.update(available=False,error=str(error))
+        self.saveImportChanged.emit()
+
+    def _save_action(self,restore=False):
+        if self.offline:self.toast.emit('离线预览不修改存档');return
+        if self._install_state['busy'] or self._save_state['busy']:return
+        self._armed=False;self._ovc_armed=False;self._reset_output()
+        self._save_state.update(busy=True,error='',message='正在备份并导入…' if not restore else '正在恢复备份…');self.saveImportChanged.emit()
+        def work():
+            try:
+                manager=self._save_import_manager()
+                return dict(ok=True,**(manager.restore() if restore else manager.import_save()),**manager.status())
+            except Exception as error:return dict(ok=False,error=str(error))
+        self._run_install_task('save_restore' if restore else 'save_import',work)
+
+    @Slot()
+    def importFullCgSave(self):self._save_action()
+
+    @Slot()
+    def restoreImportedSave(self):self._save_action(True)
+
+    @Slot()
+    def openSaveBackupFolder(self):
+        try:
+            path=self._save_import_manager().backups
+            if path.is_dir():QDesktopServices.openUrl(QUrl.fromLocalFile(str(path)))
+        except Exception as error:self.toast.emit(str(error))
+
     @Slot()
     def installTrainer(self):
         if self.offline:self.toast.emit('离线预览不安装游戏辅助');return
@@ -790,6 +846,11 @@ class Backend(QObject):
                 self._install_state.update(progress=data['overall'],message=data['message']);continue
             if phase=='progress':self._install_state.update(progress=data['progress'],message=data['message']);continue
             self._install_state.update(busy=False,phase='idle')
+            if phase in ('save_import','save_restore'):
+                self._save_state.update(busy=False)
+                self._save_state.update({k:v for k,v in data.items() if k!='ok'})
+                self._install_state.update(message='存档操作完成。' if data['ok'] else '存档操作未完成。')
+                self.saveImportChanged.emit();continue
             if phase=='error':self._launch_after_install=None;self._monster_cache_state['busy']=False;self._install_state.update(error=data['error'],message='操作未完成，请检查目录或提示后重试。');continue
             if phase=='scan':
                 self._game_candidates=[dict(x,path=x.get('game_dir',''),name=Path(x.get('game_dir') or 'SiNiSistar2').parent.name,supported=bool(x.get('supported')),installed=bool(x.get('plugin_version'))) for x in data]

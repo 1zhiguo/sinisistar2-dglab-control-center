@@ -1,0 +1,1 @@
+.game-screens figure:first-child{grid-column:1/-1}.game-screens .screenshot img{aspect-ratio:auto;object-fit:contain}.game-screens figcaption{font-family:"Segoe UI","Microsoft YaHei","Yu Gothic",sans-serif;letter-spacing:normal}@media(max-width:760px){.game-screens{grid-template-columns:1fr}.game-screens figure:first-child{grid-column:auto}}

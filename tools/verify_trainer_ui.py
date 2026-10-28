@@ -14,7 +14,7 @@ def main():
     app=QGuiApplication([]);app.setFont(QFont('Microsoft YaHei UI',10));messages=[]
     qInstallMessageHandler(lambda k,c,m:messages.append(m))
     temp=tempfile.TemporaryDirectory(dir=ROOT/'artifacts/test-temp');folder=Path(temp.name)
-    b=Backend(offline=True,developer_tools=True,settings=folder/'settings.json');b._timer.stop()
+    b=Backend(offline=True,settings=folder/'settings.json');b._timer.stop()
     b._game_directory=folder/'game';b._game_candidates=[dict(path=str(b._game_directory),supported=True)]
     ipc=b._game_directory/'BepInEx/plugins/SiNiSistarTrainer/ipc';ipc.mkdir(parents=True)
     data=dict(schema=1,source='bepinex-trainer',fingerprint=BUILD,session='a'*32,pid=123,player=456,
@@ -53,6 +53,9 @@ def main():
         assert not b.trainerState['pending'] and '游戏已确认' in b.trainerState['message']
     def verify():
         try:
+            assert QMetaObject.invokeMethod(find('openAppSettings'),'clicked');app.processEvents()
+            assert QMetaObject.invokeMethod(find('settingsMoreOptions'),'clicked');app.processEvents()
+            assert QMetaObject.invokeMethod(find('openGameAssistance'),'clicked');app.processEvents()
             assert QMetaObject.invokeMethod(find('openGameTrainer'),'clicked');app.processEvents()
             assert find('trainerDialog').property('visible')
             assert not find('trainerPlus_hp').property('enabled')

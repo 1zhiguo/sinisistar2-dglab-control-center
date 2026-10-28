@@ -38,6 +38,10 @@ ScrollView {
             ColumnLayout { id: header; anchors.left: parent.left; anchors.right: parent.right; anchors.top: parent.top; anchors.margins: 16; spacing: 11
                 RowLayout { Layout.fillWidth: true
                     AppText { text: page.gallery ? "图鉴回放反馈" : "CG 观看反馈"; color: Theme.gold; font.pixelSize: 22; Layout.fillWidth: true }
+                    AppButton { objectName: "syncCgFeedback"; text: page.gallery ? "同步到游戏 CG" : "同步到图鉴反馈"; onClicked: backend.syncCgFeedback(page.scope)
+                        ToolTip.visible: hovered
+                        ToolTip.text: backend.translate("复制两种设备的 A/B 强度、波形、循环队列与渐强；保留目标页总开关、触发和暂停规则。同步后暂停输出并自动保存。",backend.language)
+                    }
                     AppText { text: "总开关"; color: Theme.muted; font.pixelSize: 11 }
                     AppSwitch { objectName: "cgMasterEnabled"; checked: page.config.rule.enabled; onToggled: backend.setCgRule(page.prefix+"enabled",checked) }
                 }

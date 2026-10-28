@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "file": "full-cg.zip",
+  "source_filename": "sinisistar2_save_by_Alicelel.zip",
+  "attribution": "Alicelel",
+  "game_version": "1.3.1",
+  "bytes": 628946,
+  "sha256": "431a4862e3f60dfd5ebd8b1e09b31b385cfa4cfc8318558ea4d9e8e3194acfa1",
+  "files": ["System", "SystemSpare", "File01"],
+  "automatic_import": false,
+  "separate_from_project_license": true
+}
