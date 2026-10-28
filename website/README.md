@@ -17,7 +17,7 @@ Source: https://github.com/1zhiguo/sinisistar2-dglab-control-center.
 The active sanitized Git checkout is `public_repo/sinisistar2-source/` in the
 development workspace. It excludes runtime binaries and extracted game artwork.
 
-Windows 1.0.1 downloads use Tencent COS, Baidu Netdisk and GitHub Releases.
+Windows 1.0.2 download priority: GitHub Releases, Baidu Netdisk, then Tencent COS.
 `website/downloads.json` is the version, URL and checksum source of truth.
 The source ZIP is separately labeled for developers; Windows users do not need Python.
 

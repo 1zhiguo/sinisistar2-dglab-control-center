@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "profiles": [
+    {
+      "id": "full-1.3.1",
+      "label": "SiNiSistar2 v1.3.1",
+      "files": {
+        "SiNiSistar2.exe": "14aa8540d92597f0e7482bf2c11d63a9cd202bb3accbaed7bf0a12a141e259a7",
+        "GameAssembly.dll": "b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d",
+        "UnityPlayer.dll": "43fb0aea1b80c74963dae88ec7fc1c3c1993d893ce94d12972000fcc9b653ad1",
+        "SiNiSistar2_Data/il2cpp_data/Metadata/global-metadata.dat": "a56278d0162b6c148312b56fbe208b54ba9af2d3bad609ebf9349b7ae7ddc84b"
+      }
+    },
+    {
+      "id": "steam-lite-1.3.1",
+      "label": "Steam Lite v1.3.1",
+      "files": {
+        "SiNiSistar2.exe": "fc884a104a29f873eb045eef3ad3fc5a2a1aa326940cdef27db81434a86f18eb",
+        "GameAssembly.dll": "d8a9c09002dfb5cb834ab25bde2864bb4379d22e699cb249f79e78fd648c7383",
+        "UnityPlayer.dll": "43fb0aea1b80c74963dae88ec7fc1c3c1993d893ce94d12972000fcc9b653ad1",
+        "SiNiSistar2_Data/il2cpp_data/Metadata/global-metadata.dat": "76ad83efc7ee7fe67f468a298ed6de6be6c62dff5790dfa23ee4a5991b946d9b"
+      }
+    }
+  ]
+}

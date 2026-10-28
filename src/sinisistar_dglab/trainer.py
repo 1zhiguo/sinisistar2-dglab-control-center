@@ -1,4 +1,5 @@
 """Explicit, expiring local requests to the optional gameplay helper."""
+from .game_builds import FINGERPRINTS
 from copy import deepcopy
 from datetime import datetime,timedelta,timezone
 from pathlib import Path
@@ -9,7 +10,7 @@ from .telemetry import TYPES
 from .monitoring import status_label
 from .status_policy import positive_status
 
-KNOWN_OLD_TRAINERS=frozenset(('fc60235d835efcd32cb895fb22a745610d5ea4c75e412c24733c5c741dd69ac3',
+KNOWN_OLD_TRAINERS=frozenset(('24ce81b2a701dad72c704d056a33007ec24428fb37ce42821a913613cf6be5b2','fc60235d835efcd32cb895fb22a745610d5ea4c75e412c24733c5c741dd69ac3',
                             'adb864d220d712ff867f6d344a134cb13ed383903cffef089b1d73a1d815ed33'))
 
 def _read_json(path):
@@ -29,7 +30,7 @@ def _read_json(path):
     return json.loads(payload.decode('utf-8-sig'))
 
 def decode_snapshot(data,*,now=None):
-    if not isinstance(data,dict) or data.get('schema')!=1 or data.get('source')!='bepinex-trainer' or data.get('fingerprint')!=BUILD:
+    if not isinstance(data,dict) or data.get('schema')!=1 or data.get('source')!='bepinex-trainer' or data.get('fingerprint') not in FINGERPRINTS:
         raise ValueError('辅助插件协议或游戏版本不匹配')
     age=((now or datetime.now(timezone.utc))-parse_time(data['utc'])).total_seconds()
     if not 0<=age<1:raise ValueError('辅助插件心跳已过期')

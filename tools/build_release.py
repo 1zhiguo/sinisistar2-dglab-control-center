@@ -77,6 +77,8 @@ def build():
         source=app/'_internal/PySide6'/filename
         if source.is_file():shutil.copy2(source,app/'_internal'/filename)
     shutil.copytree(ROOT/'installer_payload',app/'installer_payload')
+    release_notes=release/f'RELEASE_NOTES-{__version__}.md'
+    if release_notes.is_file():shutil.copy2(release_notes,app/'RELEASE_NOTES.md')
     for filename in ('LICENSE','THIRD_PARTY_NOTICES.md'):shutil.copy2(ROOT/filename,app/filename)
     versions={}
     for package in ('PySide6','PySide6_Essentials','PySide6_Addons','shiboken6','websockets','qrcode','Pillow','PyInstaller'):
@@ -103,7 +105,8 @@ def build():
 
 Ctrl+F12：全局急停（可在右上角齿轮中自定义）；Ctrl+F11：调整 / 锁定 HUD。
 日常界面已隐藏模拟、批量测试和无 HP 消融入口。
-支持已核验的 SiNiSistar2 v1.3.1；观察插件 0.6.0，独立辅助插件 0.2.1。
+支持已核验的 SiNiSistar2 v1.3.1，以及 Steam Lite v1.3.1／Lite＋官方补丁；观察插件 0.7.0，独立辅助插件 0.2.2。
+Steam 两种模式已验证启动与插件心跳，游戏事件与设备联动仍待实测。官方游戏补丁不包含在本程序包中。
 游戏反馈使用共享动画识别与 HP / 抓取兜底；图鉴使用独立播放信号。
 支持 EventPlayer、已声明 Animator 和有效片段会话；并非所有实战分支均已实测。
 退出时归零并关闭设备服务。配置和日志保存在本文件夹的 artifacts/ 下。
@@ -115,6 +118,7 @@ Select your game folder, install the plugin with the game closed, then start the
 Pair the matching V3/V4 APP on the same LAN, enable Pulse, choose a preset and position the HUD.
 Global emergency stop: Ctrl+F12. HUD adjustment: Ctrl+F11. Settings: the top-right gear.
 Gallery playback uses independent EventPlayer, declared Animator and valid take-session signals.
+Steam Lite v1.3.1, with or without the official patch, has passed startup/observer-heartbeat checks. Gameplay feedback still requires testing. The game patch is not bundled.
 Development and batch-testing controls are hidden in the normal interface.
 Settings/logs stay in artifacts/ beside this EXE. No game or developer's personal saves are included. Unsigned build.
 Same-HP and gallery rules default to on. Enable device output separately. Damage-only channel scope excludes CG and gallery feedback.
@@ -141,7 +145,7 @@ Source: https://github.com/1zhiguo/sinisistar2-dglab-control-center
     with zipfile.ZipFile(app/f'SOURCE-{__version__}.zip','x',zipfile.ZIP_DEFLATED,compresslevel=6) as z:
         for p in sorted(set(source_files)):z.write(p,p.relative_to(ROOT).as_posix())
     (app/'BUILD_INFO.json').write_text(json.dumps({'version':__version__,'platform':'windows-x64','built_utc':datetime.now(timezone.utc).isoformat(),
-        'dependencies':versions,'observer_version':'0.6.0','helper_version':'0.2.1','source_sha256':{p.relative_to(ROOT).as_posix():digest(p) for p in source_files},
+        'dependencies':versions,'observer_version':'0.7.0','helper_version':'0.2.2','source_sha256':{p.relative_to(ROOT).as_posix():digest(p) for p in source_files},
         'game_included':False,'personal_settings_included':False,'signed':False,
         'optional_save_payload':{'file':'sinisistar_dglab/assets/optional-saves/full-cg.zip','sha256':PAYLOAD_SHA256,'automatic_import':False},
         'developer_ui_default':False,'qt_pruning':pruning,'removed_bytes':sum(p['bytes'] for p in pruning)},ensure_ascii=False,indent=2),encoding='utf-8')

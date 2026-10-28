@@ -14,9 +14,10 @@ SAVE_NAMES = ('System', 'SystemSpare', 'FileAuto')+tuple(f'File{i:02}' for i in 
 
 def digest(data):return hashlib.sha256(data).hexdigest()
 
-def default_directory():
+def default_directory(build_profile=''):
     if sys.platform != 'win32':raise ValueError('存档导入仅支持 Windows')
-    return Path(os.environ['USERPROFILE'])/'AppData/LocalLow/Uu/SiNiSistar2/SaveData'
+    folder='SaveData_S' if build_profile.startswith('steam-') else 'SaveData'
+    return Path(os.environ['USERPROFILE'])/'AppData/LocalLow/Uu/SiNiSistar2'/folder
 
 def decode(data):
     try:result=json.loads(base64.b64decode(data.decode('utf-8-sig').splitlines()[0].strip(),validate=True).decode('utf-8')[::-1])
@@ -52,9 +53,9 @@ def merge_system(current, source):
     return result
 
 class SaveImporter:
-    def __init__(self,directory=None,*,payload=PAYLOAD,process_checker=None,replace=None):
+    def __init__(self,directory=None,*,payload=PAYLOAD,process_checker=None,replace=None,build_profile=''):
         from .install_manager import game_is_running
-        self.directory=Path(directory) if directory else default_directory()
+        self.directory=Path(directory) if directory else default_directory(build_profile)
         self.backups=self.directory.parent/'DGLabSaveBackups'
         self.payload=Path(payload);self.process_checker=process_checker or (lambda:game_is_running(None))
         self.replace=replace or os.replace

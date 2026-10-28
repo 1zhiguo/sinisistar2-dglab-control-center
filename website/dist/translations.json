@@ -250,9 +250,9 @@
     "ja": "ダウンロード・ソース"
   },
   "version": {
-    "zh": "Windows 免安装版 · 1.0.1",
-    "en": "Windows portable · 1.0.1",
-    "ja": "Windows ポータブル版 · 1.0.1"
+    "zh": "Windows 免安装版 · 1.0.2",
+    "en": "Windows portable · 1.0.2",
+    "ja": "Windows ポータブル版 · 1.0.2"
   },
   "buildbadge": {
     "zh": "游玩测试版 · Windows x64",
@@ -265,9 +265,9 @@
     "ja": "フォルダー全体を解凍して EXE を起動。BepInEx と観測プラグインの導入用ファイルを同梱。Python の別途導入は不要です。"
   },
   "sourcenote": {
-    "zh": "三个入口提供同一版本，不含游戏本体、存档或个人配置。升级时先关闭旧控制中心；插件更新前请退出游戏。",
-    "en": "All three links provide the same version, without game files, saves or personal settings. Close the old Control Center before upgrading and exit the game before updating its plugin.",
-    "ja": "3 つのリンクは同じバージョンです。ゲーム本体・セーブ・個人設定は含みません。更新前に旧アプリを閉じ、プラグイン更新時はゲームを終了してください。"
+    "zh": "免安装包不含游戏本体或用户个人配置。升级时先关闭旧控制中心；插件更新前请退出游戏。",
+    "en": "The portable package excludes the game and user-specific settings. Close the old Control Center before upgrading and exit the game before updating its plugin.",
+    "ja": "ポータブル版にはゲーム本体やユーザー個人の設定は含みません。更新前に旧アプリを閉じ、プラグイン更新時はゲームを終了してください。"
   },
   "githubdownload": {
     "zh": "GitHub · 下载 ZIP ↓",
@@ -280,9 +280,9 @@
     "ja": "Baidu Netdisk ↓"
   },
   "baiducode": {
-    "zh": "提取码：hj15",
-    "en": "Access code: hj15",
-    "ja": "抽出コード：hj15"
+    "zh": "提取码：4p86",
+    "en": "Access code: 4p86",
+    "ja": "抽出コード：4p86"
   },
   "cos": {
     "zh": "腾讯 COS · 国内直链 ↓",

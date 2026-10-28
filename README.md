@@ -1,20 +1,20 @@
 # SiNiSistar2 × DG-LAB
 
-Windows control center for SiNiSistar2 v1.3.1. Supports Coyote Pulse and Opossum
+Windows control center for SiNiSistar2 v1.3.1, including Steam Lite with or without the official patch. Steam startup/heartbeat checks passed; gameplay feedback still requires testing. Supports Coyote Pulse and Opossum
 vibration through DG-LAB V3 / V4, independent A/B rules, waveform editing,
 CG feedback queues, a game HUD and an event inspector. Chinese / English / Japanese UI.
 
 Website: https://sinisistar2-dglab.web.app/
 Game hub: https://dglab-x-game.web.app/
 
-## Windows 1.0.2 test build
+## Windows 1.0.3 test build
 
-Download the portable Windows x64 ZIP from Releases (tag `v1.0.2`). Extract the
+Download the portable Windows x64 ZIP from Releases (tag `v1.0.3`). Extract the
 entire folder and run `SiNiSistar2-x-DGlab.exe`; no separate Python installation
 is needed. The release includes plugin installation resources and uses clean
 default settings. No game, publisher settings, personal saves or logs are included.
 Development and batch-testing controls are hidden by default.
-Observer 0.6.0 combines shared animation and declared CG playback signals with
+Observer 0.7.0 combines shared animation and declared CG playback signals with
 HP/grab fallback. Gallery feedback uses independent playback and take sessions.
 
 ## Run from source

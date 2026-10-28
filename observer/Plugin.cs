@@ -15,7 +15,7 @@ using BepInEx.Unity.IL2CPP.Hook;
 
 namespace SiNiSistarDGLab;
 
-[BepInPlugin("local.sinisistar.dglab.observer", "SiNiSistar2 DG-LAB Observer", "0.6.0")]
+[BepInPlugin("local.sinisistar.dglab.observer", "SiNiSistar2 DG-LAB Observer", "0.7.0")]
 public sealed partial class Plugin : BasePlugin
 {
     const string Fingerprint="b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d";
@@ -80,12 +80,13 @@ public sealed partial class Plugin : BasePlugin
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)] delegate void VBB(IntPtr self,[MarshalAs(UnmanagedType.I1)]bool a,[MarshalAs(UnmanagedType.I1)]bool b,IntPtr method);
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)] delegate void V2(IntPtr self,IntPtr a,IntPtr b,IntPtr method);
 
+    string gameFingerprint=Fingerprint;
+    string buildProfile="";
     public override void Load()
     {
-        var path=Path.Combine(Paths.GameRootPath,"GameAssembly.dll");
-        using(var stream=File.OpenRead(path))
-            if(Convert.ToHexString(SHA256.Create().ComputeHash(stream)).ToLowerInvariant()!=Fingerprint)
-            { Log.LogError("Unsupported GameAssembly fingerprint. No game hooks were installed.");return; }
+        if(!SiNiSistarCompatibility.BuildCompatibility.Validate(Paths.GameRootPath,out gameFingerprint,out buildProfile))
+        {Log.LogError("Unsupported game/metadata pair. No game hooks were installed.");return;}
+        Log.LogInfo("Verified build profile: "+buildProfile);
         directory=Config.Bind("Bridge","Directory",Path.Combine(Paths.PluginPath,"SiNiSistarDGLab","telemetry"),"Local observer IPC directory. No device connection.").Value;
         Directory.CreateDirectory(directory);
         api=new Native();managerClass=api.Class("SiNiSistar2.Manager","ManagerList");enemyClass=api.Class("SiNiSistar2.Obj","EnemyObject");
@@ -200,7 +201,7 @@ public sealed partial class Plugin : BasePlugin
         });
         InstallCgObservation();
         writer=new Thread(WriteLoop){IsBackground=true,Name="SiNiSistarDGLab IPC"};writer.Start();
-        Emit("observer_loaded",new(){["hook_count"]=hooks.Count,["version"]="0.6.0",["combat_hooks"]=CombatHooks(),["flow_hooks"]=FlowHooks(),["game_build"]="1.3.1"});
+        Emit("observer_loaded",new(){["hook_count"]=hooks.Count,["version"]="0.7.0",["combat_hooks"]=CombatHooks(),["flow_hooks"]=FlowHooks(),["game_build"]="1.3.1"});
         Log.LogInfo($"Observer loaded: {hooks.Count} hooks. Local IPC: {directory}. No DG-LAB output.");
     }
 
@@ -394,7 +395,7 @@ public sealed partial class Plugin : BasePlugin
             }}
         }
         var data=new Dictionary<string,object?>{
-            ["schema"]=1,["source"]="bepinex",["fingerprint"]=Fingerprint,["session"]=session,["pid"]=Environment.ProcessId,["sample_id"]=++sample,["utc"]=DateTimeOffset.UtcNow.ToString("O"),["valid"]=valid,["player"]=player.ToInt64(),["scene_id"]=scene,["loading"]=loading,["observer_version"]="0.6.0",["combat_hooks"]=CombatHooks(),["flow_hooks"]=FlowHooks(),
+            ["schema"]=1,["source"]="bepinex",["fingerprint"]=gameFingerprint,["build_profile"]=buildProfile,["session"]=session,["pid"]=Environment.ProcessId,["sample_id"]=++sample,["utc"]=DateTimeOffset.UtcNow.ToString("O"),["valid"]=valid,["player"]=player.ToInt64(),["scene_id"]=scene,["loading"]=loading,["observer_version"]="0.7.0",["combat_hooks"]=CombatHooks(),["flow_hooks"]=FlowHooks(),
             ["hp"]=Parameter(hp),["mp"]=Parameter(P(ps,"<MP>k__BackingField")),["durability"]=Parameter(P(ps,"<Durability>k__BackingField")),["paused"]=RB(P(ui,"<IsPauseProp>k__BackingField")),
             ["event_playing"]=B(ev,"<IsEventPlaying>k__BackingField"),["event_paused"]=B(ev,"<EventPause>k__BackingField"),["broken"]=RB(P(dress,"<IsBrokenRp>k__BackingField")),["bound"]=false,
             ["binder"]=api.ObjectName(P(bind,"<BinderEnemy>k__BackingField")),["abnormals"]=abnormal,["hook_count"]=hooks.Count};

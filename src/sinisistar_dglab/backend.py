@@ -652,7 +652,8 @@ class Backend(QObject):
     def _save_import_manager(self):
         if self._save_importer is None:
             from .save_import import SaveImporter
-            self._save_importer=SaveImporter()
+            info=self._installer().inspect_game(self._game_directory)
+            self._save_importer=SaveImporter(build_profile=info.get('build_profile',''))
         return self._save_importer
 
     @Slot()
@@ -774,9 +775,11 @@ class Backend(QObject):
         payload=self._installer().payload_info()
         valid=bool(info.get('supported') and info.get('detected') and not errors)
         self._install_state.update(selectedPath=path,valid=valid,gameRunning=bool(info.get('running')),installedVersion=info.get('plugin_version',''),gameVersion='1.3.1' if valid else '',
+            buildProfile=info.get('build_profile',''),buildLabel=info.get('build_label',''),
             payloadReady=bool(payload.get('available')),error='；'.join(str(x) for x in errors),
             message='请先退出这个目录里的游戏，再安装。' if info.get('running') else '；'.join(str(x) for x in warnings) or ('目录检查通过，可以安装或修复。' if valid else '没有找到支持的 SiNiSistar2 1.3.1 游戏目录。'))
         if valid and Path(path)!=self._game_directory:
+            self._save_importer=None
             self._armed=False;self._ovc_armed=False;self._reset_output()
             if self._observer:self._observer.stop()
             self._game_directory=Path(path);self._live={};self._last={};self._identity=None;self._dialogue_until=0.

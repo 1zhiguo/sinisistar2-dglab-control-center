@@ -14,11 +14,12 @@ def main():
     args=['/nostdlib+','/target:library','/langversion:latest','/nullable:enable','/optimize+','/out:"'+str(dll)+'"']
     args+=['/reference:"'+str(p)+'"' for p in refs]
     args+=['"'+str(ROOT/'trainer'/name)+'"' for name in ['Native.cs','AttackSettings.cs','Plugin.cs']]
+    args+=['\"'+str(ROOT/'observer/BuildCompatibility.cs')+'\"']
     rsp=out/'compile.rsp';rsp.write_text('\n'.join(args),encoding='utf-8')
     code=subprocess.call(['dotnet',str(ROOT/'.analysis/tools/roslyn411/tasks/netcore/bincore/csc.dll'),'/noconfig','@'+str(rsp)],cwd=ROOT)
     if code:return code
     target=ROOT/'installer_payload'/dll.name;target.write_bytes(dll.read_bytes())
-    manifest=dict(version='0.2.1',file=dll.name,sha256=hashlib.sha256(dll.read_bytes()).hexdigest(),
+    manifest=dict(version='0.2.2',file=dll.name,sha256=hashlib.sha256(dll.read_bytes()).hexdigest(),
                   fingerprint='b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d')
     (ROOT/'installer_payload/trainer-manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
     print(json.dumps(manifest));return 0

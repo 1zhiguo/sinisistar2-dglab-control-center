@@ -15,7 +15,7 @@ using BepInEx.Unity.IL2CPP.Hook;
 
 namespace SiNiSistarTrainer;
 
-[BepInPlugin("local.sinisistar.dglab.trainer", "SiNiSistar2 Gameplay Helper", "0.2.1")]
+[BepInPlugin("local.sinisistar.dglab.trainer", "SiNiSistar2 Gameplay Helper", "0.2.2")]
 public sealed class Plugin : BasePlugin
 {
     const string Fingerprint="b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d";
@@ -44,11 +44,12 @@ public sealed class Plugin : BasePlugin
     sealed record Command(string Id,string Session,int Pid,long Player,string Attribute,string Mode,double Value,DateTimeOffset Expires);
     sealed record PendingRemoval(Command Command,Dictionary<string,object?> Reply,int[] Types,double Deadline);
 
+    string gameFingerprint=Fingerprint;
+    string buildProfile="";
     public override void Load()
     {
-        using(var file=File.OpenRead(Path.Combine(Paths.GameRootPath,"GameAssembly.dll")))
-            if(Convert.ToHexString(SHA256.Create().ComputeHash(file)).ToLowerInvariant()!=Fingerprint)
-            {Log.LogError("Unsupported build; helper disabled.");return;}
+        if(!SiNiSistarCompatibility.BuildCompatibility.Validate(Paths.GameRootPath,out gameFingerprint,out buildProfile))
+        {Log.LogError("Unsupported game/metadata pair; helper disabled.");return;}
         api=new Native();managers=api.Class("SiNiSistar2.Manager","ManagerList");
         directory=Path.Combine(Paths.PluginPath,"SiNiSistarTrainer","ipc");Directory.CreateDirectory(directory);
         try{
@@ -107,7 +108,7 @@ public sealed class Plugin : BasePlugin
             // Mutations execute on Unity's main thread, including when paused.
             for(int i=0;i<4&&commands.TryDequeue(out var command);i++)Apply(command,player,hp,mp,abnormalList,canEdit);
             ConfirmRemovals(player,abnormalList,valid);
-            latest=new(){["schema"]=1,["source"]="bepinex-trainer",["version"]="0.2.1",["fingerprint"]=Fingerprint,
+            latest=new(){["schema"]=1,["source"]="bepinex-trainer",["version"]="0.2.2",["fingerprint"]=gameFingerprint,["build_profile"]=buildProfile,
                 ["session"]=session,["pid"]=Environment.ProcessId,["player"]=player.ToInt64(),["sample_id"]=++sample,
                 ["utc"]=DateTimeOffset.UtcNow.ToString("O"),["valid"]=valid,["can_edit"]=canEdit,
                 ["hp"]=hp==IntPtr.Zero?null:Resource(hp),["mp"]=mp==IntPtr.Zero?null:Resource(mp),

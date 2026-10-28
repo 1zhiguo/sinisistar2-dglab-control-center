@@ -1,5 +1,6 @@
 """Read the BepInEx plugin's atomic heartbeat and append-only event stream."""
 from __future__ import annotations
+from .game_builds import FINGERPRINTS
 import json, threading, time, queue, re
 from copy import deepcopy
 from datetime import datetime,timezone
@@ -27,7 +28,7 @@ class PluginObserver:
 
     @staticmethod
     def decode(data,now=None):
-        if not isinstance(data,dict) or data.get('schema')!=1 or data.get('source')!='bepinex' or data.get('fingerprint')!=BUILD:raise ValueError('插件协议或游戏指纹不匹配')
+        if not isinstance(data,dict) or data.get('schema')!=1 or data.get('source')!='bepinex' or data.get('fingerprint') not in FINGERPRINTS:raise ValueError('插件协议或游戏指纹不匹配')
         stamp=datetime.fromisoformat(re.sub(r'(\.\d{6})\d+(?=[+-]\d{2}:\d{2}$)',r'\1',data['utc'].replace('Z','+00:00')));age=((now or datetime.now(timezone.utc))-stamp).total_seconds()
         if not 0<=age<.6:raise ValueError('插件心跳已过期，等待游戏更新')
         if not isinstance(data.get('pid'),int) or data['pid']<=0 or not isinstance(data.get('session'),str) or not data['session']:raise ValueError('插件会话无效')

@@ -1,11 +1,12 @@
 {
-  "version": "1.0.1",
-  "filename": "SiNiSistar2-x-DGlab-1.0.1-windows-x64.zip",
-  "bytes": 119500676,
-  "sha256": "3f746e3dae3fb9915a013127df13d0bd7ec3e5cab9bf4f6e18e12b26cd2af119",
-  "cos": "https://manaka-dglab-downloads-1504229034.cos.ap-shanghai.myqcloud.com/sini_releases/SiNiSistar2-x-DGlab-1.0.1-windows-x64.zip",
-  "baidu": "https://pan.baidu.com/s/1WQ2vEvOfqnnVIo8YHu26DA?pwd=hj15",
-  "baidu_code": "hj15",
-  "github": "https://github.com/1zhiguo/sinisistar2-dglab-control-center/releases/download/v1.0.1/SiNiSistar2-x-DGlab-1.0.1-windows-x64.zip",
-  "release_notes": "https://github.com/1zhiguo/sinisistar2-dglab-control-center/releases/tag/v1.0.1"
+  "version": "1.0.2",
+  "filename": "SiNiSistar2-x-DGlab-1.0.2-windows-x64.zip",
+  "bytes": 120002453,
+  "sha256": "6f2e5694d36369087bc4321a1e787dcf00190ccfb57c68fc3c8f8e6e31f1b924",
+  "cos": "https://manaka-dglab-downloads-1504229034.cos.ap-shanghai.myqcloud.com/sini_releases/v1.0.2/SiNiSistar2-x-DGlab-1.0.2-windows-x64.zip",
+  "baidu": "https://pan.baidu.com/s/1RJIMUIfUGB6IYPl68i8gnw?pwd=4p86",
+  "baidu_code": "4p86",
+  "github": "https://github.com/1zhiguo/sinisistar2-dglab-control-center/releases/download/v1.0.2/SiNiSistar2-x-DGlab-1.0.2-windows-x64.zip",
+  "release_notes": "https://github.com/1zhiguo/sinisistar2-dglab-control-center/releases/tag/v1.0.2",
+  "cos_available": true
 }
