@@ -1,0 +1,5274 @@
+{
+  "schema": 1,
+  "contract": "sinisistar2-observer-v1",
+  "exports": [
+    "il2cpp_assembly_get_image",
+    "il2cpp_class_from_name",
+    "il2cpp_class_get_field_from_name",
+    "il2cpp_class_get_flags",
+    "il2cpp_class_get_methods",
+    "il2cpp_class_get_name",
+    "il2cpp_class_get_nested_types",
+    "il2cpp_class_get_parent",
+    "il2cpp_class_is_enum",
+    "il2cpp_class_is_valuetype",
+    "il2cpp_domain_get",
+    "il2cpp_domain_get_assemblies",
+    "il2cpp_field_get_flags",
+    "il2cpp_field_get_offset",
+    "il2cpp_field_get_type",
+    "il2cpp_field_static_get_value",
+    "il2cpp_gchandle_free",
+    "il2cpp_gchandle_new",
+    "il2cpp_method_get_flags",
+    "il2cpp_method_get_name",
+    "il2cpp_method_get_param",
+    "il2cpp_method_get_param_count",
+    "il2cpp_method_get_return_type",
+    "il2cpp_object_unbox",
+    "il2cpp_runtime_invoke",
+    "il2cpp_string_chars",
+    "il2cpp_string_length",
+    "il2cpp_string_new",
+    "il2cpp_type_get_name"
+  ],
+  "types": [
+    {
+      "ns": "",
+      "name": "ChangeSceneProc",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<IsActive>k__BackingField",
+          "type": "System.Boolean",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "get_IsActive",
+          "returns": "System.Boolean",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "",
+      "name": "EventReceiver",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<LabelEvents>k__BackingField",
+          "type": "System.Collections.Generic.List<SiNiSistar2.EventLabel.LabelEvent>",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "CallEvent",
+          "returns": "System.Void",
+          "parameters": [
+            "System.String"
+          ],
+          "static": false,
+          "first_type_filter": "String"
+        }
+      ]
+    },
+    {
+      "ns": "",
+      "name": "GalleryEnemyID",
+      "kind": "enum",
+      "fields": [
+        {
+          "name": "value__",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "None",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": -1
+        },
+        {
+          "name": "GaID_Livor",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 4
+        },
+        {
+          "name": "GaID_SisterOAC",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 17
+        },
+        {
+          "name": "GaID_Zombification",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 3
+        },
+        {
+          "name": "GaID_Breast",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 31
+        },
+        {
+          "name": "GaID_Breast_Leech",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 94
+        },
+        {
+          "name": "GaID_Parasite",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 18
+        },
+        {
+          "name": "GaID_Drunk",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 77
+        },
+        {
+          "name": "GaID_Ruffian",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 71
+        },
+        {
+          "name": "GaID_VillagerAges",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 101
+        },
+        {
+          "name": "GaID_PriestTown",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 102
+        },
+        {
+          "name": "GaID_SlugS",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 74
+        },
+        {
+          "name": "GaID_SlugM",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 75
+        },
+        {
+          "name": "GaID_SlugBoss",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 76
+        },
+        {
+          "name": "GaID_Hunchback",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 105
+        },
+        {
+          "name": "GaID_Zombie",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 0
+        },
+        {
+          "name": "GaID_ZombieTomb",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 1
+        },
+        {
+          "name": "GaID_ZombieCru",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 2
+        },
+        {
+          "name": "GaID_ZombieCoffin",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 5
+        },
+        {
+          "name": "GaID_Gravekeeper",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 6
+        },
+        {
+          "name": "GaID_Enenuth",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 7
+        },
+        {
+          "name": "GaID_EnenuthMollusk",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 8
+        },
+        {
+          "name": "GaID_EnenuthMother",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 95
+        },
+        {
+          "name": "GaID_VillageMeatWall",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 78
+        },
+        {
+          "name": "GaID_Ghoul",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 79
+        },
+        {
+          "name": "GaID_Funghoul",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 80
+        },
+        {
+          "name": "GaID_Enenuth_JellyFish",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 81
+        },
+        {
+          "name": "GaID_Cliff",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 87
+        },
+        {
+          "name": "GaID_Bobel",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 96
+        },
+        {
+          "name": "GaID_PigParasite",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 82
+        },
+        {
+          "name": "GaID_VillagerMiddleMale_A_Pig",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 83
+        },
+        {
+          "name": "GaID_TreeBoss",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 73
+        },
+        {
+          "name": "GaID_ZombieSpawner",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 72
+        },
+        {
+          "name": "GaID_SpiderHuntsman",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 98
+        },
+        {
+          "name": "GaID_SpiderEgg",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 100
+        },
+        {
+          "name": "GaID_Frog_M",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 106
+        },
+        {
+          "name": "GaID_Frog_L",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 103
+        },
+        {
+          "name": "GaID_Hag",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 104
+        },
+        {
+          "name": "GaID_Seere",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 88
+        },
+        {
+          "name": "GaID_SwampLeech",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 9
+        },
+        {
+          "name": "GaID_SwampLeech_Adult",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 10
+        },
+        {
+          "name": "GaID_FlyBug",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 13
+        },
+        {
+          "name": "GaID_LeechGluttony",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 12
+        },
+        {
+          "name": "GaID_LeechBaby",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 16
+        },
+        {
+          "name": "GaID_LeechMan",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 11
+        },
+        {
+          "name": "GaID_LeechBoss",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 14
+        },
+        {
+          "name": "GaID_Swamp",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 15
+        },
+        {
+          "name": "GaID_DemihumanM",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 19
+        },
+        {
+          "name": "GaID_DemihumanS",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 84
+        },
+        {
+          "name": "GaID_DemihumanL",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 20
+        },
+        {
+          "name": "GaID_DemihumanM_Mask",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 32
+        },
+        {
+          "name": "GaID_Demihuman_Prison",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 33
+        },
+        {
+          "name": "GaID_DemihumanBoss",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 21
+        },
+        {
+          "name": "GaID_DemihumanL_Mask",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 34
+        },
+        {
+          "name": "GaID_DemihumanRaidBoss",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 35
+        },
+        {
+          "name": "GaID_VillagerMiddleMale",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 22
+        },
+        {
+          "name": "GaID_VillagerFemale",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 23
+        },
+        {
+          "name": "GaID_VillagerMale",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 24
+        },
+        {
+          "name": "GaID_PriestVillage",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 25
+        },
+        {
+          "name": "GaID_VillagerMaleParasite",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 27
+        },
+        {
+          "name": "GaID_VillagerFemaleParasite",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 28
+        },
+        {
+          "name": "GaID_MiddleMaleParasiteL",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 26
+        },
+        {
+          "name": "GaID_VillagerFat",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 29
+        },
+        {
+          "name": "GaID_VillagerRegion",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 85
+        },
+        {
+          "name": "GaID_Region",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 86
+        },
+        {
+          "name": "GaID_VillagerMM_Before",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 30
+        },
+        {
+          "name": "GaID_MeatWorm1",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 37
+        },
+        {
+          "name": "GaID_MeatTentacleCeiling",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 38
+        },
+        {
+          "name": "GaID_MeatBall",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 39
+        },
+        {
+          "name": "GaID_MeatTentacleCluster",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 40
+        },
+        {
+          "name": "GaID_MeatWormVore",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 41
+        },
+        {
+          "name": "GaID_MeatWormShooter",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 42
+        },
+        {
+          "name": "GaID_MeatCeiling",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 43
+        },
+        {
+          "name": "GaID_MeatWomb1",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 44
+        },
+        {
+          "name": "GaID_MeatWombBaby",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 45
+        },
+        {
+          "name": "GaID_MeatTentacleCloudy",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 46
+        },
+        {
+          "name": "GaID_MeatTentacleMan",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 46
+        },
+        {
+          "name": "GaID_MeatEggMass",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 47
+        },
+        {
+          "name": "GaID_MeatTentacleWall",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 36
+        },
+        {
+          "name": "GaID_Mimic",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 48
+        },
+        {
+          "name": "GaID_ContinueSewage",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 49
+        },
+        {
+          "name": "GaID_MeatBoss",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 50
+        },
+        {
+          "name": "GaID_PriestRod_H",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 51
+        },
+        {
+          "name": "GaID_PriestRod_C_Air",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 52
+        },
+        {
+          "name": "GaID_PriestSlime",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 53
+        },
+        {
+          "name": "GaID_PriestBossEye",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 54
+        },
+        {
+          "name": "GaID_PictureFrame",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 55
+        },
+        {
+          "name": "GaID_TreasureBox",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 56
+        },
+        {
+          "name": "GaID_StoneEye",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 57
+        },
+        {
+          "name": "GaID_PictureFrameInsect",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 58
+        },
+        {
+          "name": "GaID_MidasTouch",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 59
+        },
+        {
+          "name": "GaID_PictureFrameBig",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 60
+        },
+        {
+          "name": "GaID_Bobel_Barnacle",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 61
+        },
+        {
+          "name": "GaID_SistarTentacle",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 62
+        },
+        {
+          "name": "GaID_BobelDarktacle",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 63
+        },
+        {
+          "name": "GaID_PigDining",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 64
+        },
+        {
+          "name": "GaID_Priest_Scythe",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 66
+        },
+        {
+          "name": "GaID_SnailBrain_s",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 65
+        },
+        {
+          "name": "GaID_SnailBrain",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 67
+        },
+        {
+          "name": "GaID_Ovaries",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 68
+        },
+        {
+          "name": "GaID_OuterOne",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 69
+        },
+        {
+          "name": "GaID_NoItem",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 70
+        },
+        {
+          "name": "GaID_Walk",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 93
+        },
+        {
+          "name": "GaID_Attack",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 89
+        },
+        {
+          "name": "GaID_Damage",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 90
+        },
+        {
+          "name": "GaID_Other_1",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 91
+        },
+        {
+          "name": "GaID_Other_2",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 92
+        },
+        {
+          "name": "GaID_Other_3",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 97
+        },
+        {
+          "name": "GaID_SpiderS",
+          "type": "GalleryEnemyID",
+          "static": true,
+          "value": 99
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "",
+      "name": "HierarchyEventReceiver",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "",
+      "name": "IAbnormalContainer",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "",
+      "name": "LocalizeID",
+      "kind": "enum",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "",
+      "name": "SceneID",
+      "kind": "enum",
+      "fields": [
+        {
+          "name": "value__",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "None",
+          "type": "SceneID",
+          "static": true,
+          "value": -1
+        },
+        {
+          "name": "Dungeon_Cathedral_Courtyard",
+          "type": "SceneID",
+          "static": true,
+          "value": 122
+        },
+        {
+          "name": "Dungeon_Cathedral_Courtyard_Bridge",
+          "type": "SceneID",
+          "static": true,
+          "value": 123
+        },
+        {
+          "name": "Dungeon_Cathedral_Hall",
+          "type": "SceneID",
+          "static": true,
+          "value": 124
+        },
+        {
+          "name": "Dungeon_Cathedral_Hall_Boss",
+          "type": "SceneID",
+          "static": true,
+          "value": 125
+        },
+        {
+          "name": "Dungeon_Cathedral_Hall_Elevator",
+          "type": "SceneID",
+          "static": true,
+          "value": 126
+        },
+        {
+          "name": "Dungeon_Cathedral_Hall_Boss_Ending",
+          "type": "SceneID",
+          "static": true,
+          "value": 246
+        },
+        {
+          "name": "Dungeon_Cathedral_Hall_Room",
+          "type": "SceneID",
+          "static": true,
+          "value": 241
+        },
+        {
+          "name": "Dungeon_Cathedral_ArtGallery1",
+          "type": "SceneID",
+          "static": true,
+          "value": 106
+        },
+        {
+          "name": "Dungeon_Cathedral_ArtGallery2",
+          "type": "SceneID",
+          "static": true,
+          "value": 119
+        },
+        {
+          "name": "Dungeon_Cathedral_ArtGallery3",
+          "type": "SceneID",
+          "static": true,
+          "value": 120
+        },
+        {
+          "name": "Dungeon_Cathedral_ArtGallery4",
+          "type": "SceneID",
+          "static": true,
+          "value": 114
+        },
+        {
+          "name": "Dungeon_Cathedral_ArtGallery5",
+          "type": "SceneID",
+          "static": true,
+          "value": 121
+        },
+        {
+          "name": "Dungeon_Cathedral_Dining1",
+          "type": "SceneID",
+          "static": true,
+          "value": 9
+        },
+        {
+          "name": "Dungeon_Cathedral_Dining2",
+          "type": "SceneID",
+          "static": true,
+          "value": 107
+        },
+        {
+          "name": "Dungeon_Cathedral_Dining3",
+          "type": "SceneID",
+          "static": true,
+          "value": 108
+        },
+        {
+          "name": "Dungeon_Cathedral_Dining4",
+          "type": "SceneID",
+          "static": true,
+          "value": 116
+        },
+        {
+          "name": "Dungeon_Cathedral_Dining5",
+          "type": "SceneID",
+          "static": true,
+          "value": 117
+        },
+        {
+          "name": "Dungeon_Cathedral_Library1",
+          "type": "SceneID",
+          "static": true,
+          "value": 105
+        },
+        {
+          "name": "Dungeon_Cathedral_Library1_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 24
+        },
+        {
+          "name": "Dungeon_Cathedral_Library2",
+          "type": "SceneID",
+          "static": true,
+          "value": 109
+        },
+        {
+          "name": "Dungeon_Cathedral_Library2_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 110
+        },
+        {
+          "name": "Dungeon_Cathedral_Library2_2",
+          "type": "SceneID",
+          "static": true,
+          "value": 118
+        },
+        {
+          "name": "Dungeon_Cathedral_Library3",
+          "type": "SceneID",
+          "static": true,
+          "value": 111
+        },
+        {
+          "name": "Dungeon_Cathedral_Library3_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 112
+        },
+        {
+          "name": "Dungeon_Cathedral_Library4",
+          "type": "SceneID",
+          "static": true,
+          "value": 113
+        },
+        {
+          "name": "Dungeon_Cathedral_Under1",
+          "type": "SceneID",
+          "static": true,
+          "value": 127
+        },
+        {
+          "name": "Dungeon_Cathedral_Under2",
+          "type": "SceneID",
+          "static": true,
+          "value": 128
+        },
+        {
+          "name": "Dungeon_Cathedral_Under3",
+          "type": "SceneID",
+          "static": true,
+          "value": 129
+        },
+        {
+          "name": "Dungeon_Cathedral_Under3_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 130
+        },
+        {
+          "name": "Dungeon_Cathedral_Under4",
+          "type": "SceneID",
+          "static": true,
+          "value": 131
+        },
+        {
+          "name": "Dungeon_Cathedral_Under5",
+          "type": "SceneID",
+          "static": true,
+          "value": 132
+        },
+        {
+          "name": "Dungeon_Cathedral_Under6",
+          "type": "SceneID",
+          "static": true,
+          "value": 133
+        },
+        {
+          "name": "Dungeon_Cathedral_Under7",
+          "type": "SceneID",
+          "static": true,
+          "value": 134
+        },
+        {
+          "name": "Dungeon_Cathedral_Under8",
+          "type": "SceneID",
+          "static": true,
+          "value": 135
+        },
+        {
+          "name": "Dungeon_Cathedral_UnderHall",
+          "type": "SceneID",
+          "static": true,
+          "value": 136
+        },
+        {
+          "name": "Dungeon_Cave1",
+          "type": "SceneID",
+          "static": true,
+          "value": 59
+        },
+        {
+          "name": "Dungeon_Cave2",
+          "type": "SceneID",
+          "static": true,
+          "value": 74
+        },
+        {
+          "name": "Dungeon_Cave3",
+          "type": "SceneID",
+          "static": true,
+          "value": 60
+        },
+        {
+          "name": "Dungeon_Cave3_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 66
+        },
+        {
+          "name": "Dungeon_Cave3_2",
+          "type": "SceneID",
+          "static": true,
+          "value": 69
+        },
+        {
+          "name": "Dungeon_Cave4",
+          "type": "SceneID",
+          "static": true,
+          "value": 70
+        },
+        {
+          "name": "Dungeon_Cave4_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 71
+        },
+        {
+          "name": "Dungeon_Cave5",
+          "type": "SceneID",
+          "static": true,
+          "value": 72
+        },
+        {
+          "name": "Dungeon_Cave5_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 73
+        },
+        {
+          "name": "Dungeon_Cave6",
+          "type": "SceneID",
+          "static": true,
+          "value": 75
+        },
+        {
+          "name": "Dungeon_Cave6_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 76
+        },
+        {
+          "name": "Dungeon_Cave7",
+          "type": "SceneID",
+          "static": true,
+          "value": 77
+        },
+        {
+          "name": "Dungeon_Cave_Boss",
+          "type": "SceneID",
+          "static": true,
+          "value": 68
+        },
+        {
+          "name": "Dungeon_Cave_Boss_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 78
+        },
+        {
+          "name": "Dungeon_Cave_Prison1",
+          "type": "SceneID",
+          "static": true,
+          "value": 65
+        },
+        {
+          "name": "Dungeon_Cave_Prison2",
+          "type": "SceneID",
+          "static": true,
+          "value": 67
+        },
+        {
+          "name": "Road_IsolationWard_Entrance",
+          "type": "SceneID",
+          "static": true,
+          "value": 22
+        },
+        {
+          "name": "Monastery",
+          "type": "SceneID",
+          "static": true,
+          "value": 7
+        },
+        {
+          "name": "Monastery_Tutorial_Home",
+          "type": "SceneID",
+          "static": true,
+          "value": 45
+        },
+        {
+          "name": "Character_Setting",
+          "type": "SceneID",
+          "static": true,
+          "value": 42
+        },
+        {
+          "name": "MonasteryGo_HaanjaZombie",
+          "type": "SceneID",
+          "static": true,
+          "value": 47
+        },
+        {
+          "name": "Monastery_Tutorial1",
+          "type": "SceneID",
+          "static": true,
+          "value": 43
+        },
+        {
+          "name": "Monastery_Tutorial2",
+          "type": "SceneID",
+          "static": true,
+          "value": 33
+        },
+        {
+          "name": "Monastery_Tutorial2_Rest",
+          "type": "SceneID",
+          "static": true,
+          "value": 44
+        },
+        {
+          "name": "Monastery_Tutorial3",
+          "type": "SceneID",
+          "static": true,
+          "value": 35
+        },
+        {
+          "name": "Monastery_Tutorial3_hosyu",
+          "type": "SceneID",
+          "static": true,
+          "value": 46
+        },
+        {
+          "name": "Road_0_3_Owl",
+          "type": "SceneID",
+          "static": true,
+          "value": 200
+        },
+        {
+          "name": "Road_0_n2",
+          "type": "SceneID",
+          "static": true,
+          "value": 151
+        },
+        {
+          "name": "Road_0_n3",
+          "type": "SceneID",
+          "static": true,
+          "value": 152
+        },
+        {
+          "name": "Road_1_0",
+          "type": "SceneID",
+          "static": true,
+          "value": 0
+        },
+        {
+          "name": "Road_2_0",
+          "type": "SceneID",
+          "static": true,
+          "value": 55
+        },
+        {
+          "name": "Road_2_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 3
+        },
+        {
+          "name": "Road_2_1_GO",
+          "type": "SceneID",
+          "static": true,
+          "value": 4
+        },
+        {
+          "name": "Road_2_2_Entrance",
+          "type": "SceneID",
+          "static": true,
+          "value": 165
+        },
+        {
+          "name": "Road_2_2_Livestock",
+          "type": "SceneID",
+          "static": true,
+          "value": 166
+        },
+        {
+          "name": "Road_2_2_Livestock_go",
+          "type": "SceneID",
+          "static": true,
+          "value": 167
+        },
+        {
+          "name": "Road_2_n1_Cliff_Before",
+          "type": "SceneID",
+          "static": true,
+          "value": 194
+        },
+        {
+          "name": "Road_2_n1_Cliff",
+          "type": "SceneID",
+          "static": true,
+          "value": 193
+        },
+        {
+          "name": "Road_3_0",
+          "type": "SceneID",
+          "static": true,
+          "value": 192
+        },
+        {
+          "name": "Road_3_1_SavePoint",
+          "type": "SceneID",
+          "static": true,
+          "value": 20
+        },
+        {
+          "name": "Road_3_2",
+          "type": "SceneID",
+          "static": true,
+          "value": 168
+        },
+        {
+          "name": "Road_3_n1",
+          "type": "SceneID",
+          "static": true,
+          "value": 191
+        },
+        {
+          "name": "Road_3_n2_SavePoint",
+          "type": "SceneID",
+          "static": true,
+          "value": 195
+        },
+        {
+          "name": "Road_4_0",
+          "type": "SceneID",
+          "static": true,
+          "value": 1
+        },
+        {
+          "name": "Road_4_0_GO01",
+          "type": "SceneID",
+          "static": true,
+          "value": 5
+        },
+        {
+          "name": "Road_4_0_GO02",
+          "type": "SceneID",
+          "static": true,
+          "value": 6
+        },
+        {
+          "name": "Road_4_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 169
+        },
+        {
+          "name": "Road_4_2",
+          "type": "SceneID",
+          "static": true,
+          "value": 199
+        },
+        {
+          "name": "Road_4_n2_Altar",
+          "type": "SceneID",
+          "static": true,
+          "value": 196
+        },
+        {
+          "name": "Road_5_0_Bridge",
+          "type": "SceneID",
+          "static": true,
+          "value": 170
+        },
+        {
+          "name": "Road_5_n2",
+          "type": "SceneID",
+          "static": true,
+          "value": 197
+        },
+        {
+          "name": "Road_6_n1",
+          "type": "SceneID",
+          "static": true,
+          "value": 171
+        },
+        {
+          "name": "Road_6_n2",
+          "type": "SceneID",
+          "static": true,
+          "value": 198
+        },
+        {
+          "name": "Road_CaveEntrance",
+          "type": "SceneID",
+          "static": true,
+          "value": 201
+        },
+        {
+          "name": "Road_HouseTreasure",
+          "type": "SceneID",
+          "static": true,
+          "value": 62
+        },
+        {
+          "name": "Road_n1_0",
+          "type": "SceneID",
+          "static": true,
+          "value": 48
+        },
+        {
+          "name": "Road_n1_3",
+          "type": "SceneID",
+          "static": true,
+          "value": 202
+        },
+        {
+          "name": "Road_n1_4",
+          "type": "SceneID",
+          "static": true,
+          "value": 204
+        },
+        {
+          "name": "Road_n1_n1",
+          "type": "SceneID",
+          "static": true,
+          "value": 153
+        },
+        {
+          "name": "Road_n1_n2",
+          "type": "SceneID",
+          "static": true,
+          "value": 154
+        },
+        {
+          "name": "Road_n2_0",
+          "type": "SceneID",
+          "static": true,
+          "value": 49
+        },
+        {
+          "name": "Road_n2_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 149
+        },
+        {
+          "name": "Road_n2_1_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 150
+        },
+        {
+          "name": "Road_n2_3_Alter",
+          "type": "SceneID",
+          "static": true,
+          "value": 203
+        },
+        {
+          "name": "Road_n2_n1",
+          "type": "SceneID",
+          "static": true,
+          "value": 50
+        },
+        {
+          "name": "Road_n2_n2",
+          "type": "SceneID",
+          "static": true,
+          "value": 155
+        },
+        {
+          "name": "Road_n3_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 205
+        },
+        {
+          "name": "Road_n3_2_SavePoint",
+          "type": "SceneID",
+          "static": true,
+          "value": 206
+        },
+        {
+          "name": "Road_n3_3_Hill",
+          "type": "SceneID",
+          "static": true,
+          "value": 207
+        },
+        {
+          "name": "Road_n3_3_MountainStart",
+          "type": "SceneID",
+          "static": true,
+          "value": 208
+        },
+        {
+          "name": "Road_n4_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 209
+        },
+        {
+          "name": "Road_Swamp_Entrance",
+          "type": "SceneID",
+          "static": true,
+          "value": 51
+        },
+        {
+          "name": "Road_TreeBoss",
+          "type": "SceneID",
+          "static": true,
+          "value": 156
+        },
+        {
+          "name": "Road_TreeBoss_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 158
+        },
+        {
+          "name": "Road_Village_Entrance",
+          "type": "SceneID",
+          "static": true,
+          "value": 79
+        },
+        {
+          "name": "Road_Mountain1_GO1",
+          "type": "SceneID",
+          "static": true,
+          "value": 16
+        },
+        {
+          "name": "Dungeon_Sewage_Entrance",
+          "type": "SceneID",
+          "static": true,
+          "value": 185
+        },
+        {
+          "name": "Dungeon_Cathedral_Under_Entrance",
+          "type": "SceneID",
+          "static": true,
+          "value": 180
+        },
+        {
+          "name": "Road_SpiderBoss",
+          "type": "SceneID",
+          "static": true,
+          "value": 274
+        },
+        {
+          "name": "Road_SpiderBoss_Continue",
+          "type": "SceneID",
+          "static": true,
+          "value": 275
+        },
+        {
+          "name": "Road_SpiderBoss_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 276
+        },
+        {
+          "name": "Road_n6_2",
+          "type": "SceneID",
+          "static": true,
+          "value": 283
+        },
+        {
+          "name": "Road_n4_2",
+          "type": "SceneID",
+          "static": true,
+          "value": 273
+        },
+        {
+          "name": "Road_n4_2_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 279
+        },
+        {
+          "name": "Road_0_n1",
+          "type": "SceneID",
+          "static": true,
+          "value": 284
+        },
+        {
+          "name": "Road_TownUnder1",
+          "type": "SceneID",
+          "static": true,
+          "value": 288
+        },
+        {
+          "name": "Road_TownUnder1_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 289
+        },
+        {
+          "name": "Road_TownUnder2",
+          "type": "SceneID",
+          "static": true,
+          "value": 290
+        },
+        {
+          "name": "Road_TownUnder2_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 296
+        },
+        {
+          "name": "Road_TownUnder2_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 291
+        },
+        {
+          "name": "Road_TownUnder3",
+          "type": "SceneID",
+          "static": true,
+          "value": 292
+        },
+        {
+          "name": "Road_TownUnder3_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 293
+        },
+        {
+          "name": "Dungeon_Sewage1",
+          "type": "SceneID",
+          "static": true,
+          "value": 161
+        },
+        {
+          "name": "Dungeon_Sewage2",
+          "type": "SceneID",
+          "static": true,
+          "value": 162
+        },
+        {
+          "name": "Dungeon_Sewage3",
+          "type": "SceneID",
+          "static": true,
+          "value": 173
+        },
+        {
+          "name": "Dungeon_Sewage4",
+          "type": "SceneID",
+          "static": true,
+          "value": 174
+        },
+        {
+          "name": "Dungeon_Sewage5",
+          "type": "SceneID",
+          "static": true,
+          "value": 175
+        },
+        {
+          "name": "Dungeon_Sewage6",
+          "type": "SceneID",
+          "static": true,
+          "value": 176
+        },
+        {
+          "name": "Dungeon_Sewage7",
+          "type": "SceneID",
+          "static": true,
+          "value": 177
+        },
+        {
+          "name": "Dungeon_Sewage8",
+          "type": "SceneID",
+          "static": true,
+          "value": 178
+        },
+        {
+          "name": "Dungeon_Sewage9",
+          "type": "SceneID",
+          "static": true,
+          "value": 179
+        },
+        {
+          "name": "Dungeon_Sewage10",
+          "type": "SceneID",
+          "static": true,
+          "value": 172
+        },
+        {
+          "name": "Dungeon_Sewage_Wall",
+          "type": "SceneID",
+          "static": true,
+          "value": 181
+        },
+        {
+          "name": "Dungeon_Sewage11",
+          "type": "SceneID",
+          "static": true,
+          "value": 182
+        },
+        {
+          "name": "Dungeon_Sewage_Treasure",
+          "type": "SceneID",
+          "static": true,
+          "value": 183
+        },
+        {
+          "name": "Dungeon_Sewage_Boss",
+          "type": "SceneID",
+          "static": true,
+          "value": 184
+        },
+        {
+          "name": "Dungeon_Sewage_Boss_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 187
+        },
+        {
+          "name": "Dungeon_Sewage_Continue",
+          "type": "SceneID",
+          "static": true,
+          "value": 188
+        },
+        {
+          "name": "Dungeon_Sewage_Egg",
+          "type": "SceneID",
+          "static": true,
+          "value": 189
+        },
+        {
+          "name": "Dungeon_Sewage_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 190
+        },
+        {
+          "name": "Dungeon_Sewage_Midpoint",
+          "type": "SceneID",
+          "static": true,
+          "value": 186
+        },
+        {
+          "name": "Dungeon_Sewage_Start",
+          "type": "SceneID",
+          "static": true,
+          "value": 163
+        },
+        {
+          "name": "Dungeon_Swamp1",
+          "type": "SceneID",
+          "static": true,
+          "value": 25
+        },
+        {
+          "name": "Dungeon_Swamp2",
+          "type": "SceneID",
+          "static": true,
+          "value": 26
+        },
+        {
+          "name": "Dungeon_Swamp2_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 263
+        },
+        {
+          "name": "Dungeon_Swamp3",
+          "type": "SceneID",
+          "static": true,
+          "value": 27
+        },
+        {
+          "name": "Dungeon_Swamp4",
+          "type": "SceneID",
+          "static": true,
+          "value": 31
+        },
+        {
+          "name": "Dungeon_Swamp5",
+          "type": "SceneID",
+          "static": true,
+          "value": 52
+        },
+        {
+          "name": "Dungeon_Swamp6",
+          "type": "SceneID",
+          "static": true,
+          "value": 53
+        },
+        {
+          "name": "Dungeon_Swamp_Gluttony_GO",
+          "type": "SceneID",
+          "static": true,
+          "value": 32
+        },
+        {
+          "name": "Dungeon_Swamp_Boss",
+          "type": "SceneID",
+          "static": true,
+          "value": 28
+        },
+        {
+          "name": "Dungeon_Swamp_Boss_GO1",
+          "type": "SceneID",
+          "static": true,
+          "value": 29
+        },
+        {
+          "name": "Dungeon_Swamp_Boss_GO2",
+          "type": "SceneID",
+          "static": true,
+          "value": 30
+        },
+        {
+          "name": "Town",
+          "type": "SceneID",
+          "static": true,
+          "value": 18
+        },
+        {
+          "name": "Town_Pub",
+          "type": "SceneID",
+          "static": true,
+          "value": 56
+        },
+        {
+          "name": "Town_SecondFloor",
+          "type": "SceneID",
+          "static": true,
+          "value": 148
+        },
+        {
+          "name": "Town_Alley",
+          "type": "SceneID",
+          "static": true,
+          "value": 213
+        },
+        {
+          "name": "Town_Alley_House",
+          "type": "SceneID",
+          "static": true,
+          "value": 244
+        },
+        {
+          "name": "Town_DartyHouse",
+          "type": "SceneID",
+          "static": true,
+          "value": 215
+        },
+        {
+          "name": "Town_Outskirts",
+          "type": "SceneID",
+          "static": true,
+          "value": 214
+        },
+        {
+          "name": "Town_Drunk",
+          "type": "SceneID",
+          "static": true,
+          "value": 216
+        },
+        {
+          "name": "Town_Raid",
+          "type": "SceneID",
+          "static": true,
+          "value": 211
+        },
+        {
+          "name": "Dungeon_Village1",
+          "type": "SceneID",
+          "static": true,
+          "value": 80
+        },
+        {
+          "name": "Dungeon_Village2",
+          "type": "SceneID",
+          "static": true,
+          "value": 81
+        },
+        {
+          "name": "Dungeon_Village3",
+          "type": "SceneID",
+          "static": true,
+          "value": 82
+        },
+        {
+          "name": "Dungeon_Village4",
+          "type": "SceneID",
+          "static": true,
+          "value": 84
+        },
+        {
+          "name": "Dungeon_Village4_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 85
+        },
+        {
+          "name": "Dungeon_Village4_2",
+          "type": "SceneID",
+          "static": true,
+          "value": 86
+        },
+        {
+          "name": "Dungeon_Village4_3",
+          "type": "SceneID",
+          "static": true,
+          "value": 87
+        },
+        {
+          "name": "Dungeon_Village4_3_Before",
+          "type": "SceneID",
+          "static": true,
+          "value": 96
+        },
+        {
+          "name": "Dungeon_Village4_4",
+          "type": "SceneID",
+          "static": true,
+          "value": 88
+        },
+        {
+          "name": "Dungeon_Village4_4_Before",
+          "type": "SceneID",
+          "static": true,
+          "value": 97
+        },
+        {
+          "name": "Dungeon_Village4_Before",
+          "type": "SceneID",
+          "static": true,
+          "value": 93
+        },
+        {
+          "name": "Dungeon_Village4_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 101
+        },
+        {
+          "name": "Dungeon_Village5",
+          "type": "SceneID",
+          "static": true,
+          "value": 90
+        },
+        {
+          "name": "Dungeon_Village6",
+          "type": "SceneID",
+          "static": true,
+          "value": 91
+        },
+        {
+          "name": "Dungeon_Village_Boss",
+          "type": "SceneID",
+          "static": true,
+          "value": 92
+        },
+        {
+          "name": "Dungeon_Village_Boss_Go1",
+          "type": "SceneID",
+          "static": true,
+          "value": 94
+        },
+        {
+          "name": "Dungeon_Village_Boss_Go2",
+          "type": "SceneID",
+          "static": true,
+          "value": 95
+        },
+        {
+          "name": "Dungeon_Village_House1",
+          "type": "SceneID",
+          "static": true,
+          "value": 98
+        },
+        {
+          "name": "Dungeon_Village_House4",
+          "type": "SceneID",
+          "static": true,
+          "value": 83
+        },
+        {
+          "name": "Dungeon_Village_House4_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 99
+        },
+        {
+          "name": "Dungeon_Village4_5",
+          "type": "SceneID",
+          "static": true,
+          "value": 218
+        },
+        {
+          "name": "Dungeon_Village2_Before",
+          "type": "SceneID",
+          "static": true,
+          "value": 217
+        },
+        {
+          "name": "Resident",
+          "type": "SceneID",
+          "static": true,
+          "value": 8
+        },
+        {
+          "name": "TitleMenu",
+          "type": "SceneID",
+          "static": true,
+          "value": 19
+        },
+        {
+          "name": "Dream_Slug_Villager",
+          "type": "SceneID",
+          "static": true,
+          "value": 157
+        },
+        {
+          "name": "Dream_Slug_Villager_Go1",
+          "type": "SceneID",
+          "static": true,
+          "value": 164
+        },
+        {
+          "name": "Monastery_Raid_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 210
+        },
+        {
+          "name": "Town_Alley_House2",
+          "type": "SceneID",
+          "static": true,
+          "value": 277
+        },
+        {
+          "name": "Town_Alley_House2_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 278
+        },
+        {
+          "name": "Town_Alley_House2_Haanja",
+          "type": "SceneID",
+          "static": true,
+          "value": 280
+        },
+        {
+          "name": "Dungeon_Cave_Go_Pregnant",
+          "type": "SceneID",
+          "static": true,
+          "value": 160
+        },
+        {
+          "name": "Dungeon_Village6_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 245
+        },
+        {
+          "name": "SandBlinded",
+          "type": "SceneID",
+          "static": true,
+          "value": 89
+        },
+        {
+          "name": "Dungeon_Cathedral_Base",
+          "type": "SceneID",
+          "static": true,
+          "value": 115
+        },
+        {
+          "name": "Dungeon_Cathedral_Hall_Boss_Go1",
+          "type": "SceneID",
+          "static": true,
+          "value": 159
+        },
+        {
+          "name": "Dungeon_Cathedral_Hall_Boss_Go2",
+          "type": "SceneID",
+          "static": true,
+          "value": 146
+        },
+        {
+          "name": "Dungeon_Cathedral_Hall_Boss_Go_NoItem",
+          "type": "SceneID",
+          "static": true,
+          "value": 145
+        },
+        {
+          "name": "Dungeon_Cathedral_Hall_Elevator_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 147
+        },
+        {
+          "name": "Dungeon_Cathedral_Library_Under",
+          "type": "SceneID",
+          "static": true,
+          "value": 262
+        },
+        {
+          "name": "Ga_Bobel",
+          "type": "SceneID",
+          "static": true,
+          "value": 23
+        },
+        {
+          "name": "Ga_Bola",
+          "type": "SceneID",
+          "static": true,
+          "value": 100
+        },
+        {
+          "name": "Ga_Enenuth",
+          "type": "SceneID",
+          "static": true,
+          "value": 12
+        },
+        {
+          "name": "Ga_EnenuthMollusk",
+          "type": "SceneID",
+          "static": true,
+          "value": 63
+        },
+        {
+          "name": "Ga_FlyBug",
+          "type": "SceneID",
+          "static": true,
+          "value": 37
+        },
+        {
+          "name": "Ga_LeechBaby",
+          "type": "SceneID",
+          "static": true,
+          "value": 40
+        },
+        {
+          "name": "Ga_LeechBaby_SwampEnd",
+          "type": "SceneID",
+          "static": true,
+          "value": 64
+        },
+        {
+          "name": "Ga_LeechGluttony",
+          "type": "SceneID",
+          "static": true,
+          "value": 39
+        },
+        {
+          "name": "Ga_LeechMan",
+          "type": "SceneID",
+          "static": true,
+          "value": 38
+        },
+        {
+          "name": "Ga_SisterOAC",
+          "type": "SceneID",
+          "static": true,
+          "value": 41
+        },
+        {
+          "name": "Ga_Swamp",
+          "type": "SceneID",
+          "static": true,
+          "value": 61
+        },
+        {
+          "name": "Ga_SwampLeech",
+          "type": "SceneID",
+          "static": true,
+          "value": 34
+        },
+        {
+          "name": "Ga_SwampLeech_Adult",
+          "type": "SceneID",
+          "static": true,
+          "value": 36
+        },
+        {
+          "name": "Ga_Zombie",
+          "type": "SceneID",
+          "static": true,
+          "value": 13
+        },
+        {
+          "name": "Ga_ZombieTomb",
+          "type": "SceneID",
+          "static": true,
+          "value": 14
+        },
+        {
+          "name": "Gallery",
+          "type": "SceneID",
+          "static": true,
+          "value": 10
+        },
+        {
+          "name": "GalleryTemplate",
+          "type": "SceneID",
+          "static": true,
+          "value": 11
+        },
+        {
+          "name": "Gallery_Cathedral",
+          "type": "SceneID",
+          "static": true,
+          "value": 266
+        },
+        {
+          "name": "Gallery_Cave",
+          "type": "SceneID",
+          "static": true,
+          "value": 267
+        },
+        {
+          "name": "Gallery_Monastery",
+          "type": "SceneID",
+          "static": true,
+          "value": 58
+        },
+        {
+          "name": "Gallery_Road",
+          "type": "SceneID",
+          "static": true,
+          "value": 54
+        },
+        {
+          "name": "Gallery_Sewage",
+          "type": "SceneID",
+          "static": true,
+          "value": 268
+        },
+        {
+          "name": "Gallery_Swamp",
+          "type": "SceneID",
+          "static": true,
+          "value": 57
+        },
+        {
+          "name": "Gallery_Village",
+          "type": "SceneID",
+          "static": true,
+          "value": 269
+        },
+        {
+          "name": "Road_3_0_Old",
+          "type": "SceneID",
+          "static": true,
+          "value": 2
+        },
+        {
+          "name": "Road_Mountain1",
+          "type": "SceneID",
+          "static": true,
+          "value": 15
+        },
+        {
+          "name": "Road_4_1_IsolationWard1",
+          "type": "SceneID",
+          "static": true,
+          "value": 264
+        },
+        {
+          "name": "Road_4_1_IsolationWard2",
+          "type": "SceneID",
+          "static": true,
+          "value": 265
+        },
+        {
+          "name": "Road_5_n2_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 21
+        },
+        {
+          "name": "Road_Swamp_Sample",
+          "type": "SceneID",
+          "static": true,
+          "value": 285
+        },
+        {
+          "name": "Road_Swamp_Sample_Go",
+          "type": "SceneID",
+          "static": true,
+          "value": 286
+        },
+        {
+          "name": "Road_SwampSample2",
+          "type": "SceneID",
+          "static": true,
+          "value": 287
+        },
+        {
+          "name": "Road_n1_0_Raid",
+          "type": "SceneID",
+          "static": true,
+          "value": 212
+        },
+        {
+          "name": "Road_Mountain1_GO1_Breast",
+          "type": "SceneID",
+          "static": true,
+          "value": 17
+        },
+        {
+          "name": "Ga_Box_NeckTrap",
+          "type": "SceneID",
+          "static": true,
+          "value": 247
+        },
+        {
+          "name": "Ga_MidasTouch",
+          "type": "SceneID",
+          "static": true,
+          "value": 238
+        },
+        {
+          "name": "Ga_PictureFrameBig",
+          "type": "SceneID",
+          "static": true,
+          "value": 248
+        },
+        {
+          "name": "Ga_StoneEye",
+          "type": "SceneID",
+          "static": true,
+          "value": 237
+        },
+        {
+          "name": "Ga_StoneEye2",
+          "type": "SceneID",
+          "static": true,
+          "value": 255
+        },
+        {
+          "name": "Ga_Hand_S",
+          "type": "SceneID",
+          "static": true,
+          "value": 250
+        },
+        {
+          "name": "Ga_Hand_S_End",
+          "type": "SceneID",
+          "static": true,
+          "value": 251
+        },
+        {
+          "name": "Ga_MiscarriedFetus",
+          "type": "SceneID",
+          "static": true,
+          "value": 243
+        },
+        {
+          "name": "Ga_SlugW",
+          "type": "SceneID",
+          "static": true,
+          "value": 271
+        },
+        {
+          "name": "Ga_Bobel_Barnacle",
+          "type": "SceneID",
+          "static": true,
+          "value": 239
+        },
+        {
+          "name": "Ga_PigDining",
+          "type": "SceneID",
+          "static": true,
+          "value": 249
+        },
+        {
+          "name": "Ga_SistarTentacle",
+          "type": "SceneID",
+          "static": true,
+          "value": 240
+        },
+        {
+          "name": "Ga_SnailBrain_s",
+          "type": "SceneID",
+          "static": true,
+          "value": 242
+        },
+        {
+          "name": "Ga_PriestRod_C_Air",
+          "type": "SceneID",
+          "static": true,
+          "value": 235
+        },
+        {
+          "name": "Ga_Priest_Slime",
+          "type": "SceneID",
+          "static": true,
+          "value": 236
+        },
+        {
+          "name": "Ga_DemiHumanL",
+          "type": "SceneID",
+          "static": true,
+          "value": 104
+        },
+        {
+          "name": "Ga_DemiHumanS",
+          "type": "SceneID",
+          "static": true,
+          "value": 219
+        },
+        {
+          "name": "Ga_DemihumanM_Down2",
+          "type": "SceneID",
+          "static": true,
+          "value": 102
+        },
+        {
+          "name": "Ga_DemihumanM_Spear",
+          "type": "SceneID",
+          "static": true,
+          "value": 103
+        },
+        {
+          "name": "Ga_Player_Attack",
+          "type": "SceneID",
+          "static": true,
+          "value": 253
+        },
+        {
+          "name": "Ga_Player_Damage",
+          "type": "SceneID",
+          "static": true,
+          "value": 256
+        },
+        {
+          "name": "Ga_Player_Other_1",
+          "type": "SceneID",
+          "static": true,
+          "value": 257
+        },
+        {
+          "name": "Ga_Player_Other_1_Breast2",
+          "type": "SceneID",
+          "static": true,
+          "value": 260
+        },
+        {
+          "name": "Ga_Player_Other_1_Broken2",
+          "type": "SceneID",
+          "static": true,
+          "value": 259
+        },
+        {
+          "name": "Ga_Player_Other_2",
+          "type": "SceneID",
+          "static": true,
+          "value": 258
+        },
+        {
+          "name": "Ga_Player_Other_2_Mask",
+          "type": "SceneID",
+          "static": true,
+          "value": 261
+        },
+        {
+          "name": "Ga_Player_Other_3_Broken2",
+          "type": "SceneID",
+          "static": true,
+          "value": 272
+        },
+        {
+          "name": "Ga_Player_Walk",
+          "type": "SceneID",
+          "static": true,
+          "value": 252
+        },
+        {
+          "name": "Ga_Cliff",
+          "type": "SceneID",
+          "static": true,
+          "value": 254
+        },
+        {
+          "name": "Ga_Enenuth_Jellyfish",
+          "type": "SceneID",
+          "static": true,
+          "value": 224
+        },
+        {
+          "name": "Ga_Funghoul",
+          "type": "SceneID",
+          "static": true,
+          "value": 223
+        },
+        {
+          "name": "Ga_PigParasite",
+          "type": "SceneID",
+          "static": true,
+          "value": 225
+        },
+        {
+          "name": "Ga_ZombieG",
+          "type": "SceneID",
+          "static": true,
+          "value": 222
+        },
+        {
+          "name": "Ga_MeatBall",
+          "type": "SceneID",
+          "static": true,
+          "value": 228
+        },
+        {
+          "name": "Ga_MeatCeiling",
+          "type": "SceneID",
+          "static": true,
+          "value": 231
+        },
+        {
+          "name": "Ga_MeatTentacleCeiling",
+          "type": "SceneID",
+          "static": true,
+          "value": 227
+        },
+        {
+          "name": "Ga_MeatTentacleCloudy",
+          "type": "SceneID",
+          "static": true,
+          "value": 233
+        },
+        {
+          "name": "Ga_MeatTentacleCluster",
+          "type": "SceneID",
+          "static": true,
+          "value": 229
+        },
+        {
+          "name": "Ga_MeatTentacleMan",
+          "type": "SceneID",
+          "static": true,
+          "value": 270
+        },
+        {
+          "name": "Ga_MeatWombBaby",
+          "type": "SceneID",
+          "static": true,
+          "value": 232
+        },
+        {
+          "name": "Ga_MeatWorm1",
+          "type": "SceneID",
+          "static": true,
+          "value": 226
+        },
+        {
+          "name": "Ga_MeatWormVore",
+          "type": "SceneID",
+          "static": true,
+          "value": 230
+        },
+        {
+          "name": "Ga_Mimic",
+          "type": "SceneID",
+          "static": true,
+          "value": 234
+        },
+        {
+          "name": "Ga_SlugM",
+          "type": "SceneID",
+          "static": true,
+          "value": 221
+        },
+        {
+          "name": "Ga_Slug_S",
+          "type": "SceneID",
+          "static": true,
+          "value": 220
+        },
+        {
+          "name": "Ga_VillagerAges",
+          "type": "SceneID",
+          "static": true,
+          "value": 282
+        },
+        {
+          "name": "Ga_PriestVillage",
+          "type": "SceneID",
+          "static": true,
+          "value": 140
+        },
+        {
+          "name": "Ga_VillagerFatA",
+          "type": "SceneID",
+          "static": true,
+          "value": 143
+        },
+        {
+          "name": "Ga_VillagerFemale",
+          "type": "SceneID",
+          "static": true,
+          "value": 138
+        },
+        {
+          "name": "Ga_VillagerFemaleParasite",
+          "type": "SceneID",
+          "static": true,
+          "value": 142
+        },
+        {
+          "name": "Ga_VillagerMale",
+          "type": "SceneID",
+          "static": true,
+          "value": 139
+        },
+        {
+          "name": "Ga_VillagerMaleParasite",
+          "type": "SceneID",
+          "static": true,
+          "value": 141
+        },
+        {
+          "name": "Ga_VillagerMiddleMale",
+          "type": "SceneID",
+          "static": true,
+          "value": 137
+        },
+        {
+          "name": "Ga_VillagerRegion",
+          "type": "SceneID",
+          "static": true,
+          "value": 144
+        },
+        {
+          "name": "Ga_SpiderHuntsman",
+          "type": "SceneID",
+          "static": true,
+          "value": 281
+        },
+        {
+          "name": "Ga_Frog_L",
+          "type": "SceneID",
+          "static": true,
+          "value": 295
+        },
+        {
+          "name": "Ga_Frog_M",
+          "type": "SceneID",
+          "static": true,
+          "value": 294
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2",
+      "name": "GachaGachaParameter",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_SuccessValue",
+          "type": "System.Single",
+          "static": false
+        },
+        {
+          "name": "m_HardOverwrite",
+          "type": "System.Boolean",
+          "static": false
+        },
+        {
+          "name": "m_SuccessValueHard",
+          "type": "System.Single",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2",
+      "name": "GachaGachaSystem",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_Parameter",
+          "type": "SiNiSistar2.GachaGachaParameter",
+          "static": false
+        },
+        {
+          "name": "m_IsActive",
+          "type": "UniRx.ReactiveProperty<System.Boolean>",
+          "static": false
+        },
+        {
+          "name": "<CurrentValue>k__BackingField",
+          "type": "System.Single",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "get_IsActive",
+          "returns": "System.Boolean",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.Damage",
+      "name": "DamageManager",
+      "kind": "class",
+      "fields": [],
+      "methods": [
+        {
+          "name": "UpdateDamageOne",
+          "returns": "System.Void",
+          "parameters": [
+            "SiNiSistar2.Damage.DamageStack"
+          ],
+          "static": false,
+          "first_type_filter": "DamageStack"
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.Damage",
+      "name": "DamageSenderCollider",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<OwnerObject>k__BackingField",
+          "type": "SiNiSistar2.Damage.IDamageSenderOwner",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Damage",
+      "name": "DamageStack",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_Sender",
+          "type": "SiNiSistar2.Damage.IDamageSenderOwner",
+          "static": false
+        },
+        {
+          "name": "m_SenderCollider",
+          "type": "SiNiSistar2.Damage.DamageSenderCollider",
+          "static": false
+        },
+        {
+          "name": "m_Receiver",
+          "type": "SiNiSistar2.Damage.IDamageReceiverOwner",
+          "static": false
+        },
+        {
+          "name": "m_DamageTargetType",
+          "type": "SiNiSistar2.Damage.DamageTargetType",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Damage",
+      "name": "DamageTargetType",
+      "kind": "enum",
+      "fields": [
+        {
+          "name": "value__",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "Player",
+          "type": "SiNiSistar2.Damage.DamageTargetType",
+          "static": true,
+          "value": 0
+        },
+        {
+          "name": "Enemy",
+          "type": "SiNiSistar2.Damage.DamageTargetType",
+          "static": true,
+          "value": 1
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Damage",
+      "name": "IDamageReceiverOwner",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Damage",
+      "name": "IDamageSenderOwner",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Damage",
+      "name": "IDisplayEnemyName",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Damage",
+      "name": "IGalleryEnemyIDContainer",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Damage",
+      "name": "NotifyHitArgument",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_SpendHp",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "m_SpendMp",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "m_BeforeHp",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "m_RemainHP",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "m_RemainMP",
+          "type": "System.Int32",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Event",
+      "name": "EventManager",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<IsRestartConfirmed>k__BackingField",
+          "type": "System.Boolean",
+          "static": false
+        },
+        {
+          "name": "m_EventPlayableDirector",
+          "type": "UnityEngine.Playables.PlayableDirector",
+          "static": false
+        },
+        {
+          "name": "<EventPause>k__BackingField",
+          "type": "System.Boolean",
+          "static": false
+        },
+        {
+          "name": "<IsPlayingPlayableDirector>k__BackingField",
+          "type": "System.Boolean",
+          "static": false
+        },
+        {
+          "name": "<CurrentBootEventTrigger>k__BackingField",
+          "type": "SiNiSistar2.Event.EvSystem.BootEventTrigger",
+          "static": false
+        },
+        {
+          "name": "<CurrentEventPlayer>k__BackingField",
+          "type": "SiNiSistar2.Event.EvSystem.EventPlayerBase",
+          "static": false
+        },
+        {
+          "name": "<NextEventPlayer>k__BackingField",
+          "type": "SiNiSistar2.Event.EvSystem.EventPlayerBase",
+          "static": false
+        },
+        {
+          "name": "<IsEventPlaying>k__BackingField",
+          "type": "System.Boolean",
+          "static": false
+        },
+        {
+          "name": "<IsBossBattleProp>k__BackingField",
+          "type": "UniRx.ReadOnlyReactiveProperty<System.Boolean>",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "PlayEvent",
+          "returns": "System.Void",
+          "parameters": [
+            "SiNiSistar2.Event.EvSystem.EventTriggerBase",
+            "SiNiSistar2.Event.EvSystem.EventPlayerBase"
+          ],
+          "static": false,
+          "first_type_filter": ""
+        },
+        {
+          "name": "StopEvent",
+          "returns": "System.Void",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.Event.EvSystem",
+      "name": "BootEventTrigger",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Event.EvSystem",
+      "name": "EventGroup",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Event.EvSystem",
+      "name": "EventObjectBase",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<ParentGroup>k__BackingField",
+          "type": "SiNiSistar2.Event.EvSystem.EventGroup",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Event.EvSystem",
+      "name": "EventPlayerBase",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<IsPlaying>k__BackingField",
+          "type": "System.Boolean",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Event.EvSystem",
+      "name": "EventTriggerBase",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Event.EvSystem",
+      "name": "HierarchyEventPlayer",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_Receiver",
+          "type": "HierarchyEventReceiver",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.EventLabel",
+      "name": "AnimatorAsyncTriggerParameter",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.EventLabel",
+      "name": "AnimatorTriggerAsyncLabel",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_Parameters",
+          "type": "SiNiSistar2.EventLabel.AnimatorAsyncTriggerParameter[]",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.EventLabel",
+      "name": "AnimatorTriggerLabel",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_Parameters",
+          "type": "SiNiSistar2.EventLabel.AnimatorTriggerParameter[]",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.EventLabel",
+      "name": "AnimatorTriggerParameter",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_Label",
+          "type": "System.String",
+          "static": false
+        },
+        {
+          "name": "m_Animator",
+          "type": "UnityEngine.Animator",
+          "static": false
+        },
+        {
+          "name": "m_PlayName",
+          "type": "System.String",
+          "static": false
+        },
+        {
+          "name": "m_LayerIndex",
+          "type": "System.Int32",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.EventLabel",
+      "name": "CommonLabelBase",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.EventLabel",
+      "name": "CommonLabelEventBaseAsync`1",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.EventLabel",
+      "name": "CommonLabelEventBase`1",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.EventLabel",
+      "name": "IEnemyOrderObserver",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.EventLabel",
+      "name": "ILabelItem",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.EventLabel",
+      "name": "LabelEvent",
+      "kind": "class",
+      "fields": [],
+      "methods": [
+        {
+          "name": "LabelEvent_Execution",
+          "returns": "System.Void",
+          "parameters": [
+            "System.String"
+          ],
+          "static": false,
+          "first_type_filter": "String"
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.EventLabel.GameOver",
+      "name": "GameOverDisplayType",
+      "kind": "enum",
+      "fields": [
+        {
+          "name": "value__",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "Normal",
+          "type": "SiNiSistar2.EventLabel.GameOver.GameOverDisplayType",
+          "static": true,
+          "value": 0
+        },
+        {
+          "name": "Slow",
+          "type": "SiNiSistar2.EventLabel.GameOver.GameOverDisplayType",
+          "static": true,
+          "value": 1
+        },
+        {
+          "name": "Immediate",
+          "type": "SiNiSistar2.EventLabel.GameOver.GameOverDisplayType",
+          "static": true,
+          "value": 2
+        },
+        {
+          "name": "None",
+          "type": "SiNiSistar2.EventLabel.GameOver.GameOverDisplayType",
+          "static": true,
+          "value": 3
+        },
+        {
+          "name": "ImmediateAnim",
+          "type": "SiNiSistar2.EventLabel.GameOver.GameOverDisplayType",
+          "static": true,
+          "value": 4
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.EventLabel.GameOver",
+      "name": "GameOverLabel",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_Parameters",
+          "type": "SiNiSistar2.EventLabel.GameOver.GameOverParameter[]",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "ExecutionOne",
+          "returns": "System.Void",
+          "parameters": [
+            "SiNiSistar2.EventLabel.GameOver.GameOverParameter"
+          ],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.EventLabel.GameOver",
+      "name": "GameOverParameter",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_Label",
+          "type": "System.String",
+          "static": false
+        },
+        {
+          "name": "m_GameOverDisplayType",
+          "type": "SiNiSistar2.EventLabel.GameOver.GameOverDisplayType",
+          "static": false
+        },
+        {
+          "name": "m_HpControlType",
+          "type": "SiNiSistar2.EventLabel.GameOver.HpControlType",
+          "static": false
+        },
+        {
+          "name": "m_HasRetryTime",
+          "type": "System.Boolean",
+          "static": false
+        },
+        {
+          "name": "m_RestartTime",
+          "type": "System.Single",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.EventLabel.GameOver",
+      "name": "HpControlType",
+      "kind": "enum",
+      "fields": [
+        {
+          "name": "value__",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "SubAll",
+          "type": "SiNiSistar2.EventLabel.GameOver.HpControlType",
+          "static": true,
+          "value": 0
+        },
+        {
+          "name": "NotSub",
+          "type": "SiNiSistar2.EventLabel.GameOver.HpControlType",
+          "static": true,
+          "value": 1
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.EventLabel.GameOver",
+      "name": "IRedAlertParameter",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Manager",
+      "name": "ISequenceObserver",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Manager",
+      "name": "ISetUpObserver",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Manager",
+      "name": "ISetUpObserverSceneLoaded",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Manager",
+      "name": "ISetUpObserverSceneLoadedBefore",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Manager",
+      "name": "ISetUpObserverSceneLoadedBeforeUsesManager",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Manager",
+      "name": "ISetUpObserverSceneLoadedUsesManager",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Manager",
+      "name": "ManagerBase",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Manager",
+      "name": "ManagerList",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_Sequence",
+          "type": "SiNiSistar2.Manager.Sequence",
+          "static": false
+        },
+        {
+          "name": "m_UIList",
+          "type": "SiNiSistar2.UI.UIList",
+          "static": false
+        },
+        {
+          "name": "m_ObjectManager",
+          "type": "SiNiSistar2.Obj.ObjectManager",
+          "static": false
+        },
+        {
+          "name": "m_EventManager",
+          "type": "SiNiSistar2.Event.EventManager",
+          "static": false
+        },
+        {
+          "name": "m_PlayerStatusManager",
+          "type": "SiNiSistar2.Obj.PlayerStatusManager",
+          "static": false
+        },
+        {
+          "name": "m_TimeManager",
+          "type": "SiNiSistar2.Manager.TimeManager",
+          "static": false
+        },
+        {
+          "name": "m_Gallery",
+          "type": "SiNiSistar2.Manager.Gallery.GalleryManager",
+          "static": false
+        },
+        {
+          "name": "<Instance>k__BackingField",
+          "type": "SiNiSistar2.Manager.ManagerList",
+          "static": true
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Manager",
+      "name": "Sequence",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<ChangeSceneProc>k__BackingField",
+          "type": "ChangeSceneProc",
+          "static": false
+        },
+        {
+          "name": "<ActvieSceneID>k__BackingField",
+          "type": "SceneID",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Manager",
+      "name": "TimeManager",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<TimeRateArray>k__BackingField",
+          "type": "SiNiSistar2.Manager.TimeSetting[]",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Manager",
+      "name": "TimeSetting",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<ScaleProp>k__BackingField",
+          "type": "UniRx.ReadOnlyReactiveProperty<System.Single>",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Manager.Gallery",
+      "name": "AnimationTakeData",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_TakeName",
+          "type": "System.String",
+          "static": false
+        },
+        {
+          "name": "m_PlayType",
+          "type": "SiNiSistar2.Manager.Gallery.PlayType",
+          "static": false
+        },
+        {
+          "name": "m_Animator",
+          "type": "UnityEngine.Animator",
+          "static": false
+        },
+        {
+          "name": "m_QueueArray",
+          "type": "System.String[]",
+          "static": false
+        },
+        {
+          "name": "m_IsAnimatorLoop",
+          "type": "System.Boolean",
+          "static": false
+        },
+        {
+          "name": "m_LikeGameSceneMode",
+          "type": "System.Boolean",
+          "static": false
+        },
+        {
+          "name": "m_IsCombatEvent",
+          "type": "System.Boolean",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Manager.Gallery",
+      "name": "GaTakePlayer",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_TakeDataArray",
+          "type": "SiNiSistar2.Manager.Gallery.AnimationTakeData[]",
+          "static": false
+        },
+        {
+          "name": "<PlayingTakeData>k__BackingField",
+          "type": "SiNiSistar2.Manager.Gallery.AnimationTakeData",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "Awake",
+          "returns": "System.Void",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        },
+        {
+          "name": "OnDestroy",
+          "returns": "System.Void",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.Manager.Gallery",
+      "name": "GalleryManager",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<GalleryUI>k__BackingField",
+          "type": "SiNiSistar2.UI.Gallery.GalleryUI",
+          "static": false
+        },
+        {
+          "name": "<AcceptHP0>k__BackingField",
+          "type": "System.Boolean",
+          "static": false
+        },
+        {
+          "name": "<TakeTokenSource>k__BackingField",
+          "type": "System.Threading.CancellationTokenSource",
+          "static": false
+        },
+        {
+          "name": "<CurrentTakePlayer>k__BackingField",
+          "type": "SiNiSistar2.Manager.Gallery.GaTakePlayer",
+          "static": false
+        },
+        {
+          "name": "<IsChangingGalleryTake>k__BackingField",
+          "type": "System.Boolean",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "get_IsActive",
+          "returns": "System.Boolean",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.Manager.Gallery",
+      "name": "PlayType",
+      "kind": "enum",
+      "fields": [
+        {
+          "name": "value__",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "Animator",
+          "type": "SiNiSistar2.Manager.Gallery.PlayType",
+          "static": true,
+          "value": 0
+        },
+        {
+          "name": "EventPlayer",
+          "type": "SiNiSistar2.Manager.Gallery.PlayType",
+          "static": true,
+          "value": 1
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "AbnormalData",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_AbnormalType",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": false
+        },
+        {
+          "name": "m_RemoveWhenChangeScene",
+          "type": "System.Boolean",
+          "static": false
+        },
+        {
+          "name": "m_DeleteTime",
+          "type": "System.Single",
+          "static": false
+        },
+        {
+          "name": "<DeleteTimer>k__BackingField",
+          "type": "System.Single",
+          "static": false
+        },
+        {
+          "name": "<LevelRp>k__BackingField",
+          "type": "UniRx.ReadOnlyReactiveProperty<System.Int32>",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "get_MaxLevel",
+          "returns": "System.Int32",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        },
+        {
+          "name": "get_AbnormalNameID",
+          "returns": "LocalizeID",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "AbnormalList",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<AddedArray>k__BackingField",
+          "type": "SiNiSistar2.Obj.AbnormalData[]",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "AddAbnormal",
+          "returns": "System.Void",
+          "parameters": [
+            "SiNiSistar2.Obj.AbnormalType",
+            "System.Int32",
+            "SiNiSistar2.Damage.DamageStack"
+          ],
+          "static": false,
+          "first_type_filter": "AbnormalType"
+        },
+        {
+          "name": "DownAbnormal",
+          "returns": "System.Void",
+          "parameters": [
+            "SiNiSistar2.Obj.AbnormalType"
+          ],
+          "static": false,
+          "first_type_filter": "AbnormalType"
+        },
+        {
+          "name": "RemoveAbnormal",
+          "returns": "System.Void",
+          "parameters": [
+            "SiNiSistar2.Obj.AbnormalType"
+          ],
+          "static": false,
+          "first_type_filter": "AbnormalType"
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "AbnormalType",
+      "kind": "enum",
+      "fields": [
+        {
+          "name": "value__",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "None",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 0
+        },
+        {
+          "name": "Assimilation",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 825648481
+        },
+        {
+          "name": "Assimilation_Seed",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1681275188
+        },
+        {
+          "name": "BigPicture",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1684355129
+        },
+        {
+          "name": "Blessing_Lost",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 912668723
+        },
+        {
+          "name": "Blinded",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 926496313
+        },
+        {
+          "name": "BolaBind",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1630627383
+        },
+        {
+          "name": "Book",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1647458103
+        },
+        {
+          "name": "Breast",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 926037814
+        },
+        {
+          "name": "BreastSuper",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1701143864
+        },
+        {
+          "name": "Broken2",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1717855074
+        },
+        {
+          "name": "ChangeZombie",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 909664822
+        },
+        {
+          "name": "Clouding",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 892745521
+        },
+        {
+          "name": "DeadlyPoison",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 895562034
+        },
+        {
+          "name": "Defilement",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 960050227
+        },
+        {
+          "name": "Down2",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1630561332
+        },
+        {
+          "name": "Down2ForSewageBoss",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 959538532
+        },
+        {
+          "name": "Drunk",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1667393074
+        },
+        {
+          "name": "Entombed",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 926036019
+        },
+        {
+          "name": "EvilWoodSeed",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1650681443
+        },
+        {
+          "name": "FallSleep",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 926245473
+        },
+        {
+          "name": "Feed",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 812003637
+        },
+        {
+          "name": "FrogEgg",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 875902512
+        },
+        {
+          "name": "FrogLEgg",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 909140581
+        },
+        {
+          "name": "FungalBed",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 946092089
+        },
+        {
+          "name": "GO_OuterOne",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 862086243
+        },
+        {
+          "name": "GO_Stomach",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1650811237
+        },
+        {
+          "name": "HandRestraints",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 912668513
+        },
+        {
+          "name": "Handcuffed",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 926180450
+        },
+        {
+          "name": "Infertility",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 960049207
+        },
+        {
+          "name": "InfertilityBlessing",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 825765986
+        },
+        {
+          "name": "LeechEgg",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 895628336
+        },
+        {
+          "name": "LeechEgg_Boss",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1697985080
+        },
+        {
+          "name": "LeechInfestation",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 959930726
+        },
+        {
+          "name": "LeechInfestation_Hold",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 876032055
+        },
+        {
+          "name": "LimbLoss",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 909522533
+        },
+        {
+          "name": "LivestockParasite",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 959853109
+        },
+        {
+          "name": "Livestock_Pig",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 875574114
+        },
+        {
+          "name": "LustMarkCurse",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1650603577
+        },
+        {
+          "name": "Lustfull",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 875651684
+        },
+        {
+          "name": "Lustfull_Forever",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 875968056
+        },
+        {
+          "name": "Mask",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 842555749
+        },
+        {
+          "name": "MeatBud",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 892429874
+        },
+        {
+          "name": "MeatBuding",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 811819831
+        },
+        {
+          "name": "MeatTentacleCluster1Bind",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1650800693
+        },
+        {
+          "name": "Milk",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 926038369
+        },
+        {
+          "name": "MindControl",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 892483896
+        },
+        {
+          "name": "MindIntegration",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 828585015
+        },
+        {
+          "name": "MotherBody",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 909468724
+        },
+        {
+          "name": "Mucus",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1681340722
+        },
+        {
+          "name": "MucusSlug",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 926363747
+        },
+        {
+          "name": "Mutation",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 943206711
+        },
+        {
+          "name": "Parasite",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1630613811
+        },
+        {
+          "name": "ParasiteLv13",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 892483891
+        },
+        {
+          "name": "ParasitePennis",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1647457636
+        },
+        {
+          "name": "Poison",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 858940217
+        },
+        {
+          "name": "Pregnant",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 959721780
+        },
+        {
+          "name": "Pregnant_Demi",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1647863137
+        },
+        {
+          "name": "SandBlinded",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 862270521
+        },
+        {
+          "name": "Semen",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 808858210
+        },
+        {
+          "name": "Semen_mucus",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1664234806
+        },
+        {
+          "name": "Slow",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 842283320
+        },
+        {
+          "name": "SpiderEggSac",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1698181682
+        },
+        {
+          "name": "SpiderWeb",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 892940601
+        },
+        {
+          "name": "Spore",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 825373751
+        },
+        {
+          "name": "Stone",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 926180454
+        },
+        {
+          "name": "TentacleEgg",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 862074214
+        },
+        {
+          "name": "TentacleEgg_GO",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 858927927
+        },
+        {
+          "name": "TreeDisorientation",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 962880824
+        },
+        {
+          "name": "Vomiting",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 862335028
+        },
+        {
+          "name": "WetNurse",
+          "type": "SiNiSistar2.Obj.AbnormalType",
+          "static": true,
+          "value": 1664246113
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "BattleMainParameter",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<CurrentProperty>k__BackingField",
+          "type": "UniRx.ReadOnlyReactiveProperty<System.Int32>",
+          "static": false
+        },
+        {
+          "name": "<MaxProperty>k__BackingField",
+          "type": "UniRx.ReadOnlyReactiveProperty<System.Int32>",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "Bind",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_IsBoundRP",
+          "type": "UniRx.ReactiveProperty<System.Boolean>",
+          "static": false
+        },
+        {
+          "name": "<Binder>k__BackingField",
+          "type": "SiNiSistar2.Obj.IBinder",
+          "static": false
+        },
+        {
+          "name": "<BinderEnemy>k__BackingField",
+          "type": "SiNiSistar2.Obj.EnemyObject",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "StartBind",
+          "returns": "System.Void",
+          "parameters": [
+            "SiNiSistar2.Obj.IBinder",
+            "SiNiSistar2.Obj.BindParameter",
+            "System.Boolean"
+          ],
+          "static": false,
+          "first_type_filter": ""
+        },
+        {
+          "name": "ReleaseBind",
+          "returns": "System.Void",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "BindParameter",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "DressCondition",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<IsBrokenRp>k__BackingField",
+          "type": "UniRx.ReadOnlyReactiveProperty<System.Boolean>",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "Durability",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "EnemyDead",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<StateProp>k__BackingField",
+          "type": "UniRx.ReadOnlyReactiveProperty<SiNiSistar2.Obj.EnemyDead.State>",
+          "static": false
+        },
+        {
+          "name": "<EnemyObject>k__BackingField",
+          "type": "SiNiSistar2.Obj.EnemyObject",
+          "static": false
+        },
+        {
+          "name": "<IsNotDefeat>k__BackingField",
+          "type": "System.Boolean",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "DiedButExists",
+          "returns": "System.Void",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        },
+        {
+          "name": "DeathOfExistence",
+          "returns": "System.Void",
+          "parameters": [
+            "System.Boolean",
+            "System.Boolean"
+          ],
+          "static": false,
+          "first_type_filter": ""
+        },
+        {
+          "name": "ResumeAlive",
+          "returns": "System.Void",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "EnemyObject",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_EnemyDead",
+          "type": "SiNiSistar2.Obj.EnemyDead",
+          "static": false
+        },
+        {
+          "name": "<IsGalleryObject>k__BackingField",
+          "type": "System.Boolean",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "get_GalleryEnemyID",
+          "returns": "GalleryEnemyID",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "GachaBind",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_Bind",
+          "type": "SiNiSistar2.Obj.Bind",
+          "static": false
+        },
+        {
+          "name": "<GachaSystem>k__BackingField",
+          "type": "SiNiSistar2.GachaGachaSystem",
+          "static": false
+        },
+        {
+          "name": "m_ReleaseResponseParameter",
+          "type": "SiNiSistar2.Obj.GachaBind.ReleaseResponseParameter",
+          "static": false
+        },
+        {
+          "name": "m_IsActive",
+          "type": "System.Boolean",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "GachaBind.ReleaseReason",
+      "kind": "enum",
+      "fields": [
+        {
+          "name": "value__",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "BeforeRelease",
+          "type": "SiNiSistar2.Obj.GachaBind.ReleaseReason",
+          "static": true,
+          "value": 0
+        },
+        {
+          "name": "IsDead",
+          "type": "SiNiSistar2.Obj.GachaBind.ReleaseReason",
+          "static": true,
+          "value": 1
+        },
+        {
+          "name": "SuccessRelease",
+          "type": "SiNiSistar2.Obj.GachaBind.ReleaseReason",
+          "static": true,
+          "value": 2
+        },
+        {
+          "name": "CancelToken",
+          "type": "SiNiSistar2.Obj.GachaBind.ReleaseReason",
+          "static": true,
+          "value": 3
+        },
+        {
+          "name": "BeforeBind",
+          "type": "SiNiSistar2.Obj.GachaBind.ReleaseReason",
+          "static": true,
+          "value": 4
+        },
+        {
+          "name": "OtherRelease",
+          "type": "SiNiSistar2.Obj.GachaBind.ReleaseReason",
+          "static": true,
+          "value": 5
+        },
+        {
+          "name": "ForceRelease",
+          "type": "SiNiSistar2.Obj.GachaBind.ReleaseReason",
+          "static": true,
+          "value": 6
+        },
+        {
+          "name": "FromBind",
+          "type": "SiNiSistar2.Obj.GachaBind.ReleaseReason",
+          "static": true,
+          "value": 7
+        },
+        {
+          "name": "ReplaceBind",
+          "type": "SiNiSistar2.Obj.GachaBind.ReleaseReason",
+          "static": true,
+          "value": 8
+        },
+        {
+          "name": "SimpleRelease",
+          "type": "SiNiSistar2.Obj.GachaBind.ReleaseReason",
+          "static": true,
+          "value": 9
+        },
+        {
+          "name": "CommonDeadRelease",
+          "type": "SiNiSistar2.Obj.GachaBind.ReleaseReason",
+          "static": true,
+          "value": 10
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "GachaBind.ReleaseResponseParameter",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<Binder>k__BackingField",
+          "type": "System.Object",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "set_ReleaseReason",
+          "returns": "System.Void",
+          "parameters": [
+            "SiNiSistar2.Obj.GachaBind.ReleaseReason"
+          ],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "HP",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "IBindReleaser",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "IBindable",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "IBinder",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "IKnockBaker",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "Lelia",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<MP>k__BackingField",
+          "type": "SiNiSistar2.Obj.MP",
+          "static": false
+        },
+        {
+          "name": "<Durability>k__BackingField",
+          "type": "SiNiSistar2.Obj.Durability",
+          "static": false
+        },
+        {
+          "name": "m_Animator",
+          "type": "UnityEngine.Animator",
+          "static": false
+        },
+        {
+          "name": "m_Bind",
+          "type": "SiNiSistar2.Obj.Bind",
+          "static": false
+        },
+        {
+          "name": "m_GachaBind",
+          "type": "SiNiSistar2.Obj.GachaBind",
+          "static": false
+        },
+        {
+          "name": "<LeliaAnimation>k__BackingField",
+          "type": "SiNiSistar2.Obj.Animation.LeliaAnimation",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "OnDamageHappen",
+          "returns": "System.Void",
+          "parameters": [
+            "SiNiSistar2.Damage.NotifyHitArgument"
+          ],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "MP",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "ObjectManager",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_LeliaRp",
+          "type": "UniRx.ReactiveProperty<SiNiSistar2.Obj.Lelia>",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "Update",
+          "returns": "System.Void",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "PlayerStatusManager",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<DressCondition>k__BackingField",
+          "type": "SiNiSistar2.Obj.DressCondition",
+          "static": false
+        },
+        {
+          "name": "<AbnormalList>k__BackingField",
+          "type": "SiNiSistar2.Obj.AbnormalList",
+          "static": false
+        },
+        {
+          "name": "<Durability>k__BackingField",
+          "type": "SiNiSistar2.Obj.Durability",
+          "static": false
+        },
+        {
+          "name": "<HP>k__BackingField",
+          "type": "SiNiSistar2.Obj.HP",
+          "static": false
+        },
+        {
+          "name": "<MP>k__BackingField",
+          "type": "SiNiSistar2.Obj.MP",
+          "static": false
+        },
+        {
+          "name": "<GameDifficultyRP>k__BackingField",
+          "type": "UniRx.ReadOnlyReactiveProperty<SiNiSistar2.Manager.GameDifficulty>",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "ResponseParameter",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "SeqMonoBehaviour",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj",
+      "name": "SiNiObject",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<HP>k__BackingField",
+          "type": "SiNiSistar2.Obj.HP",
+          "static": false
+        },
+        {
+          "name": "<IsSetupEnd>k__BackingField",
+          "type": "System.Boolean",
+          "static": false
+        },
+        {
+          "name": "<AbnormalList>k__BackingField",
+          "type": "SiNiSistar2.Obj.AbnormalList",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj.Animation",
+      "name": "AnimState",
+      "kind": "enum",
+      "fields": [
+        {
+          "name": "value__",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "Idle",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 0
+        },
+        {
+          "name": "Idle_Broken",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 1
+        },
+        {
+          "name": "Idle_Injured",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 2
+        },
+        {
+          "name": "Idle_Injured2",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 3
+        },
+        {
+          "name": "Go_End_Village_Idle",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 4
+        },
+        {
+          "name": "Jump",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 5
+        },
+        {
+          "name": "Jump_Fall",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 6
+        },
+        {
+          "name": "Walk",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 7
+        },
+        {
+          "name": "Walk2",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 8
+        },
+        {
+          "name": "Walk_Injured",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 9
+        },
+        {
+          "name": "Walk_Injured2",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 10
+        },
+        {
+          "name": "Go_End_Village_Walk",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 11
+        },
+        {
+          "name": "Sit",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 12
+        },
+        {
+          "name": "Melee",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 13
+        },
+        {
+          "name": "Melee_Fall",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 14
+        },
+        {
+          "name": "Melee_Sit",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 15
+        },
+        {
+          "name": "Magic_Arrow1",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 16
+        },
+        {
+          "name": "Magic_Arrow2",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 17
+        },
+        {
+          "name": "Magic_Arrow_Empty",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 18
+        },
+        {
+          "name": "Magic_Arrow1_Fall",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 19
+        },
+        {
+          "name": "Magic_Arrow2_Fall",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 20
+        },
+        {
+          "name": "Magic_Arrow_Empty_Fall",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 21
+        },
+        {
+          "name": "Magic_Sword1",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 22
+        },
+        {
+          "name": "Magic_Sword2_Fall",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 23
+        },
+        {
+          "name": "Magic_Sword2",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 24
+        },
+        {
+          "name": "Magic_Sword1_Combo",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 25
+        },
+        {
+          "name": "Magic_Sword2_Combo",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 26
+        },
+        {
+          "name": "Magic_Sword1_Empty",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 27
+        },
+        {
+          "name": "Magic_Sword2_Fall_Empty",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 28
+        },
+        {
+          "name": "Magic_Sword2_Empty",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 29
+        },
+        {
+          "name": "Damage1",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 30
+        },
+        {
+          "name": "Damage1_Air",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 31
+        },
+        {
+          "name": "Damage2",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 32
+        },
+        {
+          "name": "Damage2_Air",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 33
+        },
+        {
+          "name": "Damage3",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 34
+        },
+        {
+          "name": "Down",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 35
+        },
+        {
+          "name": "Damage2_FetalMovement",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": true,
+          "value": 36
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj.Animation",
+      "name": "LeliaAnimation",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_Animator",
+          "type": "UnityEngine.Animator",
+          "static": false
+        },
+        {
+          "name": "<CurrentAnimState>k__BackingField",
+          "type": "SiNiSistar2.Obj.Animation.AnimState",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Obj.Combat",
+      "name": "ICombatMember",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.Sound",
+      "name": "ISoundParameterContainer",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.UI",
+      "name": "RedAlert",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_Animator",
+          "type": "UnityEngine.Animator",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "ShowGameOver",
+          "returns": "System.Void",
+          "parameters": [
+            "System.Boolean"
+          ],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.UI",
+      "name": "UIList",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<IsPauseProp>k__BackingField",
+          "type": "UniRx.ReadOnlyReactiveProperty<System.Boolean>",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.UI.Gallery",
+      "name": "AnimationTake",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_TakeName",
+          "type": "System.String",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.UI.Gallery",
+      "name": "ButtonGuideUI",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "<EnemyData>k__BackingField",
+          "type": "SiNiSistar2.UI.Gallery.EnemyData",
+          "static": false
+        },
+        {
+          "name": "m_IsDevelopModeProp",
+          "type": "UniRx.ReactiveProperty<System.Boolean>",
+          "static": false
+        },
+        {
+          "name": "m_IsUIOffProp",
+          "type": "UniRx.ReactiveProperty<System.Boolean>",
+          "static": false
+        },
+        {
+          "name": "m_IsUISlowProp",
+          "type": "UniRx.ReactiveProperty<System.Boolean>",
+          "static": false
+        },
+        {
+          "name": "m_IsUIPauseProp",
+          "type": "UniRx.ReactiveProperty<System.Boolean>",
+          "static": false
+        },
+        {
+          "name": "<CurrentSceneID>k__BackingField",
+          "type": "SceneID",
+          "static": false
+        },
+        {
+          "name": "<TakePlayer>k__BackingField",
+          "type": "SiNiSistar2.Manager.Gallery.GaTakePlayer",
+          "static": false
+        },
+        {
+          "name": "<IsLoadScene>k__BackingField",
+          "type": "System.Boolean",
+          "static": false
+        },
+        {
+          "name": "<IsUnLoadScene>k__BackingField",
+          "type": "System.Boolean",
+          "static": false
+        },
+        {
+          "name": "<TakeTokenSource>k__BackingField",
+          "type": "System.Threading.CancellationTokenSource",
+          "static": false
+        },
+        {
+          "name": "<CurrentActiveIndex>k__BackingField",
+          "type": "System.Int32",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.UI.Gallery",
+      "name": "EnemyData",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_LocalizeID_Name",
+          "type": "LocalizeID",
+          "static": false
+        },
+        {
+          "name": "m_AnimationTakeArray",
+          "type": "SiNiSistar2.UI.Gallery.AnimationTake[]",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "get_GalleryEnemyID",
+          "returns": "GalleryEnemyID",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.UI.Gallery",
+      "name": "GalleryUI",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_ButtonGuideUI",
+          "type": "SiNiSistar2.UI.Gallery.ButtonGuideUI",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "get_IsOpen",
+          "returns": "System.Boolean",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "SiNiSistar2.UI.ToggleParts",
+      "name": "FlexibleToggleListUI",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.UI.ToggleParts",
+      "name": "IFlexibleTextColum",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.UI.ToggleParts",
+      "name": "IScrollTarget",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "SiNiSistar2.UI.ToggleParts",
+      "name": "ToggleListUI",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "m_Animator",
+          "type": "UnityEngine.Animator",
+          "static": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "get_IsOpen",
+          "returns": "System.Boolean",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "System",
+      "name": "Action`1",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System",
+      "name": "Delegate",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System",
+      "name": "ICloneable",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System",
+      "name": "IDisposable",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System",
+      "name": "IObservable`1",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System",
+      "name": "IObserver`1",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System",
+      "name": "MulticastDelegate",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System.Collections",
+      "name": "ICollection",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System.Collections",
+      "name": "IEnumerable",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System.Collections",
+      "name": "IList",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System.Collections.Generic",
+      "name": "ICollection`1",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System.Collections.Generic",
+      "name": "IEnumerable`1",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System.Collections.Generic",
+      "name": "IList`1",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System.Collections.Generic",
+      "name": "IReadOnlyCollection`1",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System.Collections.Generic",
+      "name": "IReadOnlyList`1",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System.Collections.Generic",
+      "name": "List`1",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "_items",
+          "type": "T[]",
+          "static": false
+        },
+        {
+          "name": "_size",
+          "type": "System.Int32",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "System.Runtime.Serialization",
+      "name": "ISerializable",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "System.Threading",
+      "name": "CancellationTokenSource",
+      "kind": "class",
+      "fields": [],
+      "methods": [
+        {
+          "name": "get_IsCancellationRequested",
+          "returns": "System.Boolean",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "UniRx",
+      "name": "IObserverLinkedList`1",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "UniRx",
+      "name": "IOptimizedObservable`1",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "UniRx",
+      "name": "IReactiveProperty`1",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "UniRx",
+      "name": "IReadOnlyReactiveProperty`1",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "UniRx",
+      "name": "ReactiveProperty`1",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "value",
+          "type": "T",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "UniRx",
+      "name": "ReadOnlyReactiveProperty`1",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "latestValue",
+          "type": "T",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "UnityEngine",
+      "name": "Animator",
+      "kind": "class",
+      "fields": [],
+      "methods": [
+        {
+          "name": "get_layerCount",
+          "returns": "System.Int32",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        },
+        {
+          "name": "GetCurrentAnimatorStateInfo",
+          "returns": "UnityEngine.AnimatorStateInfo",
+          "parameters": [
+            "System.Int32"
+          ],
+          "static": false,
+          "first_type_filter": ""
+        },
+        {
+          "name": "get_runtimeAnimatorController",
+          "returns": "UnityEngine.RuntimeAnimatorController",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        },
+        {
+          "name": "StringToHash",
+          "returns": "System.Int32",
+          "parameters": [
+            "System.String"
+          ],
+          "static": true,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "UnityEngine",
+      "name": "AnimatorStateInfo",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "m_Name",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "m_Path",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "m_FullPath",
+          "type": "System.Int32",
+          "static": false
+        },
+        {
+          "name": "m_NormalizedTime",
+          "type": "System.Single",
+          "static": false
+        },
+        {
+          "name": "m_Length",
+          "type": "System.Single",
+          "static": false
+        }
+      ],
+      "methods": []
+    },
+    {
+      "ns": "UnityEngine",
+      "name": "Behaviour",
+      "kind": "class",
+      "fields": [],
+      "methods": [
+        {
+          "name": "get_isActiveAndEnabled",
+          "returns": "System.Boolean",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "UnityEngine",
+      "name": "Component",
+      "kind": "class",
+      "fields": [],
+      "methods": [
+        {
+          "name": "get_transform",
+          "returns": "UnityEngine.Transform",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "UnityEngine",
+      "name": "IExposedPropertyTable",
+      "kind": "interface",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "UnityEngine",
+      "name": "MonoBehaviour",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "UnityEngine",
+      "name": "Object",
+      "kind": "class",
+      "fields": [],
+      "methods": [
+        {
+          "name": "get_name",
+          "returns": "System.String",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "UnityEngine",
+      "name": "RuntimeAnimatorController",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "UnityEngine",
+      "name": "ScriptableObject",
+      "kind": "class",
+      "fields": [],
+      "methods": []
+    },
+    {
+      "ns": "UnityEngine",
+      "name": "Transform",
+      "kind": "class",
+      "fields": [],
+      "methods": [
+        {
+          "name": "get_parent",
+          "returns": "UnityEngine.Transform",
+          "parameters": [],
+          "static": false,
+          "first_type_filter": ""
+        }
+      ]
+    },
+    {
+      "ns": "UnityEngine.Playables",
+      "name": "PlayableDirector",
+      "kind": "class",
+      "fields": [
+        {
+          "name": "paused",
+          "type": "System.Action<UnityEngine.Playables.PlayableDirector>",
+          "static": false
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

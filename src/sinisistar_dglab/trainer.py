@@ -137,6 +137,7 @@ def install_trainer(game_dir):
     from .install_manager import InstallManager,_target,sha256
     root=Path(game_dir).resolve();info=InstallManager().inspect_game(root)
     if not info.get('supported') or info.get('errors'):raise ValueError('请先在「设备与游戏」核验并安装游戏插件环境')
+    if info.get('compatibility_mode')=='runtime-interface':raise ValueError('此构建尚未验证游戏辅助接口；可以使用只读事件联动')
     if not (root/'BepInEx/core/BepInEx.Unity.IL2CPP.dll').is_file():raise ValueError('请先安装 BepInEx 运行环境')
     payload=ROOT/'installer_payload';manifest=json.loads((payload/'trainer-manifest.json').read_text(encoding='utf-8'))
     source=payload/'SiNiSistarDGLab.Trainer.dll'

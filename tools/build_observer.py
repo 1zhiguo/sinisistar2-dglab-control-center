@@ -9,6 +9,7 @@ def main():
     refs=list(ref.glob('*.dll'))+[core/n for n in ['BepInEx.Core.dll','BepInEx.Unity.Common.dll','BepInEx.Unity.IL2CPP.dll','Il2CppInterop.Runtime.dll','MonoMod.RuntimeDetour.dll','MonoMod.Utils.dll']]
     if not compiler.is_file() or not refs:raise RuntimeError('Project compiler dependencies have not been prepared')
     lines=['/nostdlib+','/target:library','/langversion:latest','/nullable:enable','/optimize+','/out:"'+str(out/'SiNiSistarDGLab.Observer.dll')+'"']+['/reference:"'+str(p)+'"' for p in refs]+['"'+str(p)+'"' for p in sorted((ROOT/'observer').glob('*.cs'))]
+    lines+=['/resource:"'+str(ROOT/'src/sinisistar_dglab/assets/runtime-interface-v1.json')+'",runtime-interface-v1.json']
     rsp=out/'compile.rsp';rsp.write_text('\n'.join(lines),encoding='utf-8')
     return subprocess.call(['dotnet',str(compiler),'/noconfig','@'+str(rsp)],cwd=ROOT)
 

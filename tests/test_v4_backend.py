@@ -323,6 +323,22 @@ class V4Backend(unittest.IsolatedAsyncioTestCase):
         self.assertEqual({f[:8] for f in b},{'0C0C0C0C'})
         self.assertEqual({int(f[i:i+2],16) for f in b for i in range(8,16,2)},{25,50})
 
+    async def test_interface_compatible_unknown_build_streams_four_channels_and_failed_probe_stops(self):
+        from sinisistar_dglab.cg_policy import make_cg
+        from sinisistar_dglab.game_builds import CONTRACT_ID,CONTRACT_SHA256
+        from cg_fixture import event_state
+        cg=make_cg(self.b._sim_profile['rules']['defeat_hold'],inherit=False);self.b._sim_profile['cg']=cg
+        self.b._sim_profile['cg_detection_mode']='playback_only'
+        cg['rule'].update(enabled=True,pulse_enabled=True,vibration_enabled=True,pulse_channel='AB',vibration_channel='AB',
+            pulse_strength_a=8,pulse_strength_b=10,vibration_strength_a=60,vibration_strength_b=70,death_mode='until_end')
+        for option in cg['routes'].values():option['ramp_mode']='constant'
+        self.game.s=event_state();self.game.s['fingerprint']='a'*64
+        self.game.s['compatibility']=dict(schema=1,contract=CONTRACT_ID,contract_sha256=CONTRACT_SHA256,status='compatible',
+            fingerprint=self.game.s['fingerprint'],pid=self.game.s['pid'],session=self.game.s['session'],errors=[])
+        since=time.monotonic();await self.drive(.35);await self.until_outputs_acknowledged([8,10],[60,70],since=since)
+        self.game.s['compatibility']['status']='incompatible'
+        await self.drive(.2);await self.until_outputs_acknowledged([0,0],[0,0])
+
     async def test_same_hp_scene_callbacks_drive_cg_routes_then_timeout_and_end(self):
         from sinisistar_dglab.cg_policy import make_cg
         cg=make_cg(self.b._sim_profile['rules']['defeat_hold'],inherit=False);self.b._sim_profile['cg']=cg;cg.update(same_hp_enabled=True,same_hp_timeout=.6)

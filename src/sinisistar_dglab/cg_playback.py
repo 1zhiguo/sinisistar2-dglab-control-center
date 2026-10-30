@@ -1,5 +1,5 @@
 """HP-independent recognition from serialized CG references and live playback."""
-from .game_builds import FINGERPRINTS
+from .game_builds import compatible_snapshot
 from pathlib import Path
 import json,math,time,re
 from .telemetry import BUILD
@@ -66,7 +66,7 @@ REGISTRY=CgRegistry()
 
 def fresh(s,now):
     stamp=s.get('sampled_at')
-    return bool(s.get('source')=='bepinex' and s.get('fingerprint') in FINGERPRINTS and s.get('live') is True
+    return bool(s.get('source')=='bepinex' and compatible_snapshot(s) and s.get('live') is True
         and type(stamp) in (int,float) and math.isfinite(stamp) and 0<=now-stamp<.6
         and type(s.get('pid')) is int and s['pid']>0 and isinstance(s.get('session'),str) and s['session'])
 

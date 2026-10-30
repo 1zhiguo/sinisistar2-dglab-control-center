@@ -15,13 +15,14 @@ using BepInEx.Unity.IL2CPP.Hook;
 
 namespace SiNiSistarDGLab;
 
-[BepInPlugin("local.sinisistar.dglab.observer", "SiNiSistar2 DG-LAB Observer", "0.7.0")]
+[BepInPlugin("local.sinisistar.dglab.observer", "SiNiSistar2 DG-LAB Observer", "0.8.0")]
 public sealed partial class Plugin : BasePlugin
 {
     const string Fingerprint="b869493305bbe587598c8709e7fe271f00d79d37803c6a8241946d6a6297499d";
     readonly List<INativeDetour> hooks=new();
     readonly List<Delegate> callbacks=new();
     readonly HashSet<string> installedHooks=new();
+    readonly List<string> failedHooks=new();
     readonly ConcurrentQueue<Dictionary<string,object?>> events=new();
     readonly string session=Guid.NewGuid().ToString("N");
     volatile bool stopping;
@@ -82,15 +83,29 @@ public sealed partial class Plugin : BasePlugin
 
     string gameFingerprint=Fingerprint;
     string buildProfile="";
+    SiNiSistarCompatibility.RuntimeInterface.Report? compatibility;
+    Dictionary<string,object?> compatibilityData=new();
     public override void Load()
     {
-        if(!SiNiSistarCompatibility.BuildCompatibility.Validate(Paths.GameRootPath,out gameFingerprint,out buildProfile))
-        {Log.LogError("Unsupported game/metadata pair. No game hooks were installed.");return;}
-        Log.LogInfo("Verified build profile: "+buildProfile);
         directory=Config.Bind("Bridge","Directory",Path.Combine(Paths.PluginPath,"SiNiSistarDGLab","telemetry"),"Local observer IPC directory. No device connection.").Value;
         Directory.CreateDirectory(directory);
-        api=new Native();managerClass=api.Class("SiNiSistar2.Manager","ManagerList");enemyClass=api.Class("SiNiSistar2.Obj","EnemyObject");
-        releaseClass=api.Nested(api.Class("SiNiSistar2.Obj","GachaBind"),"ReleaseResponseParameter");
+        try{
+            bool known=SiNiSistarCompatibility.BuildCompatibility.Validate(Paths.GameRootPath,out gameFingerprint,out buildProfile);
+            compatibility=SiNiSistarCompatibility.RuntimeInterface.Check(new SiNiSistarCompatibility.RuntimeInterface.NativeMetadata());
+            compatibilityData=compatibility.Data(gameFingerprint);
+            compatibilityData["known_build"]=known;
+            compatibilityData["session"]=session;compatibilityData["pid"]=Environment.ProcessId;
+            compatibilityData["utc"]=DateTimeOffset.UtcNow.ToString("O");
+            WriteCompatibility();
+            if(!compatibility.Compatible){Log.LogError("Game interface incompatible; no hooks installed: "+string.Join("; ",compatibility.Errors.Take(8)));return;}
+            if(!known)buildProfile="interface-compatible";
+            api=new Native();managerClass=api.Class("SiNiSistar2.Manager","ManagerList");enemyClass=api.Class("SiNiSistar2.Obj","EnemyObject");
+            releaseClass=api.Nested(api.Class("SiNiSistar2.Obj","GachaBind"),"ReleaseResponseParameter");
+        }catch(Exception error){
+            compatibilityData=new(){["schema"]=1,["status"]="incompatible",["errors"]=new[]{error.Message},["pid"]=Environment.ProcessId,["session"]=session,["utc"]=DateTimeOffset.UtcNow.ToString("O")};
+            WriteCompatibility();Log.LogError("Game interface probe failed; no hooks installed: "+error.Message);return;
+        }
+        Log.LogInfo("Game interface compatible: "+buildProfile);
         // All callbacks call the original exactly once, without modifying arguments or results.
         Install("ObjectManager.Update",()=>{
             V0 original=null!;V0 callback=(self,method)=>{original(self,method);Guard(Snapshot);};
@@ -200,15 +215,21 @@ public sealed partial class Plugin : BasePlugin
             Attach(api.Method(api.Class("SiNiSistar2.EventLabel","LabelEvent"),"LabelEvent_Execution",1,"String"),callback,out original);
         });
         InstallCgObservation();
+        if(failedHooks.Count>0||!installedHooks.Contains("ObjectManager.Update")){
+            compatibilityData["status"]="incompatible";compatibilityData["errors"]=failedHooks.Count>0?failedHooks.ToArray():new[]{"Core ObjectManager.Update hook could not be installed"};WriteCompatibility();
+            for(int i=hooks.Count-1;i>=0;i--)hooks[i].Dispose();hooks.Clear();return;
+        }
         writer=new Thread(WriteLoop){IsBackground=true,Name="SiNiSistarDGLab IPC"};writer.Start();
-        Emit("observer_loaded",new(){["hook_count"]=hooks.Count,["version"]="0.7.0",["combat_hooks"]=CombatHooks(),["flow_hooks"]=FlowHooks(),["game_build"]="1.3.1"});
+        Emit("observer_loaded",new(){["hook_count"]=hooks.Count,["version"]="0.8.0",["compatibility"]=compatibilityData,["combat_hooks"]=CombatHooks(),["flow_hooks"]=FlowHooks(),["game_build"]=buildProfile});
         Log.LogInfo($"Observer loaded: {hooks.Count} hooks. Local IPC: {directory}. No DG-LAB output.");
     }
 
     void Attach<T>(IntPtr method,T callback,out T original) where T:Delegate
-    { if(method==IntPtr.Zero)throw new InvalidOperationException("Native method not found");hooks.Add(INativeDetour.CreateAndApply(Marshal.ReadIntPtr(method),callback,out original));callbacks.Add(callback); }
+    { if(method==IntPtr.Zero||compatibility?.Methods.Contains(method)!=true||Marshal.ReadIntPtr(method)==IntPtr.Zero)throw new InvalidOperationException("Native hook signature was not validated");hooks.Add(INativeDetour.CreateAndApply(Marshal.ReadIntPtr(method),callback,out original));callbacks.Add(callback); }
+    void WriteCompatibility()
+    {var path=Path.Combine(directory,"compatibility.json");File.WriteAllText(path+".tmp",JsonSerializer.Serialize(compatibilityData,json));File.Move(path+".tmp",path,true);}
     void Install(string name,Action action)
-    {try{action();installedHooks.Add(name);Emit("hook_installed",new(){["hook"]=name});}catch(Exception e){Log.LogWarning(name+": "+e.Message);Emit("hook_failed",new(){["hook"]=name,["error"]=e.Message});}}
+    {try{action();installedHooks.Add(name);Emit("hook_installed",new(){["hook"]=name});}catch(Exception e){failedHooks.Add(name+": "+e.Message);Log.LogWarning(name+": "+e.Message);Emit("hook_failed",new(){["hook"]=name,["error"]=e.Message});}}
     void Guard(Action action)
     {try{action();}catch(Exception e){if(++readFailures<=5)Log.LogWarning("Observer read: "+e.Message);}}
     static string Reason(int x)=>x switch{0=>"BeforeRelease",1=>"IsDead",2=>"SuccessRelease",3=>"CancelToken",4=>"BeforeBind",5=>"OtherRelease",6=>"ForceRelease",7=>"FromBind",8=>"ReplaceBind",9=>"SimpleRelease",10=>"CommonDeadRelease",_=>"Unknown"};
@@ -395,7 +416,7 @@ public sealed partial class Plugin : BasePlugin
             }}
         }
         var data=new Dictionary<string,object?>{
-            ["schema"]=1,["source"]="bepinex",["fingerprint"]=gameFingerprint,["build_profile"]=buildProfile,["session"]=session,["pid"]=Environment.ProcessId,["sample_id"]=++sample,["utc"]=DateTimeOffset.UtcNow.ToString("O"),["valid"]=valid,["player"]=player.ToInt64(),["scene_id"]=scene,["loading"]=loading,["observer_version"]="0.7.0",["combat_hooks"]=CombatHooks(),["flow_hooks"]=FlowHooks(),
+            ["schema"]=1,["source"]="bepinex",["fingerprint"]=gameFingerprint,["build_profile"]=buildProfile,["compatibility"]=compatibilityData,["session"]=session,["pid"]=Environment.ProcessId,["sample_id"]=++sample,["utc"]=DateTimeOffset.UtcNow.ToString("O"),["valid"]=valid,["player"]=player.ToInt64(),["scene_id"]=scene,["loading"]=loading,["observer_version"]="0.8.0",["combat_hooks"]=CombatHooks(),["flow_hooks"]=FlowHooks(),
             ["hp"]=Parameter(hp),["mp"]=Parameter(P(ps,"<MP>k__BackingField")),["durability"]=Parameter(P(ps,"<Durability>k__BackingField")),["paused"]=RB(P(ui,"<IsPauseProp>k__BackingField")),
             ["event_playing"]=B(ev,"<IsEventPlaying>k__BackingField"),["event_paused"]=B(ev,"<EventPause>k__BackingField"),["broken"]=RB(P(dress,"<IsBrokenRp>k__BackingField")),["bound"]=false,
             ["binder"]=api.ObjectName(P(bind,"<BinderEnemy>k__BackingField")),["abnormals"]=abnormal,["hook_count"]=hooks.Count};
@@ -426,7 +447,7 @@ public sealed partial class Plugin : BasePlugin
             Thread.Sleep(50);
         }
     }
-    public override bool Unload(){stopping=true;writer?.Join(1000);for(var i=hooks.Count-1;i>=0;i--)hooks[i].Dispose();ReleaseCgObservation();api.Release(playerHandle);api.Release(abnormalHandle);return true;}
+    public override bool Unload(){stopping=true;writer?.Join(1000);for(var i=hooks.Count-1;i>=0;i--)hooks[i].Dispose();if(api!=null){ReleaseCgObservation();api.Release(playerHandle);api.Release(abnormalHandle);}return true;}
 }
 
 internal sealed partial class Native

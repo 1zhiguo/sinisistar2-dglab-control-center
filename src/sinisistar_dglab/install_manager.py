@@ -1,4 +1,4 @@
-"""Transactional, fingerprint-pinned BepInEx/observer installation.
+"""Transactional BepInEx/observer installation with runtime interface probing.
 
 No game launch, memory access, feature plugins, patchers or save-data edits.
 The payload is project-local and can be copied with the control center.
@@ -11,7 +11,7 @@ from pathlib import Path,PurePosixPath
 from datetime import datetime,timezone
 from contextlib import contextmanager
 from .telemetry import ROOT,BUILD,METADATA
-from .game_builds import PROFILES
+from .game_builds import PROFILES,candidate_checks
 
 OWNER='SiNiSistar2-x-DGlab'
 EXE='SiNiSistar2.exe'
@@ -23,11 +23,11 @@ SOURCE_HASH='437a0ea8f52f7a9aacfda5eb4718d5422db4f9b048eea7bef296f5c7a5fae10b'
 PINNED_PAYLOAD={
     'bepinex-runtime.zip':'f32c41efaf2e21308b58dd92f68ce422cde237e1ec2985a6294242381556442e',
     'unity-2022.3.62.zip':'dd9e3e8171c2f378893d1a5df0029929c13e47f4838357c1b143b5df02aacf1f',
-    'SiNiSistarDGLab.Observer.dll':'f987b6fb0bda74c674e424b97e488349668d23cd73b18352d178a6001c8213bb'}
+    'SiNiSistarDGLab.Observer.dll':'6040a1760cb098c21181885fd7c1e72c137478fbef2dfa0a2a3cdc18ee1a09df'}
 EXPECTED_BUILD={EXE:'14aa8540d92597f0e7482bf2c11d63a9cd202bb3accbaed7bf0a12a141e259a7',
                 'GameAssembly.dll':BUILD,'UnityPlayer.dll':'43fb0aea1b80c74963dae88ec7fc1c3c1993d893ce94d12972000fcc9b653ad1',
                 'SiNiSistar2_Data/il2cpp_data/Metadata/global-metadata.dat':METADATA}
-KNOWN_OLD_OBSERVERS=frozenset(('ea5e0c05c0ce4ecf8424955a44c6938414a401b3ab985d7e68992e4c12aced7f','bfb2101c02f8664098fc83129d0d9e026d1656f9c43d3e658fb14757b21cadde','c79e4e1af33aced68ab998220668b732240a08f51982c53f2493fb381d3507c9','5b095139249fd2256d64d61f9937b7691b3a9ef3eee95476f2522dc3ffdd6ccf','73535003a763274fcbca68a6c5fa5cbd2c72fce23a6801a0b809048d93543f9f','2c5c5f6c1f64e2cf03ad22aafcdc4cf1dedc702d104595b768f0feef6cccad1d','2ffaafc92e59b57664f68be9f385df0675e58c3b3b73f9d60385157981e2a299','6f254d948a0923b67d9c1817469cc2a9b92c5c6dfe5e0dd112a4b45540b447a5','5c82ab9eb915f1a7b923afec98bebcd8a17065e68cf7d1bf1ae75841e8782326','34aca47401f565f2ec1fcf0d16ea17eaada101bcef8ef9d59256fcef2a445c8a',
+KNOWN_OLD_OBSERVERS=frozenset(('6ac941fe44722e50929313feadc8b50138f80f7d1d5d0f629c361dd50051e741','3f7cc88b1eca87168bfd3bbb7e2ed2bcfb07cf94317c9859ca037af22af183fa','f987b6fb0bda74c674e424b97e488349668d23cd73b18352d178a6001c8213bb','ea5e0c05c0ce4ecf8424955a44c6938414a401b3ab985d7e68992e4c12aced7f','bfb2101c02f8664098fc83129d0d9e026d1656f9c43d3e658fb14757b21cadde','c79e4e1af33aced68ab998220668b732240a08f51982c53f2493fb381d3507c9','5b095139249fd2256d64d61f9937b7691b3a9ef3eee95476f2522dc3ffdd6ccf','73535003a763274fcbca68a6c5fa5cbd2c72fce23a6801a0b809048d93543f9f','2c5c5f6c1f64e2cf03ad22aafcdc4cf1dedc702d104595b768f0feef6cccad1d','2ffaafc92e59b57664f68be9f385df0675e58c3b3b73f9d60385157981e2a299','6f254d948a0923b67d9c1817469cc2a9b92c5c6dfe5e0dd112a4b45540b447a5','5c82ab9eb915f1a7b923afec98bebcd8a17065e68cf7d1bf1ae75841e8782326','34aca47401f565f2ec1fcf0d16ea17eaada101bcef8ef9d59256fcef2a445c8a',
                               'f7c4b1a554194fcbb3910e0526d09fc60c988476876a4bdd07e03d573744cdf6'))
 SKIP_DIRS=frozenset(('.git','.analysis','.venv','venv','node_modules','__pycache__','BepInEx','dotnet','SaveData','installer_payload','artifacts','src','tests'))
 CONFIG_BYTES=b'[Logging.Console]\nEnabled = false\n\n[IL2CPP]\nUnityBaseLibrariesSource = 2022.3.62.zip\n'
@@ -153,6 +153,7 @@ class InstallManager:
         self.payload_dir=Path(payload_dir) if payload_dir else ROOT/'installer_payload'
         self.expected_build=dict(EXPECTED_BUILD if _expected_build is None else _expected_build)
         self.build_profiles=PROFILES if _expected_build is None else [dict(id='test-fixture',label='Fixture',files=self.expected_build)]
+        self._allow_interface_candidate=_expected_build is None
         self.trusted_archives=dict(PINNED_PAYLOAD if _trusted_archives is None else _trusted_archives)
         self.process_checker=_process_checker or game_is_running;self.replace=_replace or os.replace
 
@@ -162,7 +163,7 @@ class InstallManager:
         try:count=len(json.loads((self.payload_dir/'manifest.json').read_text(encoding='utf-8-sig'))['runtime_files'])
         except (OSError,ValueError,KeyError,TypeError):count=0
         return dict(available=available,validated=False,bytes=sum((self.payload_dir/n).stat().st_size for n in names if (self.payload_dir/n).is_file()),
-                    files=count,plugin_version='0.7.0',error='' if available else '本地安装包缺失，请补全 installer_payload')
+                    files=count,plugin_version='0.8.0',error='' if available else '本地安装包缺失，请补全 installer_payload')
 
     def inspect_game(self,path):
         result=dict(game_dir='',executable='',telemetry_dir='',detected=False,supported=False,running=False,state='not_found',plugin_version='',errors=[],warnings=[])
@@ -170,17 +171,20 @@ class InstallManager:
             root=normalize_game_dir(path);result.update(game_dir=str(root),executable=str(root/EXE),telemetry_dir=str(root/'BepInEx/plugins/SiNiSistarDGLab/telemetry'),detected=True)
             actual={relative:sha256(_target(root,relative)) if _target(root,relative).is_file() else None for relative in self.expected_build}
             profile=next((p for p in self.build_profiles if p['files']==actual),None)
+            result['game_fingerprints']=actual
             if profile is None:
-                differing=[name for name,value in actual.items() if value!=self.expected_build[name]]
-                raise InstallError('unsupported','游戏构建尚未适配；核心文件不匹配：'+', '.join(differing),{'files':differing})
-            result.update(build_profile=profile['id'],build_label=profile['label'],game_fingerprints=actual)
+                errors=candidate_checks({name:_target(root,name) for name in self.expected_build}) if self._allow_interface_candidate else ['核心文件不匹配']
+                if errors:raise InstallError('unsupported','游戏运行环境未适配：'+'；'.join(errors),{'fingerprints':actual})
+                profile=dict(id='interface-pending',label='其他渠道构建 · 待启动验证接口')
+                result['warnings'].append('允许安装观察插件；启动后检查游戏接口，通过后才读取和联动。')
+            result.update(build_profile=profile['id'],build_label=profile['label'],compatibility_mode='runtime-interface' if profile['id']=='interface-pending' else 'known-build',interface_verified=False)
             result['supported']=True;result['running']=bool(self.process_checker(root/EXE))
             plugin=_target(root,PLUGIN)
             if plugin.is_file():
-                if sha256(plugin)==self.trusted_archives['SiNiSistarDGLab.Observer.dll']:result['plugin_version']='0.7.0'
+                if sha256(plugin)==self.trusted_archives['SiNiSistarDGLab.Observer.dll']:result['plugin_version']='0.8.0'
                 elif sha256(plugin) in KNOWN_OLD_OBSERVERS:result['plugin_version']='旧版观察插件'
                 else:result['warnings'].append('存在同名但未知版本的观察插件，安装将拒绝覆盖')
-            result['state']='running' if result['running'] else 'installed' if result['plugin_version']=='0.7.0' else 'ready'
+            result['state']='running' if result['running'] else 'installed' if result['plugin_version']=='0.8.0' else 'ready'
             config=_target(root,CONFIG)
             if config.exists():result['warnings'].append('已有 BepInEx 配置将保留，除非它是本安装器创建且未经修改的版本')
         except (InstallError,OSError,ValueError,KeyError) as error:
@@ -267,7 +271,7 @@ class InstallManager:
                 if not known:raise InstallError('conflict','存在不同来源或已修改的文件，安装未覆盖',{'path':relative})
             changes.append(relative)
         self._not_running(root);notify(25,'预检通过，准备暂存文件')
-        if not changes and prior.get('plugin_version')=='0.7.0' and all(owned.get(k)==v['sha256'] for k,v in entries.items()):
+        if not changes and prior.get('plugin_version')=='0.8.0' and all(owned.get(k)==v['sha256'] for k,v in entries.items()):
             notify(100,'文件已完整安装；请启动游戏验证加载')
             return self._result(root,payload,[],unchanged,preserved_config,'',warnings)
         token=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')+'-'+uuid.uuid4().hex[:8]
@@ -289,7 +293,7 @@ class InstallManager:
                     if target.exists():
                         old=_target(stage,'old/'+relative);old.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(target,old)
                     notify(25+int(45*(index+1)/max(1,len(changes))),'暂存运行时与观察插件')
-            new_manifest=dict(owner=OWNER,schema=1,plugin_version='0.7.0',runtime=payload['runtime'],source=payload.get('source',''),
+            new_manifest=dict(owner=OWNER,schema=1,plugin_version='0.8.0',runtime=payload['runtime'],source=payload.get('source',''),
                               installed_at=datetime.now(timezone.utc).isoformat(),game_build=inspection.get('build_profile','v1.3.1'),game_fingerprints=inspection.get('game_fingerprints',self.expected_build),
                               files=[dict(path=k,sha256=v['sha256']) for k,v in entries.items()],load_verified=False)
             staged_manifest=_target(stage,'new/'+MANIFEST);staged_manifest.parent.mkdir(parents=True,exist_ok=True)
@@ -332,7 +336,7 @@ class InstallManager:
     @staticmethod
     def _result(root,payload,changed,unchanged,preserved_config,backup_dir,warnings):
         return dict(success=True,game_dir=str(root),executable=str(root/EXE),telemetry_dir=str(root/'BepInEx/plugins/SiNiSistarDGLab/telemetry'),
-                    plugin_version='0.7.0',runtime=payload['runtime'],changed_files=changed,unchanged_files=unchanged,
+                    plugin_version='0.8.0',runtime=payload['runtime'],changed_files=changed,unchanged_files=unchanged,
                     preserved_config=preserved_config,backup_dir=backup_dir,requires_restart=True,load_verified=False,warnings=warnings)
 
 def discover_game_dirs(anchor=None,extra_roots=()):return InstallManager().discover_game_dirs(anchor,extra_roots)

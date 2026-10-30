@@ -7,14 +7,14 @@ CG feedback queues, a game HUD and an event inspector. Chinese / English / Japan
 Website: https://sinisistar2-dglab.web.app/
 Game hub: https://dglab-x-game.web.app/
 
-## Windows 1.0.3 test build
+## Windows 1.0.4 test build
 
-Download the portable Windows x64 ZIP from Releases (tag `v1.0.3`). Extract the
+Download the portable Windows x64 ZIP from Releases (tag `v1.0.4`). Extract the
 entire folder and run `SiNiSistar2-x-DGlab.exe`; no separate Python installation
 is needed. The release includes plugin installation resources and uses clean
 default settings. No game, publisher settings, personal saves or logs are included.
 Development and batch-testing controls are hidden by default.
-Observer 0.7.0 combines shared animation and declared CG playback signals with
+Observer 0.8.0 combines shared animation and declared CG playback signals with
 HP/grab fallback. Gallery feedback uses independent playback and take sessions.
 
 ## Run from source
@@ -69,3 +69,7 @@ Project code is GPL-3.0-only. Third-party runtimes and game-derived UI artwork a
 small previews retain their original rights; see `THIRD_PARTY_NOTICES.md`.
 The game itself, saves, local settings, credentials and telemetry are not included.
 This is an unofficial companion and is not affiliated with DG-LAB or the game maker.
+
+## Runtime interface compatibility
+
+Observer 0.8.0 checks required IL2CPP exports, class/value kinds, fully qualified field types, native method signatures and critical enum values before hooks. Other channel builds can attempt read-only feedback after checks pass; hashes identify audited builds, rather than gate the observer. Failures are recorded in game-side BepInEx/plugins/SiNiSistarDGLab/telemetry/compatibility.json. DLsite 1.3.1 still requires external testing. Unknown builds cannot use the optional helper or save import.

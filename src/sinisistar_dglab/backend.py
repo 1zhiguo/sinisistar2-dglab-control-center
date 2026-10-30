@@ -653,6 +653,7 @@ class Backend(QObject):
         if self._save_importer is None:
             from .save_import import SaveImporter
             info=self._installer().inspect_game(self._game_directory)
+            if info.get('compatibility_mode')=='runtime-interface':raise ValueError('此渠道的存档路径尚未验证，暂不提供一键导入')
             self._save_importer=SaveImporter(build_profile=info.get('build_profile',''))
         return self._save_importer
 
@@ -770,12 +771,13 @@ class Backend(QObject):
 
     def _apply_game_inspection(self,info):
         path=str(info.get('game_dir') or '')
-        if path!=self._install_state.get('selectedPath'):self._install_state.update(needsRestart=False,pluginOnline=False)
+        if path!=self._install_state.get('selectedPath'):self._install_state.update(needsRestart=False,pluginOnline=False,interfaceMessage='',interfaceError=False)
         errors=info.get('errors') or [];warnings=info.get('warnings') or []
         payload=self._installer().payload_info()
         valid=bool(info.get('supported') and info.get('detected') and not errors)
-        self._install_state.update(selectedPath=path,valid=valid,gameRunning=bool(info.get('running')),installedVersion=info.get('plugin_version',''),gameVersion='1.3.1' if valid else '',
+        self._install_state.update(selectedPath=path,valid=valid,gameRunning=bool(info.get('running')),installedVersion=info.get('plugin_version',''),gameVersion='1.3.1' if valid and info.get('compatibility_mode')!='runtime-interface' else '',
             buildProfile=info.get('build_profile',''),buildLabel=info.get('build_label',''),
+            compatibilityMode=info.get('compatibility_mode',''),
             payloadReady=bool(payload.get('available')),error='；'.join(str(x) for x in errors),
             message='请先退出这个目录里的游戏，再安装。' if info.get('running') else '；'.join(str(x) for x in warnings) or ('目录检查通过，可以安装或修复。' if valid else '没有找到支持的 SiNiSistar2 1.3.1 游戏目录。'))
         if valid and Path(path)!=self._game_directory:
@@ -1662,6 +1664,9 @@ class Backend(QObject):
         s=self._live;fresh=s.get('live') and now-s.get('sampled_at',0)<.6
         valid=bool(fresh and s.get('valid'))
         plugin_online=bool(fresh and s.get('observer_version') and self._install_state.get('selectedPath')==str(self._game_directory))
+        interface_message=('游戏接口检查通过 · 可以进行联动测试' if plugin_online and s.get('compatibility') else s.get('error','') if str(s.get('error','')).startswith('游戏接口检查未通过') else '')
+        if interface_message!=self._install_state.get('interfaceMessage',''):
+            self._install_state.update(interfaceMessage=interface_message,interfaceError=interface_message.startswith('游戏接口检查未通过'));self.installChanged.emit()
         if plugin_online!=self._install_state.get('pluginOnline',False):
             self._install_state['pluginOnline']=plugin_online
             if plugin_online:self._install_state.update(needsRestart=False,gameRunning=True,message='观察插件已在线，正在读取当前游戏。')
