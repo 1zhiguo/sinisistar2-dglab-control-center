@@ -14,6 +14,7 @@ def main():
     parser.add_argument('--simulation-demo',choices=('grab_hp','abnormals','flow'))
     parser.add_argument('--simulate-live',action='store_true',help='启动实时只读模拟，保持设备服务关闭')
     parser.add_argument('--mock-app',action='store_true',help='启动回环模拟 APP；按自动启用设置运行')
+    parser.add_argument('--mock-coyote2',action='store_true',help='仅在回环图鉴模拟中使用郊狼 2.0 测试设备')
     parser.add_argument('--gallery-mock',action='store_true',help='在主窗口打开图鉴反馈，连接四通道本机模拟 APP 并持续记录')
     parser.add_argument('--cg-ablation',action='store_true',help='使用当前预设的测试副本，只启用无 HP 的 CG 识别和四通道本机模拟 APP')
     parser.add_argument('--cg-live-ablation',action='store_true',help='保留真实 APP 连接和当前策略，仅测试无 HP 的实战 CG 播放识别；不启动模拟 APP')
@@ -28,7 +29,9 @@ def main():
     parser.add_argument('--trainer',action='store_true',help='打开 HP / MP / 攻击力辅助面板；不会自动修改数值')
     parser.add_argument('--trainer-statuses',action='store_true',help='打开游戏辅助里的当前异常移除页')
     parser.add_argument('--abnormal-policy',action='store_true',help='打开中文异常筛选与批量启用设置')
-    args=parser.parse_args();os.environ.setdefault('QT_QUICK_CONTROLS_STYLE','Basic')
+    args=parser.parse_args()
+    if args.mock_coyote2 and (not args.gallery_mock or args.connect_v3 or args.connect_v4):parser.error('--mock-coyote2 requires --gallery-mock and cannot start real connections')
+    os.environ.setdefault('QT_QUICK_CONTROLS_STYLE','Basic')
     if args.cg_live_ablation and (args.cg_ablation or args.cg_batch or args.mock_app or args.gallery_mock or args.simulation_demo or args.simulate_live or args.offline):
         parser.error('Real-game CG testing cannot be combined with mock/demo/offline modes')
     if args.cg_batch:args.cg_ablation=True
@@ -73,7 +76,7 @@ def main():
     if args.simulation_demo:backend.simulationSource(args.simulation_demo);backend.toggleSimulation()
     elif args.simulate_live:backend.toggleSimulation()
     if args.mock_app:backend.startMockPulse()
-    if args.gallery_mock:backend.startMockBoth()
+    if args.gallery_mock:backend.startMockBoth(coyote_type="COYOTE_020" if args.mock_coyote2 else "COYOTE_030")
     if args.connect_v4:backend.setPulseBackend('v4');backend.startV4()
     if args.connect_v3:backend.setPulseBackend('v3');backend.startConnection()
     app.aboutToQuit.connect(backend.shutdown)

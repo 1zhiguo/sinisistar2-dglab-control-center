@@ -210,7 +210,13 @@ class V4RouteService:
                     active[channel]=True  # Includes a revoked half-written pair.
                     if not self._valid(frame,channel,time.monotonic()):continue
                     encoded=self._encode(frame)
-                    sent=await route._rpc('device.op',dict(s=frame['slot'],t=0,c=code,p=1,d=FRAME_MS,v=[encoded],im=True),guard=guard)
+                    pulse_data=dict(s=frame['slot'],t=0,c=code,p=1,d=FRAME_MS,v=[encoded],im=True)
+                    if route.device_type=='COYOTE_020':
+                        # V4 ver is the INPUT frame format, not hardware version.
+                        # The UI produces canonical four-sample V3 frames. Send
+                        # their format explicitly rather than relabel as V2 BLE.
+                        pulse_data['ver']=3
+                    sent=await route._rpc('device.op',pulse_data,guard=guard)
                     if sent is False:continue
                     last_seq[channel]=frame['seq'];last_send[channel]=time.monotonic();active[channel]=True
                     with self._lock:self._wire[channel]=dict(active=True,strength=strength,deadline=frame['expires_at'])

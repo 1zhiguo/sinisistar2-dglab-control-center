@@ -10,8 +10,8 @@ HINTS={
  'channel-fault-or-blocked':('通道故障或屏蔽','请查看 DG-LAB APP 的通道提示，解除屏蔽或处理故障。'),
  'accessory-not-inserted':('未插入振动配件','请将振动配件插入负鼠对应的 A/B 接口。'),
  'missing-device-state':('状态尚未同步','请等待 APP 上报完整设备状态；持续无更新可重新同步。'),
- 'unsupported-device':('设备类型暂不支持','请选择郊狼 COYOTE_030 或负鼠 OVC_1。'),
- 'unsupported-waveformat':('旧版郊狼波形格式不支持','此 V4 路线支持 COYOTE_030；旧版设备请使用对应的兼容方案。'),
+ 'unsupported-device':('设备类型暂不支持','请选择郊狼 2.0／3.0 或负鼠控制器。'),
+ 'unsupported-waveformat':('波形格式不支持','请使用支持该输入波形格式的 DG-LAB 4 APP。'),
  'software-channel-off':('本通道已关闭','在下方 A/B 通道控制中打开所需通道。'),
  'software-limit-zero':('软件上限为零','请调整快速设置及该通道的软件上限。'),
  'app-limit-zero':('APP 上限为零','请在 DG-LAB APP 中为该通道设置可用的强度上限。'),
@@ -48,6 +48,8 @@ def setup_status(role,snapshot,*,enabled,caps,device=None,emergency=False,pendin
         if not code and device.get('type')=='COYOTE_030':
             title={0:'就绪 · 无输出或输出较低',1:'就绪 · APP 尚未检测到回路',2:'就绪 · 输出正常'}.get(raw,title)
             if raw==1:hint='如预期应有输出，请对照 DG-LAB APP 检查连接；这不是通道屏蔽。'
+        if not code and device.get('type')=='COYOTE_020':
+            title='就绪 · 郊狼 2.0';hint='强度受 APP 当前通道上限限制。'
         rows.append(dict(channel=c,code=code,title=title,hint=hint,rawStatus=raw))
         if not code:usable.append(c)
     error=s.get('error') or ''

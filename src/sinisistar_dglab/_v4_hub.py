@@ -15,10 +15,11 @@ import uuid
 import websockets
 
 from . import _transport_audit as audit
+from .device_types import COYOTE_TYPES,OVC_TYPES
 from ._v4_protocol import DGLabV4Bridge, V4_PORT
 
 
-ROLE_TYPES = {"coyote": frozenset({"COYOTE_030"}), "ovc": frozenset({"OVC_1"})}
+ROLE_TYPES = {"coyote": COYOTE_TYPES, "ovc": OVC_TYPES}
 
 
 class _RoleBridge(DGLabV4Bridge):

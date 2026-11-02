@@ -25,11 +25,12 @@ import uuid
 import websockets
 
 from . import _transport_audit as audit
+from .device_types import COYOTE_TYPES,SUPPORTED_V4_TYPES
 from ._v4_base import DGLabBridge, clamp_strength
 
 
 V4_PORT = 9998
-SUPPORTED_TYPES = frozenset({"COYOTE_030", "OVC_1"})
+SUPPORTED_TYPES = SUPPORTED_V4_TYPES
 LEASE_MS = 300
 FRAME_MS = 100
 RPC_TIMEOUT = 2.0
@@ -89,8 +90,6 @@ def _abandon_rpc_future(future) -> None:
 def channel_block_reason(device: dict, channel: str) -> str:
     if device.get('_connectionUnconfirmed'):
         return 'device-unresponsive'
-    if device.get("type") == "COYOTE_020":
-        return "unsupported-waveformat"
     if device.get("type") not in SUPPORTED_TYPES:
         return "unsupported-device"
     props, state = device.get("props", {}), device.get("slotState", {})
@@ -351,11 +350,11 @@ class DGLabV4Bridge(DGLabBridge):
             self._audit_readiness("device-state-update")
         reasons = {channel: channel_block_reason(device, channel) for channel in ("A", "B")}
         if (not device or device.get("type") != self.device_type
-                or (self.device_type == "COYOTE_030" and self.selected_client_id not in self._clients)):
+                or (self.device_type in COYOTE_TYPES and self.selected_client_id not in self._clients)):
             self._lose_selection("selected-device-disconnected")
         elif reasons['A'] == 'device-unresponsive':
             self._wait_for_selected_coyote('device-unresponsive')
-        elif self.device_type == "COYOTE_030" and all(reasons.values()):
+        elif self.device_type in COYOTE_TYPES and all(reasons.values()):
             if not self._readiness_failure_latched:
                 reason = (reasons["A"] if reasons["A"] == reasons["B"]
                           else "all-channels-blocked")

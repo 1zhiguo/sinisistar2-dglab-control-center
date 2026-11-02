@@ -49,7 +49,7 @@ ScrollView {
         property bool pulse: true
         readonly property string role: pulse ? "pulse" : "ovc"
         readonly property var selected: (pulse ? page.v4.coyote : page.v4.ovc) || ({})
-        readonly property var choices: [{clientId:"",slotId:"",label:"不选择设备"}].concat(backend.v4Devices.filter(function(d){return d.type===(card.pulse ? "COYOTE_030" : "OVC_1");}).map(function(d){return {clientId:d.clientId,slotId:d.slotId,label:(d.name || d.type)+" · "+d.slotId};}))
+        readonly property var choices: [{clientId:"",slotId:"",label:"不选择设备"}].concat(backend.v4Devices.filter(function(d){return card.pulse ? !!d.pulseCompatible : d.type==="OVC_1";}).map(function(d){return {clientId:d.clientId,slotId:d.slotId,label:(d.name || backend.translate(d.displayName || d.type,backend.language))+" · "+d.slotId};}))
         readonly property bool v3: pulse && page.settings.pulse_backend==="v3"
         readonly property bool connected: pulse ? page.s.connected : page.s.ovcConnected
         readonly property bool armed: pulse ? page.s.armed : page.s.ovcArmed
@@ -173,7 +173,7 @@ ScrollView {
                         AppText { text: "发现设备后自动选择并启用"; color: Theme.text; Layout.fillWidth: true }
                         AppSwitch { objectName: "autoEnableDevices"; checked: page.settings.auto_enable; onToggled: backend.setConnectionSetting("auto_enable",checked) }
                     }
-                    AppText { Layout.fillWidth: true; text: "确认手机与电脑连接同一网络，并允许 Python 通过系统防火墙。V3 使用 DG-LAB 3 APP 的 SOCKET；V4 使用 DG-LAB 4 APP 的扫码连接。修改地址或端口后，点击重启连接。"; color: Theme.muted; font.pixelSize: 11; wrapMode: Text.Wrap; elide: Text.ElideNone }
+                    AppText { Layout.fillWidth: true; text: "确认手机与电脑连接同一网络，并允许当前控制中心程序通过系统防火墙。郊狼 2.0 请使用 DG-LAB 4 APP 并选择 V4；V3 用于郊狼 3.0 的旧版 Socket。修改地址或端口后，点击重启连接。"; color: Theme.muted; font.pixelSize: 11; wrapMode: Text.Wrap; elide: Text.ElideNone }
                     RowLayout { Layout.fillWidth: true; spacing: 10
                         AppText { text: "电脑地址"; color: Theme.muted; font.pixelSize: 11 }
                         TextField { Layout.fillWidth: true; text: page.settings.lan_ip; placeholderText: backend.translate(("自动选择"),backend.language); color: Theme.text; onEditingFinished: backend.setConnectionSetting("lan_ip",text); background: Rectangle { color: Theme.bg; border.color: Theme.border; radius: 3 } }

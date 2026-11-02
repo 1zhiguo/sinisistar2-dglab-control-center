@@ -4,14 +4,17 @@ from collections import Counter
 from datetime import datetime,timezone
 from pathlib import Path
 from .mock_v4 import MockV4App
+from .device_types import COYOTE_TYPES
 
 class MockSession:
-    def __init__(self,hub,root):
+    def __init__(self,hub,root,*,coyote_type="COYOTE_030"):
         if not hub.local_only:raise ValueError('模拟 APP 仅允许本机回环连接')
+        if coyote_type not in COYOTE_TYPES:raise ValueError('Unsupported mock Coyote hardware')
+        self.coyote_type=coyote_type
         self.hub=hub;self.directory=Path(root)/(datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')+'-'+uuid.uuid4().hex[:6])
         self.directory.mkdir(parents=True,exist_ok=False)
         self._stop=threading.Event();self._lock=threading.Lock();self._thread=None
-        self._state=dict(running=False,connected=False,error='',commands=0,pulsesA=0,pulsesB=0,ovcPulsesA=0,ovcPulsesB=0,client_id='',receipts={})
+        self._state=dict(coyote_type=coyote_type,running=False,connected=False,error='',commands=0,pulsesA=0,pulsesB=0,ovcPulsesA=0,ovcPulsesB=0,client_id='',receipts={})
         self._pipeline=(self.directory/'pipeline.jsonl').open('a',encoding='utf-8');self.frames=0;self._last_summary=0.;self._closed=False
         self.started=datetime.now(timezone.utc).isoformat();self._command_counts=Counter();self._compact_at=0.
     def snapshot(self):
@@ -23,7 +26,7 @@ class MockSession:
         self._change(running=True)
         self._thread=threading.Thread(target=lambda:asyncio.run(self._run()),daemon=True,name='MainWindowMockAPP');self._thread.start()
     async def _run(self):
-        app=MockV4App();count=0;counts=Counter();receipts={}
+        app=MockV4App(coyote_type=self.coyote_type);count=0;counts=Counter();receipts={}
         with (self.directory/'commands.jsonl').open('a',encoding='utf-8') as stream:
             def flush():
                 nonlocal count

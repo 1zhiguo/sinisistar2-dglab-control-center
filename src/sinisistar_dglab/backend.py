@@ -17,6 +17,7 @@ from .ovc_plan import OvcPlanner,has_ovc_abnormal
 from .hud_settings import HUD_DEFAULTS,sanitize_hud
 from .trainer import TrainerBridge,install_trainer
 from .device_setup import setup_status
+from .device_types import COYOTE_TYPES,OVC_TYPES,DEVICE_NAMES
 from .penalty_flows import current_penalty_class
 from .flow_semantics import FlowReview
 from .locked_hp import LockedHpEvidence
@@ -629,7 +630,8 @@ class Backend(QObject):
     @Property('QVariantMap',notify=changed)
     def v4State(self):return self._v4.snapshot() if self._v4 else {'server_ready':False,'devices':[],'qr_url':''}
     @Property('QVariantList',notify=changed)
-    def v4Devices(self):return self._v4.devices_snapshot() if self._v4 else []
+    def v4Devices(self):
+        return [dict(d,pulseCompatible=d.get('type') in COYOTE_TYPES,displayName=DEVICE_NAMES.get(d.get('type'),d.get('type',''))) for d in self._v4.devices_snapshot()] if self._v4 else []
     @Property('QVariantMap',notify=configChanged)
     def ovcLimits(self):return dict(self._ovc_limits)
     @Property('QVariantMap',notify=installChanged)
@@ -1213,8 +1215,8 @@ class Backend(QObject):
         self._auto_pending.pop(role,None)
         self._auto_suppressed.add(role)
         if self._v4:
-            kind='COYOTE_030' if role=='pulse' else 'OVC_1'
-            self._auto_present.update((id(self._v4),d['clientId'],d['slotId']) for d in self.v4Devices if d.get('type')==kind)
+            kinds=COYOTE_TYPES if role=='pulse' else OVC_TYPES
+            self._auto_present.update((id(self._v4),d['clientId'],d['slotId']) for d in self.v4Devices if d.get('type') in kinds)
         if role=='pulse' and self._service:
             self._auto_v3_pending=None
             s=self._service.snapshot();self._auto_v3=(id(self._service),s.get('controller_id'),s.get('target_id'))
@@ -1227,12 +1229,12 @@ class Backend(QObject):
             and ((d.get('slotState') or {}).get('hasDevice') is True or (d.get('props') or {}).get('connectState')=='connected')}
         added=present-self._auto_present;self._auto_present=present
         blocked=self._emergency or self._trainer.pending or self._sim_running or self._sim_source!='live'
-        for role,kind in (('pulse','COYOTE_030'),('ovc','OVC_1')):
+        for role,kinds in (('pulse',COYOTE_TYPES),('ovc',OVC_TYPES)):
             if role=='pulse' and self._connection['pulse_backend']!='v4':continue
             service=self._service if role=='pulse' else self._ovc_service
             if not service:continue
             s=service.snapshot();selected=(s.get('selected_client_id'),s.get('selected_slot_id'))
-            candidates=[d for d in devices if d.get('type')==kind and (id(self._v4),d['clientId'],d['slotId']) in added]
+            candidates=[d for d in devices if d.get('type') in kinds and (id(self._v4),d['clientId'],d['slotId']) in added]
             armed=self._armed if role=='pulse' else self._ovc_armed
             if candidates and not blocked and role not in self._auto_suppressed and (not armed or not s.get('connected')):
                 # Retain an existing selection; a second device must not steal it.
@@ -1512,7 +1514,7 @@ class Backend(QObject):
         self._ovc_limits[channel]=int(self._clamp(value,0,200)//10)*10;self._simulation_changed()
 
     @Slot()
-    def startMockBoth(self):
+    def startMockBoth(self,*,coyote_type="COYOTE_030"):
         if self.offline:self.toast.emit('离线预览不启动模拟 APP');return
         if self._mock_session:return
         from .v4 import V4ConnectionService
@@ -1522,7 +1524,7 @@ class Backend(QObject):
         self._sim_running=False;self._sim_source='live';self._simulator.reset()
         self._v4=V4ConnectionService(port=0,host='127.0.0.1',lan_ip='127.0.0.1')
         self._service=self._v4.channel('pulse');self._ovc_service=self._v4.channel('ovc')
-        self._mock_session=MockSession(self._v4,self.settings.parent/'mock-sessions')
+        self._mock_session=MockSession(self._v4,self.settings.parent/'mock-sessions',coyote_type=coyote_type)
         self._last_mock_path=str(self._mock_session.directory)
         self._mock_session.profile(self._sim_profile,self._channels,self._ovc_limits)
         self._v4.start();self._mock_session.start();self._mock_pending=True

@@ -7,9 +7,9 @@ CG feedback queues, a game HUD and an event inspector. Chinese / English / Japan
 Website: https://sinisistar2-dglab.web.app/
 Game hub: https://dglab-x-game.web.app/
 
-## Windows 1.0.4 test build
+## Windows 1.0.6 test build
 
-Download the portable Windows x64 ZIP from Releases (tag `v1.0.4`). Extract the
+Download the portable Windows x64 ZIP from Releases (tag `v1.0.6`). Extract the
 entire folder and run `SiNiSistar2-x-DGlab.exe`; no separate Python installation
 is needed. The release includes plugin installation resources and uses clean
 default settings. No game, publisher settings, personal saves or logs are included.
@@ -73,3 +73,7 @@ This is an unofficial companion and is not affiliated with DG-LAB or the game ma
 ## Runtime interface compatibility
 
 Observer 0.8.0 checks required IL2CPP exports, class/value kinds, fully qualified field types, native method signatures and critical enum values before hooks. Other channel builds can attempt read-only feedback after checks pass; hashes identify audited builds, rather than gate the observer. Failures are recorded in game-side BepInEx/plugins/SiNiSistarDGLab/telemetry/compatibility.json. DLsite 1.3.1 still requires external testing. Unknown builds cannot use the optional helper or save import.
+
+## Coyote 2.0 via V4
+
+Coyote 2.0 discovery, per-channel output and reconnect zero confirmation are supported via DG-LAB 4 APP / V4. Input frames explicitly use ver:3; the APP handles the device side. Current APP channel limits apply. Loopback tests passed; physical Coyote 2.0 testing is pending. The game observer is unchanged.
